@@ -43,7 +43,7 @@ Owners, venues, equipment
 </ul>
 
 ## Screenshots
-![Screenshot](public/img/screenshots/equip1.png)
+![Screenshot](public/img/screenshots/owner1.png)
 
 
 

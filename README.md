@@ -1,5 +1,53 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
+> A Sept 2024 to run a new Laravel 6 app from start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
+
+## Install Laravel 6 LTS, php 7.2
+
+<p>1. Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
+<p>2. In browser can navigate to /public/  => the project should open </p>
+<p>3. In console CLI <code> cd NAME_HERE </code> , and <code>git init   git add.   git commit</code> if necessary </p>
+<p>4. Create DB and set in <code>.env (DB_DATABASE)</code> </p>
+
+<p>5. <code>php artisan migrate </code>  or take next step if need Auth. </br>If  on migration error "1071 Specified key was too long;", 
+add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength(191); </code> </p>
+<p>5.1. Add Auth to project (cd to folder /NANE_HERE) => 
+<ul> 
+      <li>composer require laravel/ui "^1.0" --dev    OR  composer require laravel/ui  </li>
+	  <li><code> php artisan ui vue --auth  </code>  (it will update routes in routes/web) </li>
+	  <li><code> npm install && npm run dev </code> (adds  "Login and "register" to main page)(if this required in CLI as next step, do in Win cmd => npm install But most likely use  var2(tested) => npm install && npm run dev ) </li>
+	  <li><code> php artisan migrate   </code>(to get users db out of the box) </li>
+</ul>
+</p>
+
+<p>5.2. If any custom migration added later => <code>php artisan migrate </code></br>
+     If have seeder                      => <code>php artisan db:seed </code> 
+</p>
+	 
+<p>6. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
+If new route is not found => <code>php artisan route:clear</code> </br>
+                             <code>composer dump-autoload</code>
+</p>
+
+<p>NB: In Laravel 6 is not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(). </br>
+#If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
+</p>
+
+
+## Tables
+Owners, venues, equipment
+
+## New features
+<ul>
+<li>Implicit Route Model Binding</li>
+</ul>
+
+## Screenshots
+![Screenshot](public/img/screenshots/equip1.png)
+
+
+
+
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>

@@ -18,6 +18,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	
+	<!-- added Bootstrap 4 icons -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
 <body>
     <div id="app">
@@ -38,6 +41,24 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+					
+					    <!-- Common links (make link highlighted ) -->
+						
+						<li class="nav-item {{ Request::is('home*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
+						</li>
+						
+						<li class="nav-item {{ Request::is('home*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('home') }}">{{ __('Change pass') }}</a>
+						</li>
+						
+						<li class="nav-item {{ Request::is('owners*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('/owners') }}">{{ __('Owners') }}</a>
+						</li>
+						
+						<!-- End Common links (make link highlighted ) -->
+						
+						
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

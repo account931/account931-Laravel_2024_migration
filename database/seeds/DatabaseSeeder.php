@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Owner;
+use Database\Seeds\Subfolder\OwnerSeeder;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+		$this->call([
+		    OwnerSeeder::class,  //fill DB table {owners} with data
+		]); 
+		
+		 Cache::flush();
     }
 }

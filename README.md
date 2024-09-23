@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-> A Sept 2024 to run a new Laravel 6 app from start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
+> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
 
 ## Install Laravel 6 LTS, php 7.2
 
@@ -39,8 +39,12 @@ Owners, venues, equipment
 
 ## New features
 <ul>
-<li>Implicit Route Model Binding</li>
+<li>Implicit Route Model Binding, local scopes, accessor</li>
 </ul>
+
+## Some notes
+{{ $owner->first_name  }}  escaped html </br>
+{!! $owner->first_name  !!}  unescaped thml
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner1.png)

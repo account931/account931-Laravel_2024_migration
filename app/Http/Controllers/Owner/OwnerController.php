@@ -25,7 +25,7 @@ class OwnerController extends  Controller
     public function index() 
     {   
 	    $name   = 'All records';
-		$owners = Owner::paginate(10);
+		$owners = Owner::createdAtLastYear()/*->confirmed()*/->paginate(10); //createdAtLastYear, confirmed == local scope
         return view('owner.index')->with(compact('name', 'owners'));
     }
 	

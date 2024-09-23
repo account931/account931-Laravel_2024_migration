@@ -26,7 +26,7 @@
                             @foreach ($owners as $owner)
 							<div class="alert alert-info">
 			                <p> Owner {{ $loop->iteration }}  </p>  <!-- {{ $loop->iteration }} is Blade equivalentof $i++ -->
-                            <p><i class='fas fa-cat'   style='font-size:16px'></i> Name:    {{ $owner->first_name  }}  {{ $owner->last_name  }}</p>
+                            <p><i class='fas fa-cat'   style='font-size:16px'></i> Name:    {!! $owner->first_name  !!}  {{ $owner->last_name  }}</p>
 							<p><i class='fas fa-horse' style='font-size:16px'></i> Location: {{ $owner->location}}  </p>
 							<p><i class='fas fa-tree' style='font-size:16px'></i>  Confirmed: {!! ($owner->confirmed) ? '<i class="far fa-check-circle" style="color:green"></i>' : '<i class="far fa-bell-slash" style="color:red"></i>' !!}  </p>
 							

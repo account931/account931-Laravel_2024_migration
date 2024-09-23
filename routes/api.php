@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Api\V1\Controllers\OwnerController;
+use App\Models\Owner;
+use App\Http\Api\V1\Resources\OwnerResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners'); ;  //public/api/owners  //same working as below route
+//Route::get('/owners', function () { return new OwnerResource(Owner::find(1)); }); //same as above, working

@@ -48,12 +48,16 @@
 							<a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
 						</li>
 						
-						<li class="nav-item {{ Request::is('home*') ? 'active' : '' }}">
-							<a class="nav-link" href="{{ route('home') }}">{{ __('Change pass') }}</a>
+						<li class="nav-item {{ Request::is('password.request*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('password.request') }}">{{ __('Change pass') }}</a>
 						</li>
 						
 						<li class="nav-item {{ Request::is('owners*') ? 'active' : '' }}">
 							<a class="nav-link" href="{{ route('/owners') }}">{{ __('Owners') }}</a>
+						</li>
+						
+						<li class="nav-item {{ Request::is('api/owners*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('api/owners') }}">{{ __('Owners Api') }}</a>
 						</li>
 						
 						<!-- End Common links (make link highlighted ) -->

@@ -49,7 +49,11 @@
 						</li>
 						
 						<li class="nav-item {{ Request::is('password.request*') ? 'active' : '' }}">
-							<a class="nav-link" href="{{ route('password.request') }}">{{ __('Change pass') }}</a>
+							<a class="nav-link" href="{{ route('password.request') }}">{{ __('Reset pass(b)') }}</a>
+						</li>
+
+                        <li class="nav-item {{ Request::is('change-password*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('change-password') }}">{{ __('Change passsword') }}</a>
 						</li>
 						
 						<li class="nav-item {{ Request::is('owners*') ? 'active' : '' }}">

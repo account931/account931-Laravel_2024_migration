@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\Owner;
 use Database\Seeds\Subfolder\OwnerSeeder;
+use Database\Seeds\Subfolder\VenueSeeder;
 use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
@@ -16,8 +17,11 @@ class DatabaseSeeder extends Seeder
     {
 		$this->call([
 		    OwnerSeeder::class,  //fill DB table {owners} with data
+			VenueSeeder::class,  //fill DB table {venues} with data
 		]); 
 		
-		 Cache::flush();
+	    $this->command->info('Seedering action was successful!');
+		
+		Cache::flush();
     }
 }

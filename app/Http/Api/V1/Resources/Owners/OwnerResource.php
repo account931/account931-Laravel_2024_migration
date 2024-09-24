@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Api\V1\Resources;
+namespace App\Http\Api\V1\Resources\Owners;
 
 //use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Models\Owner;
+use App\Http\Api\V1\Resources\Venues\VenueResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OwnerResource extends JsonResource
@@ -21,7 +22,8 @@ class OwnerResource extends JsonResource
             'id'            => $this->id,
             'first_name'    => $this->first_name,
 			'last_name'     => $this->last_name,
-			'confirmed'     => $this->confirmed,
+            'confirmed'     => $this->confirmed,
+            'venues'        => VenueResource::collection($this->venues), //hasMany relation
 			'status' => 'success',
 	    ];
     }

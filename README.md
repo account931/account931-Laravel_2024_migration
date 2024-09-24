@@ -26,16 +26,18 @@ add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength
 	 
 <p>6. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
 If new route is not found => <code>php artisan route:clear</code> </br>
-                             <code>composer dump-autoload</code>
+                             <code> composer dump-autoload </code>
 </p>
 
-<p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4)  </br>
+<p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), type hinting( PHP 7.4.0)  </br>
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 
 
 ## Tables
 Owners, venues, equipment
+Owner can has many Venues, each Venue has 1 Owner (One to Many Relationships: HasMany)
+Venues can have many equipments, each equipment may be present in many Venues (Many to Many Relationships: BelongsToMany). Pivot table.
 
 ## New features
 <ul>
@@ -48,6 +50,12 @@ Owners, venues, equipment
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner1.png)
+![Screenshot](public/img/screenshots/owner2.png)
+> Api resource
+![Screenshot](public/img/screenshots/owner_api.png)
+> Password update
+![Screenshot](public/img/screenshots/password_update.png)
+
 
 
 

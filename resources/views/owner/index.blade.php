@@ -30,6 +30,21 @@
 							<p><i class='fas fa-horse' style='font-size:16px'></i> Location: {{ $owner->location}}  </p>
 							<p><i class='fas fa-tree' style='font-size:16px'></i>  Confirmed: {!! ($owner->confirmed) ? '<i class="far fa-check-circle" style="color:green"></i>' : '<i class="far fa-bell-slash" style="color:red"></i>' !!}  </p>
 							
+                            {{-- Venues hasMany  --}}
+                            <p> <i class='fas fa-horse' style='font-size:16px'></i> Venues (hasMany): 
+                            @if( $owner->venues->isEmpty())
+                                <span class="text-danger"> No venue so far. </span>
+                            @else
+                                <ul>
+                                @foreach ($owner->venues as $venue)
+                                    <li>Venue {{ $loop->iteration }}: {{ $venue->venue_name }}</li>
+                                @endforeach
+                                </ul>
+                            @endif
+                            </p>
+                           
+                            
+
 							<!-- Link to view one. Two below links shows tha same page-->
 							<p class='small'>
 							    <a href="{{route('ownerOneId', ['id' => $owner->id])}}"> <i class='far fa-eye' style='font-size:16px'></i> View it (by id)...</a>  <!-- Traditional route by id -->

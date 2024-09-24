@@ -4,6 +4,8 @@ namespace Database\Seeds\Subfolder;
 
 use Illuminate\Database\Seeder;
 use App\Models\Owner;
+use App\Models\Venue;
+use Illuminate\Support\Facades\DB;
 
 class OwnerSeeder extends Seeder
 {
@@ -14,6 +16,10 @@ class OwnerSeeder extends Seeder
      */
     public function run()
     {		
+	    //DB::table('owners')->delete();  //whether to delete old data
+		DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        DB::table('owners')->truncate(); //way to set auto increment back to 1 before seeding a table
+		
         // $this->call(UsersTableSeeder::class);
 		///Owner::factory()->count(5)->create(); //Factory trait has been introduced in Laravel v8.
 	    //$owners = factory(App\Models\Owner::class, 3)->make();
@@ -29,6 +35,7 @@ class OwnerSeeder extends Seeder
                 ['confirmed' => 1],
                 ['confirmed' => 0]
             ) */
+            //->has(factory(\App\Models\Venue::class, 1)) //not supported in Laravel 6??
 		    ->create();
     }
 }

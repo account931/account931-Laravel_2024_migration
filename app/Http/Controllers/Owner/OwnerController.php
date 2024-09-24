@@ -19,13 +19,16 @@ class OwnerController extends  Controller
 	}
 	
 	/**
-     * Show start page with my
+     * Show start page with all owners list
      * @return \Illuminate\Http\Response
      */
     public function index() 
     {   
 	    $name   = 'All records';
-		$owners = Owner::createdAtLastYear()/*->confirmed()*/->paginate(10); //createdAtLastYear, confirmed == local scope
+        $owners = Owner::createdAtLastYear() //createdAtLastYear, confirmed == local scope
+             //->confirmed()  //local scope
+            ->with('venues')  //eager loading
+            ->paginate(10);
         return view('owner.index')->with(compact('name', 'owners'));
     }
 	

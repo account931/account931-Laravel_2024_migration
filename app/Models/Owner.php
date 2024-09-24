@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder; //for scope
+use App\Models\Venue;
 //use Illuminate\Database\Eloquent\Factories\HasFactory; //Factory traithas been introduced in Laravel v8.
 
 class Owner extends Model
@@ -57,6 +58,14 @@ class Owner extends Model
     public function getFirstNameAttribute($value)
     {
         return "<span style='color:red;font-size:0.7em;'>accessor</span> " . ucfirst($value);
+    }
+
+    /**
+     * HasMany: get the venuess for the owner post.
+     */
+    public function venues() //: HasMany
+    {
+        return $this->hasMany(Venue::class);
     }
 
 }

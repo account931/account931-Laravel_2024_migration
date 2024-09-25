@@ -1,5 +1,5 @@
 <?php
-//not used!!!!
+//not used (goen to ->each in  \Database\Seeds\SubfolderOwnerSeeder)!!!!
 namespace Database\Seeds\Subfolder;
 
 use Illuminate\Database\Seeder;

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder; //for scope
 //use Illuminate\Database\Eloquent\Factories\HasFactory; //Factory traithas been introduced in Laravel v8.
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Venue extends Model
 {
@@ -50,4 +53,11 @@ class Venue extends Model
         return $this->belongsTo(Owner::class);
     }
 
+	/**
+     * BelongsToMany: get equipments that have venues
+     */
+    public function equipments(): BelongsToMany
+    {
+        return $this->belongsToMany(Equipment::class);
+    }
 }

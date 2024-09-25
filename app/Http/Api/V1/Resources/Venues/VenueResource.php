@@ -5,6 +5,7 @@ namespace App\Http\Api\V1\Resources\Venues;
 //use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Models\Venue;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Api\V1\Resources\Equipments\EquipmentResource;
 
 class VenueResource extends JsonResource
 {
@@ -20,9 +21,10 @@ class VenueResource extends JsonResource
 		return [
             'id'            => $this->id,
             'venue_name'    => $this->venue_name,
-			'address'     => $this->address,
-            'active'     => $this->active,
-			'status' => 'success',
+			'address'       => $this->address,
+            'active'        => $this->active,
+			'equipment'     => EquipmentResource::collection($this->equipments), //many to Many relation
+			'status'        => 'success',
 	    ];
     }
 }

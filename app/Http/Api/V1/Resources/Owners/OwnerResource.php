@@ -23,7 +23,7 @@ class OwnerResource extends JsonResource
             'first_name'    => $this->first_name,
 			'last_name'     => $this->last_name,
             'confirmed'     => $this->confirmed,
-            'venues'        => VenueResource::collection($this->venues), //hasMany relation
+            'venues'        => VenueResource::collection($this->venues), //hasMany relation (includes Many to Many relation 'equipments' inside)
 			'status' => 'success',
 	    ];
     }

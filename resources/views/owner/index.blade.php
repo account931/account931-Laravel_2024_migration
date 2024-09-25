@@ -24,22 +24,37 @@
 						@if ($owners->count())
                           
                             @foreach ($owners as $owner)
-							<div class="alert alert-info">
+							<div class="alert alert-info" style="border: 1px solid black;">
 			                <p> Owner {{ $loop->iteration }}  </p>  <!-- {{ $loop->iteration }} is Blade equivalentof $i++ -->
                             <p><i class='fas fa-cat'   style='font-size:16px'></i> Name:    {!! $owner->first_name  !!}  {{ $owner->last_name  }}</p>
 							<p><i class='fas fa-horse' style='font-size:16px'></i> Location: {{ $owner->location}}  </p>
 							<p><i class='fas fa-tree' style='font-size:16px'></i>  Confirmed: {!! ($owner->confirmed) ? '<i class="far fa-check-circle" style="color:green"></i>' : '<i class="far fa-bell-slash" style="color:red"></i>' !!}  </p>
 							
                             {{-- Venues hasMany  --}}
-                            <p> <i class='fas fa-horse' style='font-size:16px'></i> Venues (hasMany): 
+                            <p> <i class='fas fa-charging-station' style='font-size:16px'></i> Venues (hasMany): 
                             @if( $owner->venues->isEmpty())
                                 <span class="text-danger"> No venue so far. </span>
                             @else
-                                <ul>
                                 @foreach ($owner->venues as $venue)
-                                    <li>Venue {{ $loop->iteration }}: {{ $venue->venue_name }}</li>
+								    <div class="one" style="border: 1px solid black; padding: 1em; margin-bottom:1em; border-radius: 1em;">
+                                    <p>Venue {{ $loop->iteration }}: {{ $venue->venue_name }}</p>
+									
+									
+									{{-- Equipment Many to Many  --}}
+									@if( $venue->equipments->isEmpty())
+									    <span class="text-danger"> No equipment so far. </span>	
+									@else
+										<p>Equipment (many to many)</p>
+										<ul>
+										@foreach ($venue->equipments as $equipment)
+									        <li> {{ $equipment->trademark_name }} {{ $equipment->model_name }}</li>
+										@endforeach
+										</ul>
+									@endif
+									{{-- End Equipment Many to Many  --}}
+									
+									</div> <!-- end class one-->
                                 @endforeach
-                                </ul>
                             @endif
                             </p>
                             {{-- End Venues hasMany  --}}

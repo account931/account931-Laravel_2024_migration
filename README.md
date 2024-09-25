@@ -50,8 +50,8 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 {!! $owner->first_name  !!}  unescaped thml
 
 ## Screenshots
-![Screenshot](public/img/screenshots/owner1.png)
 ![Screenshot](public/img/screenshots/owner2.png)
+![Screenshot](public/img/screenshots/ownerOne4.png)
 > Api resource
 ![Screenshot](public/img/screenshots/owner_api.png)
 > Password update

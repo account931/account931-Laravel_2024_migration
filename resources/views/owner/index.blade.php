@@ -42,7 +42,7 @@
                                 </ul>
                             @endif
                             </p>
-                           
+                            {{-- End Venues hasMany  --}}
                             
 
 							<!-- Link to view one. Two below links shows tha same page-->

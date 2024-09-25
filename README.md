@@ -29,7 +29,8 @@ If new route is not found => <code>php artisan route:clear</code> </br>
                              <code> composer dump-autoload </code>
 </p>
 
-<p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), type hinting( PHP 7.4.0)  </br>
+<p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
+type hinting( PHP 7.4.0), seeding hasMany relation via ->has()  </br>
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 

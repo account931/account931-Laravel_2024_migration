@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 		$this->call([
-		    OwnerSeeder::class,  //fill DB table {owners} with data
-			VenueSeeder::class,  //fill DB table {venues} with data
+		    OwnerSeeder::class,  //fill DB table {owners} with data (also include seeding table {venues} vis hasMany)
+			//VenueSeeder::class,  //fill DB table {venues} with data
 		]); 
 		
 	    $this->command->info('Seedering action was successful!');

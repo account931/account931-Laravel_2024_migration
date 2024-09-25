@@ -1,5 +1,5 @@
 <?php
-
+//not used!!!!
 namespace Database\Seeds\Subfolder;
 
 use Illuminate\Database\Seeder;

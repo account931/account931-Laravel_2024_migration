@@ -16,7 +16,10 @@ class OwnerController extends Controller
 {
     public function index(Request $request): JsonResource
     {
-		$onwers = Owner::createdAtLastYear()->get(); //local scope
+		$onwers = Owner::createdAtLastYear()   //createdAtLastYear, confirmed == local scope
+		            //->confirmed()  //local scope
+		            ->with('venues')  //eager loading
+		            ->get(); //local scope
 		return  OwnerResource::collection($onwers); //works, return collection of models through Resource, but without your customization
 		//return new OwnerCollection($onwers); //custom Collection with your added data (Issue: return everything from model, regadless what specified in Resource(inc relation))
 		

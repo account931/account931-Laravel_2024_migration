@@ -18,10 +18,11 @@ class OwnerController extends Controller
     {
 		$onwers = Owner::createdAtLastYear()   //createdAtLastYear, confirmed == local scope
 		            //->confirmed()  //local scope
-		            ->with('venues')  //eager loading
-		            ->get(); //local scope
-		return  OwnerResource::collection($onwers); //works, return collection of models through Resource, but without your customization
-		//return new OwnerCollection($onwers); //custom Collection with your added data (Issue: return everything from model, regadless what specified in Resource(inc relation))
+		            ->with('venues', 'venues.equipments')  //eager loading ['venues' => 'hasMany relation in models\Owner', 'venues.equipments' => 'nested relation in models\Venue, i.e $owner->venues->equipments']
+		            ->get(); 
+					
+		//return  OwnerResource::collection($onwers); //works, return collection of models through Resource, but without your customization (so u cann't add additional data like 'owners_count' => Owner::count(),'). Advantage: dont have to create your custom collection, just use build-in.
+		return new OwnerCollection($onwers); //your custom Collection with your added data. Advantage: u can add additional data like 'owners_count' => Owner::count() 
 		
 		//Not supported, arrow functions were introduced in PHP 7.4 
         /*return Cachable::cache(

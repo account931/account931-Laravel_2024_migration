@@ -27,7 +27,7 @@ class OwnerController extends  Controller
 	    $name   = 'All records';
         $owners = Owner::createdAtLastYear() //createdAtLastYear, confirmed == local scope
              //->confirmed()  //local scope
-            ->with('venues')  //eager loading
+            ->with('venues', 'venues.equipments')  //eager loading ['venues' => 'hasMany relation in models\Owner', 'venues.equipments' => 'nested relation in models\Venue, i.e $owner->venues->equipments']
             ->paginate(10);
         return view('owner.index')->with(compact('name', 'owners'));
     }

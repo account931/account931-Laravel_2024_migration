@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder; //for scope
 use App\Models\Venue;
+use App\Events\OwnerCreated;
 //use Illuminate\Database\Eloquent\Factories\HasFactory; //Factory traithas been introduced in Laravel v8.
 
 class Owner extends Model
@@ -27,7 +28,7 @@ class Owner extends Model
      * @var array<string, string>
      */
     protected $dispatchesEvents = [
-        //'created'  => UserCreated::class,
+        'created'  => OwnerCreated::class,
         //'updated'  => UserUpdated::class,
         //'deleting' => UserDeleting::class,
         //'deleted'  => UserDeleted::class,

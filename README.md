@@ -42,12 +42,13 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 
 ## New features
 <ul>
-<li>Implicit Route Model Binding, local scopes, accessor</li>
+<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener</li>
 </ul>
 
 ## Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
+Event/Listener => Models\Owner, Providers\EventServiceProvider, Event & Listener themselves.
 
 ## Testing 
 1. create .env.testing and set 'DN_NAME_testing' there

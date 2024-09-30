@@ -31,3 +31,17 @@ Artisan::command('quiz:start', function () {
 	dd("phone is " . $s);
     //$this->info("Sending email to: !");
 });
+
+//test event listener
+Artisan::command('event-listener:start', function () {
+	$owner = new \App\Models\Owner();
+	$owner->first_name = 'Some';
+	$owner->last_name = 'Some 2';
+	$owner->email = 'some@gmail.com';
+	$owner->phone = '343434';
+	$owner->location = 'UK';
+	$owner->save();
+	
+	//$owner->forceDelete();  //moved to Listener  App\Listeners\SendOwnerCreatedNotification
+});
+

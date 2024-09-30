@@ -15,7 +15,7 @@ class AddColumnOptionsToOwnersTable extends Migration
     {
         Schema::table('owners', function (Blueprint $table) {
             //
-			$table->string('description')->after('location'); //your db  does not support json ???
+			$table->string('description')->nullable()->after('location'); //your db  does not support json ???
         });
     }
 

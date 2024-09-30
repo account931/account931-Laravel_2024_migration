@@ -23,7 +23,7 @@ class VenueResource extends JsonResource
             'venue_name'    => $this->venue_name,
 			'address'       => $this->address,
             'active'        => $this->active,
-			'equipment'     => EquipmentResource::collection($this->equipments), //add many to Many relation ($this->equipments)
+			'equipments'    => EquipmentResource::collection($this->equipments), //add many to Many relation ($this->equipments)
 			'status'        => 'success',
 	    ];
     }

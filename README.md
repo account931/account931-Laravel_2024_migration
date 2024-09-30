@@ -30,7 +30,7 @@ If new route is not found => <code>php artisan route:clear</code> </br>
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
-type hinting( PHP 7.4.0), seeding hasMany relation via ->has()  </br>
+type hinting( PHP 7.4.0), seeding hasMany relation via ->has(), Pest test (PHP 8.2) </br>
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 
@@ -48,6 +48,12 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 ## Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
+
+## Testing 
+1. create .env.testing and set 'DN_NAME_testing' there
+2.Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
+3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
+4. Run all tests <code> php vendor/phpunit/phpunit/phpunit </code>  or shortcut defined in composer.json <code>composer run-my-tests </code>
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)

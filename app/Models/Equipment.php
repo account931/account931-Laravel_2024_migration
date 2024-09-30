@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder; //for scope
 //use Illuminate\Database\Eloquent\Factories\HasFactory; //Factory traithas been introduced in Laravel v8.
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-
 class Equipment extends Model
 {
 	//use HasFactory; ////Factory trait has been introduced in Laravel v8.

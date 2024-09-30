@@ -16,9 +16,15 @@ use App\Http\Api\V1\Resources\OwnerResource;
 |
 */
 
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/
 
-Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners'); ;  //public/api/owners  //same working as below route
+Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners');   //public/api/owners  //same working as below route
 //Route::get('/owners', function () { return new OwnerResource(Owner::find(1)); }); //same as above, working
+
+Route::middleware('auth:api')->group(function() {
+	//Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners');
+});

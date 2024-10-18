@@ -25,6 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners');   //public/api/owners  //same working as below route
 //Route::get('/owners', function () { return new OwnerResource(Owner::find(1)); }); //same as above, working
 
+Route::get('/owner/{owner}', [OwnerController::class, 'show'])->name('api/owner');   //public/api/owner/{owner}  //1 owner
+
 Route::middleware('auth:api')->group(function() {
 	//Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners');
 });

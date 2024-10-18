@@ -30,7 +30,7 @@ If new route is not found => <code>php artisan route:clear</code> </br>
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
-type hinting( PHP 7.4.0), seeding hasMany relation via ->has(), Pest test (PHP 8.2) </br>
+return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation via ->has(), Pest test (PHP 8.2) </br>
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 
@@ -42,7 +42,9 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 
 ## New features
 <ul>
-<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener</li>
+<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener,
+policies, spatie RBAC, middleware
+</li>
 </ul>
 
 ## Some notes

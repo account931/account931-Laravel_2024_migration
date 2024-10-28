@@ -19,13 +19,39 @@
                             <i class="fas fa-user-circle"></i> Hello, <strong>{{Auth::user()->name}}</strong> 
 						</p>
 						
-						<p>All Owner records here.....</p>
+						<div class="row">
+						    <div class="col-lg-9 col-md-9 col-sm-9">
+						        <p>All Owner records here.....</p>
+							</div>
+							
+							 <div class="col-lg-3 col-md-3 col-sm-3">
+						        <!-- Button to create new record -->
+						        <p><a href="{{ route('owner/create-new') }}"><button class="btn btn-large btn-info">Create new</button></a></p>
+							</div>
+							
+							
+							<!-- Flash message success -->
+					        @if(session()->has('flashSuccess'))
+                                <div class=" row alert alert-success">
+					                <i class='fas fa-charging-station' style='font-size:21px'></i> &nbsp;
+                                   {{ session()->get('flashSuccess') }}
+                                </div>
+                            @endif
+					
+					        <!-- Flash message failure -->
+					        @if(session()->has('flashFailure'))
+                                <div class="row alert alert-danger">
+                                    {{ session()->get('flashFailure') }}
+                                </div>
+                            @endif   
+						
+						</div>
 						 
 						@if ($owners->count())
                           
                             @foreach ($owners as $owner)
 							<div class="alert alert-info" style="border: 1px solid black;">
-			                <p> Owner {{ $loop->iteration }}  </p>  <!-- {{ $loop->iteration }} is Blade equivalentof $i++ -->
+			                <p> Owner {{ $owner->id }} {{-- $loop->iteration --}}  </p>  <!-- {{ $loop->iteration }} is Blade equivalentof $i++ -->
                             <p><i class='fas fa-cat'   style='font-size:16px'></i> Name:    {!! $owner->first_name  !!}  {{ $owner->last_name  }}</p>
 							<p><i class='fas fa-horse' style='font-size:16px'></i> Location: {{ $owner->location}}  </p>
 							<p><i class='fas fa-tree' style='font-size:16px'></i>  Confirmed: {!! ($owner->confirmed) ? '<i class="far fa-check-circle" style="color:green"></i>' : '<i class="far fa-bell-slash" style="color:red"></i>' !!}  </p>
@@ -66,6 +92,19 @@
 								</br>
 								<a href="{{route('ownerOne',   ['owner' => $owner])}}"> <i class='far fa-eye' style='font-size:16px'></i> View it (by model binding)...</a>  <!-- Implicit Route Model Binding -->
 							</p> 
+
+							<hr>
+							
+							
+							<!-- Link to edit -->
+							<p class='small'>
+								<a href="{{route('ownerEdit',   ['owner' => $owner])}}"> <i class='far fa-eye' style='font-size:16px'></i> Edit it (by model binding)...</a>  <!-- Implicit Route Model Binding -->
+							</p> 
+							
+							
+							<hr>
+							<!-- Link to delete, partial form with delete action -->
+						    @include('owner.partial.delete', ['id_passed' => $owner->id])
 
 							<hr>
 							</div>

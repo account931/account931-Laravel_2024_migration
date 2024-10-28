@@ -42,14 +42,16 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 
 ## New features
 <ul>
-<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener,
-policies, spatie RBAC, middleware
+<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create),
+policies, Spatie RBAC, middleware, Bootstrap Icons 5
 </li>
 </ul>
 
 ## Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
+{{-- This comment will not be present in the rendered HTML --}}   comment
+
 Event/Listener => Models\Owner, Providers\EventServiceProvider, Event & Listener themselves.
 
 ## Testing 
@@ -61,6 +63,8 @@ Event/Listener => Models\Owner, Providers\EventServiceProvider, Event & Listener
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
 ![Screenshot](public/img/screenshots/ownerOne4.png)
+![Screenshot](public/img/screenshots/List1.png)
+![Screenshot](public/img/screenshots/List2.png)
 > Api resource
 ![Screenshot](public/img/screenshots/owner_api.png)
 > Password update

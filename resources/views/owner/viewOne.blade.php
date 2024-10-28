@@ -13,6 +13,21 @@
                             {{ session('status') }}
                         </div>
                     @endif
+					
+					<!-- Flash message success -->
+					@if(session()->has('flashSuccess'))
+                                <div class=" row alert alert-success">
+					                <i class='fas fa-charging-station' style='font-size:21px'></i> &nbsp;
+                                   {{ session()->get('flashSuccess') }}
+                                </div>
+                    @endif
+					
+					<!-- Flash message failure -->
+					@if(session()->has('flashFailure'))
+                                <div class="row alert alert-danger">
+                                    {{ session()->get('flashFailure') }}
+                                </div>
+                    @endif   
 
 					<div class="alert alert-sucess">
 					    <p>
@@ -53,8 +68,19 @@
                             @endif
                             </p>
                             {{-- End Venues hasMany  --}}
-						
-						<a href="{{route('/owners')}}"> <i class='fas fa-sign-in-alt'></i> Go back</a>
+								
+							<!-- Link to edit -->
+							<p class='small'>
+								<a href="{{route('ownerEdit',   ['owner' => $owner])}}"> <i class='far fa-eye' style='font-size:16px'></i> Edit it (by model binding)...</a>  <!-- Implicit Route Model Binding -->
+							</p> 
+							
+							<hr>
+							<!-- Link to delete, partial form with delete action -->
+						    @include('owner.partial.delete', ['id_passed' => $owner->id])
+							<hr>
+							
+							
+						    <a href="{{route('/owners')}}"> <i class='fas fa-sign-in-alt'></i> Go back</a>
                     </div>
 
                 </div>

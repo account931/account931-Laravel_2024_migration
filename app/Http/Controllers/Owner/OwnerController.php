@@ -27,6 +27,21 @@ class OwnerController extends  Controller
      */
     public function index() 
     {   
+	    //using Policy. There 3 possible ways
+		// way 1 
+	    $this->authorize('index', Owner::class); //must have, Policy check (403 if fails)
+		
+		// way 2, tested
+		/* 
+		if (auth()->user()->cannot('index', Owner::class)) {
+            abort(403, 'Sorry, index failed, ID does not match 1');
+        } */
+		
+		//way 3 (not tested), Via Middleware, e.g =>  Route::put('/post/{post}', function (Post $post) {
+                                                     // The current user may update the post...
+                                        //})->middleware('can:index, owner');
+		
+		
 	    $name   = 'All records';
         $owners = Owner::createdAtLastYear() //createdAtLastYear, confirmed == local scope
              //->confirmed()  //local scope
@@ -50,7 +65,10 @@ class OwnerController extends  Controller
      * @param integer $id 
      * @return \Illuminate\Http\Response
      */
-	public function showById($id) {   
+	public function showById($id) { 
+        
+        $this->authorize('view', Owner::class); //must have, Policy check (403 if fails)
+				
 	    $owner = Owner::where('id', $id)->firstOrFail(); 		   
 	    return view('owner.viewOne',  compact('owner'));
 	}
@@ -100,6 +118,8 @@ class OwnerController extends  Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 	public function edit(Owner $owner) {  
+	    $this->authorize('update', Owner::class); //must have, Policy check (403 if fails)
+		
         $venues = Venue::active()->get();//gets venues for dropdown select	
 	    return view('owner.edit', compact('owner', 'venues'));
 	}

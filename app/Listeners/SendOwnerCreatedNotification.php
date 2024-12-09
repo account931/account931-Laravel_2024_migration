@@ -1,5 +1,5 @@
 <?php
-
+// defined in  Models\Owner => $dispatchesEvents = [] =>  App\Events\OwnerCreated; Event is Bound to Listener in Providers\EventServiceProvider
 namespace App\Listeners;
 
 use App\Events\OwnerCreated;

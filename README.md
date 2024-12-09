@@ -2,7 +2,7 @@
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
 
-## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or UserFActory
+## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
 ## Install Laravel 6 LTS, php 7.2
 

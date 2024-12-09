@@ -1,5 +1,5 @@
 <?php
-
+//defined in Models\Owner => $dispatchesEvents = [event/listener]. Event is bound to Listener in Providers\EventServiceProvider
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;

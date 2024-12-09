@@ -2,6 +2,8 @@
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
 
+## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or UserFActory
+
 ## Install Laravel 6 LTS, php 7.2
 
 <p>1. Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
@@ -52,7 +54,7 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
 
-Event/Listener => Models\Owner, Providers\EventServiceProvider, Event & Listener themselves.
+Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
 
 ## Testing 
 1. create .env.testing and set 'DN_NAME_testing' there

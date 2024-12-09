@@ -32,7 +32,10 @@ Artisan::command('quiz:start', function () {
     //$this->info("Sending email to: !");
 });
 
-//test event listener
+//test event/listener, it creates a 1 owner & the listener will deleted the created owner at once. Listener fires in console only (defined in Listener)
+// Deletion is defined in Models\Owner => $dispatchesEvents = [event/listener
+//Event is bound to Listener in Providers\EventServiceProvider
+//Triger it with 'php artisan event-listener:start'
 Artisan::command('event-listener:start', function () {
 	$owner = new \App\Models\Owner();
 	$owner->first_name = 'Some';

@@ -5,6 +5,7 @@ use App\Models\Owner;
 use Database\Seeds\Subfolder\UserSeeder;
 use Database\Seeds\Subfolder\OwnerSeeder;
 use Database\Seeds\Subfolder\VenueSeeder;
+use Database\Seeds\Subfolder\RolesPermissionSeeder;
 use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +21,8 @@ class DatabaseSeeder extends Seeder
 		                               //and dont need it to fire in Seeder
 		
 		$this->call([
-		    UserSeeder::class,   //create 1 user
+		    UserSeeder::class,     //create 1 user
+			RolesPermissionSeeder::class,//create Role/permission
 		    OwnerSeeder::class,  //fill DB table {owners} with data (also include seeding table {venues} vis hasMany)
 			//VenueSeeder::class,  //fill DB table {venues} with data
 		]); 

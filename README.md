@@ -53,7 +53,9 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
+composer dump-autoload
 
+##Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
 
 ## Testing 
@@ -61,6 +63,10 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 2.Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
 4. Run all tests <code> php vendor/phpunit/phpunit/phpunit </code>  or shortcut defined in composer.json <code>composer run-my-tests </code>
+
+
+## Spatie Laravel permission 5.3 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
+php artisan permission:cache-reset
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)

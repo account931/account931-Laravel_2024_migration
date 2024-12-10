@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;  //Spatie Laravel permission
 
 class User extends Authenticatable
 {
     use Notifiable;
+	use HasRoles;  //Spatie Laravel permission
 
     /**
      * The attributes that are mass assignable.

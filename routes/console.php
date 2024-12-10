@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use App\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +50,56 @@ Artisan::command('event-listener:start', function () {
 	
 	//$owner->forceDelete();  //moved to Listener  App\Listeners\SendOwnerCreatedNotification
 });
+
+
+//Start Spatie Laravel permission -----
+
+
+//Spatie Laravel permission => check user role/permission
+Artisan::command('spatie-permission:checkUser', function () {
+	
+	//Get all certain role permission
+	$role = Role::findByName('admin');
+	//dd($role->permissions->pluck('name'));
+	
+	// get a list of all roles assigned to the user
+	$roleNames = User::find(1)->getRoleNames(); //  all Roles 
+	dd($roleNames);
+	
+	// get a list of all permissions assigned to the user
+    //$permissionNames = auth()->user()->getPermissionNames(); // collection of name strings
+	$permissionNames = User::find(1)->getAllPermissions()->pluck('name'); //  all Permissions   ($user->getDirectPermissions(), $user->getAllPermissions();)
+	//dd($permissionNames);
+	
+	//check if user has permission
+	$checkPermission = User::find(1)->can('view owners');
+	//dd($checkPermission);
+	
+	//check if user has role
+	$checkRole = User::find(1)->hasRole('admin');
+	//dd($checkRole);
+});
+
+
+//Spatie Laravel permission => manually create role, permission and assign it to user. DO NOT USE IT (unless for some testing), as it is now in RolesPermissionSeeder
+Artisan::command('spatie-permission:createRolePermissions', function () {
+	
+	if (count(Role::findByName('admin')->get()) <= 0 ) {
+	    $role = Role::create(['name' => 'admin']);
+	}
+	
+	$permissionViewOwner    = Permission::create(['name' => 'view owner']);
+	$permissionViewOwners   = Permission::create(['name' => 'view owners']);
+    $permissionEditOwner    = Permission::create(['name' => 'edit owners']);
+	$permissionDeleteOwner  = Permission::create(['name' => 'delete owners']);
+	
+	$permissionNotForAdmin  = Permission::create(['name' => 'not admin permission']);
+	
+	//$role->givePermissionTo($permission);
+	$role = Role::findByName('admin');
+	$role->syncPermissions([$permissionViewOwner, $permissionViewOwners, $permissionEditOwner, $permissionDeleteOwner]);  //multiple permission to role
+
+	User::find(1)->assignRole('admin');
+});
+//End  Spatie Laravel permission -----
 

@@ -24,9 +24,9 @@ class OwnerPolicy
 	
 	public function index(User $user)
     {
-        return $user->id === 1
+        return $user->can('view owners')   //return $user->id === 1
 		       ? Response::allow()
-			   : Response::deny('Stopped by OwnerPolicy, you User ID does not match 1'); //way to add custom message
+			   : Response::deny('Stopped by OwnerPolicy, the User does not have permission "view owners"'); //way to add custom message
 			   
 		//return $user->can('access campaigns');
 		//return $user->id === $owner->user_id;
@@ -48,17 +48,17 @@ class OwnerPolicy
 	*/
 	public function view(User $user)
     {
-        return $user->id === 1
+        return $user->can('view owner')   //return $user->id === 1
 		       ? Response::allow()
-			   : Response::deny('Cannot see 1 model,Stopped by OwnerPolicy, you User ID does not match 1'); //way to add custom message
+			   : Response::deny('Cannot see 1 model, stopped by OwnerPolicy, the User does not have permission "view owner"'); //way to add custom message
     }
 
 	
     public function update(User $user)
     {
-		return $user->id === 1
+		return $user->can('edit owners')   //return $user->id === 1
 		       ? Response::allow()
-			   : Response::deny('Cant update, Stopped by OwnerPolicy, you User ID does not match 1'); //way to add custom message
+			   : Response::deny('Cant update, Stopped by OwnerPolicy, the User does not have permission "edit owners"');; //way to add custom message
     }
 	
 

@@ -42,8 +42,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 					
+					
 					    <!-- Common links (make link highlighted ) -->
-						
+						@auth <!-- visible for auth only -->
 						<li class="nav-item {{ Request::is('home*') ? 'active' : '' }}">
 							<a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
 						</li>
@@ -64,6 +65,11 @@
 							<a class="nav-link" href="{{ route('api/owners') }}">{{ __('Owners Api') }}</a>
 						</li>
 						
+						<!-- My manual Spatie Laravel permission 5.3 GUI -->
+						<li class="nav-item {{ Request::is('spatie-permission-guis*') ? 'active' : '' }}">
+							<a class="nav-link" href="{{ route('spatie-permission-gui') }}">{{ __('Spatie-permission-gui') }}</a>
+						</li>
+						@endauth
 						<!-- End Common links (make link highlighted ) -->
 						
 						

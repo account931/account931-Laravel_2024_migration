@@ -49,5 +49,10 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     //change password
     Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');
     Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
+	
+	//My manual Spatie Laravel permission 5.3 GUI
+	Route::get('/spatie-permission-gui', 'SpatiePermissionGui\SpatiePermissionGuiController@index')->name('spatie-permission-gui');
+
+	
 
 });

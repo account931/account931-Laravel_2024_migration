@@ -28,20 +28,40 @@ class RolesPermissionSeeder extends Seeder
 	    }
 		*/
 	     
+		//Create admin role
 		$role = Role::create(['name' => 'admin']);
 		
+		//Create Permissions
+		
+		//Owner permission
 	    $permissionViewOwner    = Permission::create(['name' => 'view owner']);
 	    $permissionViewOwners   = Permission::create(['name' => 'view owners']);
         $permissionEditOwner    = Permission::create(['name' => 'edit owners']);
 	    $permissionDeleteOwner  = Permission::create(['name' => 'delete owners']);
 	
-	    $permissionNotForAdmin  = Permission::create(['name' => 'not admin permission']);
+	    //Role permission (view my custom Laravel Spatie Gui
+		$permissionViewRole  = Permission::create(['name' => 'view roles']);
+		
+	    $permissionNotForAdmin  = Permission::create(['name' => 'not admin permission']); //some permission for test
 	
 	    //$role->givePermissionTo($permission);
 	    $role = Role::findByName('admin');
-	    $role->syncPermissions([$permissionViewOwner, $permissionViewOwners, $permissionEditOwner, $permissionDeleteOwner]);  //multiple permission to role
+	    $role->syncPermissions([
+		    $permissionViewOwner, 
+			$permissionViewOwners, 
+			$permissionEditOwner, 
+			$permissionDeleteOwner,
+			$permissionViewRole
+		]);  //multiple permission to role
 
 	    User::find(1)->assignRole('admin');
+		
+		
+		//Create user role
+		$role = Role::create(['name' => 'user']);
+		$role = Role::findByName('user');
+	    $role->syncPermissions([$permissionViewOwner]);  //multiple permission to role
+	    User::find(2)->assignRole('user');
 		
     
     }

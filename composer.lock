@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a536a2fc7e97c9dd0442973212c6a0a1",
+    "content-hash": "efb6d4d9a2d9c722e35e2ad64b6e3353",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -704,6 +704,53 @@
                 "source": "https://github.com/laravel/ui/tree/v1.3.0"
             },
             "time": "2020-11-03T19:38:34+00:00"
+        },
+        {
+            "name": "laraveldaily/laravel-permission-editor",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelDaily/laravel-permission-editor.git",
+                "reference": "ef0fe565a893ede3f06e701f45a335db8fdc47d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelDaily/laravel-permission-editor/zipball/ef0fe565a893ede3f06e701f45a335db8fdc47d4",
+                "reference": "ef0fe565a893ede3f06e701f45a335db8fdc47d4",
+                "shasum": ""
+            },
+            "require": {
+                "spatie/laravel-permission": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laraveldaily\\LaravelPermissionEditor\\PermissionEditorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laraveldaily\\LaravelPermissionEditor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Povilas Korop",
+                    "email": "povilas@laraveldaily.com"
+                }
+            ],
+            "description": "Visual UI for managing Roles/Permissions for Spatie Laravel Permission package",
+            "support": {
+                "issues": "https://github.com/LaravelDaily/laravel-permission-editor/issues",
+                "source": "https://github.com/LaravelDaily/laravel-permission-editor/tree/0.0.1"
+            },
+            "time": "2023-01-11T07:56:35+00:00"
         },
         {
             "name": "league/commonmark",

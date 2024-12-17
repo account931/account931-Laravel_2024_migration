@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relatios, etc.
+> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
@@ -68,19 +68,26 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 ## Spatie Laravel permission 5.3 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
 php artisan permission:cache-reset
 
+## Spatie Laravel permission UI => https://github.com/LaravelDaily/laravel-permission-editor
+
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
 ![Screenshot](public/img/screenshots/ownerOne4.png)
 ![Screenshot](public/img/screenshots/List1.png)
 ![Screenshot](public/img/screenshots/List2.png)
+
 > Api resource
 ![Screenshot](public/img/screenshots/owner_api.png)
+
 > Password update
 ![Screenshot](public/img/screenshots/password_update.png)
 
+> Spatie Laravel permission UI (my custom)
+![Screenshot](public/img/screenshots/spatie-ui-mine.png)
 
-
-
+> Spatie Laravel permission UI (https://github.com/LaravelDaily/laravel-permission-editor)
+![Screenshot](public/img/screenshots/spatie-ui-package.png)
+![Screenshot](public/img/screenshots/spatie-ui-package2.png)
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>

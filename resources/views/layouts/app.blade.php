@@ -66,9 +66,16 @@
 						</li>
 						
 						<!-- My manual Spatie Laravel permission 5.3 GUI -->
-						<li class="nav-item {{ Request::is('spatie-permission-guis*') ? 'active' : '' }}">
+						<li class="nav-item {{ Request::is('spatie-permission-gui*') ? 'active' : '' }}">
 							<a class="nav-link" href="{{ route('spatie-permission-gui') }}">{{ __('Spatie-permission-gui') }}</a>
 						</li>
+						
+						
+						<!-- https://github.com/LaravelDaily/laravel-permission-editor Laravel permission  GUI -->
+						<li>
+							<a class="nav-link" href="{{ route('permission-editor.roles.index') }}">{{ __('SpatieUI') }}</a>
+						</li>
+						
 						@endauth
 						<!-- End Common links (make link highlighted ) -->
 						

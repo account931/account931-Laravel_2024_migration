@@ -7,13 +7,20 @@
         "laravel"
     ],
     "license": "MIT",
+	"repositories":
+    [
+            {
+                "type": "vcs",
+                "url": "https://github.com/account931/laravel-permission-editor-my-modified", "_comment": "this is the url to my forked and changed repository  instead of original https://github.com/LaravelDaily/laravel-permission-editor",
+            }
+    ],
     "require": {
         "php": "^7.2.5|^8.0",
         "fideloper/proxy": "^4.4",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^1.0",
-        "laraveldaily/laravel-permission-editor": "^0.0.1",
+        "laraveldaily/laravel-permission-editor": "dev-main", "_comment": "this is the url to my forked and changed repository, instead of original https://github.com/LaravelDaily/laravel-permission-editor, should shart with dev-, main is just my branch",
         "spatie/laravel-permission": "^5.3"
     },
     "require-dev": {

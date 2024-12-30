@@ -48,11 +48,15 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
     //change password
     Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');
-    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
+    Route::post('/change-password',[App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
 	
-	//My manual Spatie Laravel permission 5.3 GUI
+	//My simple manual Spatie Laravel permission 5.3 GUI
 	Route::get('/spatie-permission-gui', 'SpatiePermissionGui\SpatiePermissionGuiController@index')->name('spatie-permission-gui');
 
-	
+	//My edited Spatie Laravel permission GUI based on package https://github.com/LaravelDaily/laravel-permission-editor  
+	//edited and re-written from TailWind Css to Bootstrap 4 
+	//edited as original package was not 100% functioning correct (as @checked Blade directive in edit template is not supported in Laravel 6)
+	Route::resource('roles',      Laraveldaily\LaravelPermissionEditor\RoleController::class);
+    Route::resource('permissions',Laraveldaily\LaravelPermissionEditor\PermissionController::class);
 
 });

@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	<!-- <link href="{{ asset('permission-editor/css/app.css') }}" rel="stylesheet" /> --> <!-- for my forked package https://github.com/account931/laravel-permission-editor-my-modified -->
 	
 	<!-- added Bootstrap 4 icons -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -65,17 +66,39 @@
 							<a class="nav-link" href="{{ route('api/owners') }}">{{ __('Owners Api') }}</a>
 						</li>
 						
-						<!-- My manual Spatie Laravel permission 5.3 GUI -->
-						<li class="nav-item {{ Request::is('spatie-permission-gui*') ? 'active' : '' }}">
-							<a class="nav-link" href="{{ route('spatie-permission-gui') }}">{{ __('Spatie-permission-gui') }}</a>
-						</li>
+											
+						<!---------- Submenu DropDown!!!! (Bootsrap 4) ------------------>
+					    <div class="dropdown dropleft">
+                            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
+                                 Spatie menu
+                            </button>
+                            <div class="dropdown-menu">
+							
+							<ul>
+                                <!-- My simple manual Spatie Laravel permission 5.3 GUI -->
+						        <li class="nav-item {{ Request::is('spatie-permission-gui*') ? 'active' : '' }}">
+							        <a class="nav-link" href="{{ route('spatie-permission-gui') }}">{{ __('Spatie-permission-gui') }}</a>
+						        </li>
 						
-						
-						<!-- https://github.com/LaravelDaily/laravel-permission-editor Laravel permission  GUI -->
-						<li>
-							<a class="nav-link" href="{{ route('permission-editor.roles.index') }}">{{ __('SpatieUI') }}</a>
-						</li>
-						
+						        <!-- https://github.com/LaravelDaily/laravel-permission-editor Laravel permission  GUI, was later forked to mine -->
+						        <li>
+							        <a class="nav-link" href="{{ route('permission-editor.roles.index') }}">{{ __('SpatieUI Fork') }}</a>
+						        </li>
+								
+								 <!-- My edited copy-pasted package Spatie Laravel permission  from https://github.com/LaravelDaily/laravel-permission-editor -->
+						        <li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}" style="white-space: nowrap;">
+							        <a class="nav-link" href="{{ route('roles.index') }}">{{ __('SpatieGUI package my modified(TailWind to BS4)') }}</a>
+						        </li> 
+								
+							</ul>
+						    
+                            </div>
+                        </div>
+					    <!------------- END Submenu DropDown!!!! (Bootsrap 4) ------------->
+					 
+					 
+					 
+					 
 						@endauth
 						<!-- End Common links (make link highlighted ) -->
 						

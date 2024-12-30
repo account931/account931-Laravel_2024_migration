@@ -1,5 +1,5 @@
 <?php
-
+//setting from package https://github.com/LaravelDaily/laravel-permission-editor. Since we dont use it, can be deleted
 return [
-    'middleware' => ['auth', 'web', 'spatie-permission',],  //added 'auth' to keep for logged users only
+    'middleware' => ['web', 'spatie-permission',],  //added 'auth' to keep for logged users only
 ];

@@ -65,19 +65,22 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 4. Run all tests <code> php vendor/phpunit/phpunit/phpunit </code>  or shortcut defined in composer.json <code>composer run-my-tests </code>
 
 
-## Spatie Laravel permission 5.3 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
+## Spatie Laravel permission 5.3 
+=> https://spatie.be/docs/laravel-permission/v6/installation-laravel
 php artisan permission:cache-reset
 
-## Spatie Laravel permission GUI => https://github.com/LaravelDaily/laravel-permission-editor
+## Spatie Laravel permission GUI 
+=> https://github.com/LaravelDaily/laravel-permission-editor
 
-## Modifying package by fork => fork, pull to local, edit, push. Add changes to composer.json => add "repositories" +  change package in "require" + composer update
+## Modifying package by fork 
+=> fork, pull to local, edit, push. Add changes to composer.json => add "repositories" +  change package in "require" + composer update
 https://phpreel.medium.com/how-to-use-a-forked-laravel-package-instead-of-the-original-90dd5b64068a
 https://snippets.khromov.se/composer-use-your-own-fork-for-a-package/
 
 <p>Forked packages current status: forked package to my github -> edited -> changed composer.json  NOT FINISHED</p>
 https://github.com/account931/laravel-permission-editor-my-modified
 
-<p>Final result: fork is not finished, used just for test, has copy-paste package https://github.com/LaravelDaily/laravel-permission-editor and modified it + re-wrote from TailWind Css to Bootstrap 4 </p>
+<p>Final result for Spatie Laravel permission GUI  : fork is not finished, used just for test, has copy-paste package https://github.com/LaravelDaily/laravel-permission-editor and modified it + re-wrote from TailWind Css to Bootstrap 4 </p>
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
@@ -94,11 +97,9 @@ https://github.com/account931/laravel-permission-editor-my-modified
 > Spatie Laravel permission UI (my custom)
 ![Screenshot](public/img/screenshots/spatie-ui-mine.png)
 
-> Spatie Laravel permission UI (https://github.com/LaravelDaily/laravel-permission-editor)
-![Screenshot](public/img/screenshots/spatie-ui-package.png)
-![Screenshot](public/img/screenshots/spatie-ui-package2.png)
 
-> Forked (modified) Spatie Laravel permission UI (https://github.com/LaravelDaily/laravel-permission-editor)
+
+> Forked (modified) Spatie Laravel permission UI ( from https://github.com/LaravelDaily/laravel-permission-editor) (to my https://github.com/LaravelDaily/laravel-permission-editor)
 ![Screenshot](public/img/screenshots/spatie-ui-package-forked.png)
 
 > Spatie Laravel permission UI package, re-written from TailWind Css to Bootstrap 4  

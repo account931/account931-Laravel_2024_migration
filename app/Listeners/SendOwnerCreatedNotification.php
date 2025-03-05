@@ -28,7 +28,7 @@ class SendOwnerCreatedNotification
     public function handle(OwnerCreated $event)
     {
 		
-        if(App::runningInConsole()){ //run only if triggered in console (routes/console) (php artisan event-listener:start), so not to delete real created owners
+        if(App::runningInConsole() and !App::environment() == 'testing'){ //run only if triggered in console (routes/console) (php artisan event-listener:start), so not to delete real created owners and not while running tests (as dd() breaks the test)
 		    //dd($event->owner->id); //created owner
 		    $event->owner->forceDelete();
 		    dd("Event Listener works. Created Owner {$event->owner->id} was deleted at once (App\Events\OwnerCreated <==> App\Listeners\SendOwnerCreatedNotification)");

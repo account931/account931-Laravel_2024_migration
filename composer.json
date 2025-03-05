@@ -1,4 +1,5 @@
-{
+{  
+    "_comment": "comment regarding L24 (laraveldaily/laravel-permission-editor) ->this is the url to my forked and changed repository, instead of original https://github.com/LaravelDaily/laravel-permission-editor, should shart with dev-, main is just my branch",
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
@@ -11,7 +12,7 @@
     [
             {
                 "type": "vcs",
-                "url": "https://github.com/account931/laravel-permission-editor-my-modified", "_comment": "this is the url to my forked and changed repository  instead of original https://github.com/LaravelDaily/laravel-permission-editor",
+                "url": "https://github.com/account931/laravel-permission-editor-my-modified", "_comment": "this is the url to my forked and changed repository  instead of original https://github.com/LaravelDaily/laravel-permission-editor"
             }
     ],
     "require": {
@@ -20,7 +21,7 @@
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^1.0",
-        "laraveldaily/laravel-permission-editor": "dev-main", "_comment": "this is the url to my forked and changed repository, instead of original https://github.com/LaravelDaily/laravel-permission-editor, should shart with dev-, main is just my branch",
+        "laraveldaily/laravel-permission-editor": "dev-main", 
         "spatie/laravel-permission": "^5.3"
     },
     "require-dev": {

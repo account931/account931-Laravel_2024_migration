@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI etc.
+> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, Rest API resource/collection, Passport etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
@@ -60,10 +60,13 @@ git restore . is supported from git 2.23+ only, use git checkout . (or git check
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
 
 ## Testing (PhpUnit)
-1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtopose to original in phpMyAdmin.i.e "laravel_2024_migration_testing"
+1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
 4. Run all tests <code> php vendor/phpunit/phpunit/phpunit </code>  or shortcut defined in composer.json <code>composer run-my-tests </code>
+
+## Passport
+https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport
 
 
 ## Spatie Laravel permission 5.3 

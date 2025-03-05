@@ -54,6 +54,7 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
 composer dump-autoload
+git restore . is supported from git 2.23+ only, use git checkout . (or git checkout --compose.jso)
 
 ##Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.

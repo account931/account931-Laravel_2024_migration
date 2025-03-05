@@ -14,7 +14,10 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
+		//$this->withoutExceptionHandling(); //to see errors
         $response = $this->get('/');
+		//$this->assertTrue(true);
         //$response->assertStatus(200); //tempo shut down
+		$response->assertRedirect('/login');
     }
 }

@@ -1,0 +1,1 @@
+Api Auth tests(login, register go to tests/Feature/Http/Api/Api_Auth)

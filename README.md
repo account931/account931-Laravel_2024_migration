@@ -32,7 +32,7 @@ If new route is not found => <code>php artisan route:clear</code> </br>
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
-return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation via ->has(), Pest test (PHP 8.2) </br>
+return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation via ->has(), Pest test (PHP 8.2); AssertableJson ( for test) </br>
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 
@@ -63,11 +63,15 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
-4. Run all tests <code> php vendor/phpunit/phpunit/phpunit </code>  or shortcut defined in composer.json <code>composer run-my-tests </code>
+4. Run all tests    <code> php ./vendor/bin/phpunit </code>  OR  <code> php   vendor/phpunit/phpunit/phpunit </code>  OR shortcut defined in composer.json <code>composer run-my-tests </code>
+                        
+  <p>Run one test => <code>  php ./vendor/bin/phpunit tests/Feature/Http/Api/Owners/OwnerControllerTest.php </code> </p>
+
+4.1 If u run migration and it goes to wrong DB (prod or test) => php artisan config:cache
 
 ## Passport
 https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport
-
+ #to generate tokens (on login, register, etc)) u should firstly generate personal =>   php artisan passport:client --personal  
 
 ## Spatie Laravel permission 5.3 
 => https://spatie.be/docs/laravel-permission/v6/installation-laravel

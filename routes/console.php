@@ -4,6 +4,8 @@ use Illuminate\Foundation\Inspiring;
 use App\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +57,7 @@ Artisan::command('event-listener:start', function () {
 //Start Spatie Laravel permission -----
 
 
-//Spatie Laravel permission => check user role/permission
+//Spatie Laravel permission => check user role/permission, call => php artisan spatie-permission:checkUser
 Artisan::command('spatie-permission:checkUser', function () {
 	
 	//Get all certain role permission
@@ -103,3 +105,59 @@ Artisan::command('spatie-permission:createRolePermissions', function () {
 });
 //End  Spatie Laravel permission -----
 
+
+
+
+//test Api Controller registration => App\Http\Controllers\API\AuthController; call => php artisan testApi -------------------------------------
+//was waorking, if fails, make sure to have Passport Personal access client in local DB. Generate by  { php artisan passport:client --personal }
+Artisan::command('testApi', function () {
+	$client = new Client();
+	try {
+    
+		$response = $client->post('http://localhost/Laravel_2024_migration/public/api/register', [
+		    'http_errors' => false,     //to get response in json, not html
+			'headers'     => ['Accept' => 'application/json'],
+            'json'        => ['name' => 'dimmmnn', 'email' => 'dsd@gmail.com', 'password' => 'ddddddddd'] 
+        ]);
+	 
+	 
+	} catch (ClientException $e) {
+		// An exception was raised but there is an HTTP response body
+        // with the exception (in case of 404 and similar errors)
+        $response = $e->getResponse(); //dd($response);
+        $responseBodyAsString = $response->getBody()->getContents();
+        //echo $response->getStatusCode() . PHP_EOL;
+        //echo $responseBodyAsString;
+    }
+
+    dd($response->getBody()->getContents());
+    //$responseJSON = json_decode($response->getBody(), true);
+	//dd($responseJSON);
+	});
+	
+	
+	
+	//call => php artisan manuallyGeneratePassportToken --------------------------------------------------------------------------
+	Artisan::command('manuallyGeneratePassportToken', function () {
+		$user = User::find(1);
+        $token = $user->createToken('UserToken', ['*'])->accessToken;
+		//$token  = $user->token();
+		dd($token);
+	});
+	
+	
+	
+	//to test calling protected api endpoint (by Passport) (works) -------------------------------------------------------------------------
+	Artisan::command('testProtectedApiEndpoint', function () {
+		$client = new Client();
+		$user = User::find(1);
+        $bearerToken = $user->createToken('UserToken', ['*'])->accessToken;
+		
+		//$response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work
+		
+		$response = $client->request('GET', 'http://localhost/Laravel_2024_migration/public/api/owners/quantity', [  //this works
+            'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]
+        ]); 
+		
+        dd($response->getBody()->getContents());
+	});

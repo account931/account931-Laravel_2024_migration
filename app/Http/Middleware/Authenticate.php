@@ -17,5 +17,19 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+	}
+		
+	// Add new method. For Api requests, otherwise API request send without token with redirect to html login page
+    /*
+	protected function unauthenticated($request, array $guards)
+    {
+		if ($request->expectsJson()) {
+        abort(response()->json(
+            [
+                'api_status' => '401',
+                'message' => 'UnAuthenticated(Passport)',
+            ], 401));
+        }
     }
+	*/
 }

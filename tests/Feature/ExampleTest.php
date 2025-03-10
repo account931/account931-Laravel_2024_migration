@@ -16,7 +16,7 @@ class ExampleTest extends TestCase
     {
 		//$this->withoutExceptionHandling(); //to see errors
         $response = $this->get('/');
-		//$this->assertTrue(true);
+		//$this->assertTrue(true);  //here we fake success test result
         //$response->assertStatus(200); //tempo shut down
 		$response->assertRedirect('/login');
     }

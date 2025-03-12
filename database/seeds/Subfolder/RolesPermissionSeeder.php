@@ -1,5 +1,6 @@
 <?php
-//create Roles, permission and assign them to 1 user
+//create Roles, permission and assign them to some users
+//Manual: create some pesrmissions -> assign them to some roles -> assign this role to some user
 namespace Database\Seeds\Subfolder;
 
 use Illuminate\Database\Seeder;
@@ -28,11 +29,7 @@ class RolesPermissionSeeder extends Seeder
 	    }
 		*/
 	     
-		//Create admin role
-		$role = Role::create(['name' => 'admin']);
-		
-		//Create Permissions
-		
+		//Create Permissions ------------------------------------------------------------------------------------------------
 		//Owner permission
 	    $permissionViewOwner    = Permission::create(['name' => 'view owner']);
 	    $permissionViewOwners   = Permission::create(['name' => 'view owners']);
@@ -42,7 +39,17 @@ class RolesPermissionSeeder extends Seeder
 	    //Role permission (view my custom Laravel Spatie Gui
 		$permissionViewRole  = Permission::create(['name' => 'view roles']);
 		
+		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+		$permissionViewOwnerQauantityAdmin  = Permission::create(['name' => 'view owner admin quantity', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		
 	    $permissionNotForAdmin  = Permission::create(['name' => 'not admin permission']); //some permission for test
+		//End Create Permissions --------------------------------------------------------------------------------------------
+		
+		
+		
+		
+		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
+		$role = Role::create(['name' => 'admin']);
 	
 	    //$role->givePermissionTo($permission);
 	    $role = Role::findByName('admin');
@@ -51,16 +58,21 @@ class RolesPermissionSeeder extends Seeder
 			$permissionViewOwners, 
 			$permissionEditOwner, 
 			$permissionDeleteOwner,
-			$permissionViewRole
+			$permissionViewRole,
+			$permissionViewOwnerQauantityAdmin
 		]);  //multiple permission to role
 
 	    User::find(1)->assignRole('admin');
+		//End Create admin role and give him permissions  -----------------------------------------------------------------
 		
 		
-		//Create user role
+		
+		
+		//Create user role and give him permissions and assign role to some user/users ------------------------------------
 		$role = Role::create(['name' => 'user']);
 		$role = Role::findByName('user');
 	    $role->syncPermissions([$permissionViewOwner]);  //multiple permission to role
+		
 	    User::find(2)->assignRole('user');
 		
     

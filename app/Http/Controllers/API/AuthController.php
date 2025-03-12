@@ -17,7 +17,7 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'name'     => 'required|max:55|min:4',
             'email'    => 'email|required|unique:users',
-            'password' => 'required|min:3'  //|confirmed
+            'password' => 'required|min:4|confirmed'
         ]);
 
         $validatedData['password'] = bcrypt($request->password);
@@ -33,7 +33,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $loginData = $request->validate([
-            'email' => 'email|required',
+            'email'    => 'email|required',
             'password' => 'required'
         ]);
 

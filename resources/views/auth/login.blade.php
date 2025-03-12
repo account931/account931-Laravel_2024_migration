@@ -62,6 +62,11 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+								<p> 
+								    </br>
+									<i class="fas fa-award"></i>
+									<small>You may check credentials in  => <span class ="text-success">\Seeds\...\UserSeeder;</span> otherwise see Factories\UserFactory </small>
+								</p>
                             </div>
                         </div>
                     </form>

@@ -19,9 +19,12 @@ class Owner extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $fillable = [  //for mass assignment in API
         'first_name',
 		'last_name',
+		'email',
+		'phone',
+		'location'
     ];
 	
 	 /**

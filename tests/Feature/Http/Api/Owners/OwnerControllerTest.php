@@ -34,10 +34,10 @@ class OwnerControllerTest extends TestCase
 		
 		$result = factory(\App\Models\Owner::class, 12)->create(['first_name' => 'Petro', 'confirmed' => 1 ])->each(function ($owner){
 				
-			//create hasMany relation (Venues to Owners) ->has() is not supported in L6
+			//create hasMany relation (Venues attached to Owners) ->has() is not supported in L6
 			 factory(\App\Models\Venue::class, 2)->create(['owner_id' => $owner->id ])->each(function ($venue){
 										
-			    //create Many to Many relation (pivot)(Equipments to Venues) 
+			    //create Many to Many relation (pivot)(Equipments attached to Venues) 
                 $equipments = factory(\App\Models\Equipment::class, 2)->create();
 				//$venue->equipments()->saveMany($equipments);
 				$venue->equipments()->sync($equipments->pluck('id')); //Eloquent:relationship
@@ -250,6 +250,120 @@ class OwnerControllerTest extends TestCase
         $response->assertStatus(302); // should get 'UnAuthenticated' without Passport token
 	}		
 		
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	/**
+	* Test for /Post to create one owner 'api/owner/create'
+	* api response structure:
+	*/
+	public function testStore()
+    { 
+		$this->withoutExceptionHandling(); //to see errors
+
+		//create 2 venues with attached equipments
+		$venues = factory(\App\Models\Venue::class, 2)->create()->each(function ($venue){
+										
+			    //create Many to Many relation (pivot)(Equipments to Venues) 
+                $equipments = factory(\App\Models\Equipment::class, 2)->create();
+				//$venue->equipments()->saveMany($equipments);
+				$venue->equipments()->sync($equipments->pluck('id')); //Eloquent:relationship
+					
+		});
+		
+		//dd($venues->first()->equipments);
+		
+	    // Make the login request with invalid credentials
+        //$response = $this->postJson('/owner/create', [
+		$response = $this->json('post', 'api/owner/create', [
+            'first_name'    => 'Dimaa',
+            'last_name'     => 'Dima',
+            'location'      => 'EUR',
+			'email'         => 'dimqqq@gmail.com',  //email is unique on create only, not on update
+			'phone'         => '+380975654455',	
+			'owner_venue'   => $venues->pluck('id'), //array of venues ids to be  attached to owner (later in Api Controller)
+        ]);
+
+        // Assert the response status is 401 (unauthorized)
+        //$response->assertStatus(401);
+        //dd($response);
+		
+		$response->assertStatus(200)
+		    ->assertJsonCount(2, 'owner.venues')
+			->assertJsonCount(2, 'owner.venues.0.equipments') //1st array of  => venues[0].equipments
+			->assertJsonCount(2, 'owner.venues.1.equipments')
+				
+			->assertJsonFragment([
+		            'first_name'    => 'Dimaa', //ignore accessor 
+		            'last_name'     => 'Dima',
+					'venue_name'    => $venues->first()->venue_name, //$response['owner']['venues'][0]['venue_name'], 
+				])
+				
+                ->assertJsonStructure([   //same as checking with has(): ->assertJson(function ($json) {$json->has('data') ->has('data.id')       
+		            'owner' => [
+			            'id',
+					    'first_name',
+			            'last_name',
+					    'confirmed',
+						'venues' => [  //venues: ['venue_name', 'address', 'equipments':[]]
+					        '*' => [
+					            'venue_name',
+						        'address',
+								 'active',
+						   
+						        'equipments' => [
+						           '*' => [
+							           'trademark_name',
+								       'model_name',
+								    ]	   
+						        ]
+						   
+						    ]
+						],	
+						'status'
+					],
+					//'message' => 'Created successfully'  //why failing???
+				]);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//test owner update
+	//test owner delete
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	/**
 	* Test for GET protected endpoint 'api/owners/quantity' (Passport)
 	* api response structure 
@@ -305,7 +419,5 @@ class OwnerControllerTest extends TestCase
 	}
 		
 	
-	//test owner create
-	//test owner update
-	//test owner delete
+	
 }

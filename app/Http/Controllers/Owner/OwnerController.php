@@ -67,7 +67,7 @@ class OwnerController extends  Controller
      */
 	public function showById($id) { 
         
-        $this->authorize('view', Owner::class); //must have, Policy check (403 if fails)
+        $this->authorize('view', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy)
 				
 	    $owner = Owner::where('id', $id)->firstOrFail(); 		   
 	    return view('owner.viewOne',  compact('owner'));
@@ -118,7 +118,7 @@ class OwnerController extends  Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 	public function edit(Owner $owner) {  
-	    $this->authorize('update', Owner::class); //must have, Policy check (403 if fails)
+	    $this->authorize('update', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy)
 		
         $venues = Venue::active()->get();//gets venues for dropdown select	
 	    return view('owner.edit', compact('owner', 'venues'));

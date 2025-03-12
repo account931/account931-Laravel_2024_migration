@@ -1,6 +1,7 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, Rest API resource/collection, Passport etc.
+> A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, Rest API resource/collection, Passport,
+     Font Awesome 5 Icons, etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
@@ -54,7 +55,7 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
 composer dump-autoload
-git restore . is supported from git 2.23+ only, use git checkout . (or git checkout --compose.jso)
+<p>git restore . is supported from git 2.23+ only, use git checkout . (or git checkout --compose.jso)</p>
 
 ##Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
@@ -63,20 +64,29 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
-4. Run all tests    <code> php ./vendor/bin/phpunit </code>  OR  <code> php   vendor/phpunit/phpunit/phpunit </code>  OR shortcut defined in composer.json <code>composer run-my-tests </code>
+4. Run all tests    <code> php ./vendor/bin/phpunit </code>  OR  <code> php vendor/phpunit/phpunit/phpunit </code>  OR shortcut defined in composer.json <code>composer run-my-tests </code>
                         
   <p>Run one test => <code>  php ./vendor/bin/phpunit tests/Feature/Http/Api/Owners/OwnerControllerTest.php </code> </p>
 
 4.1 If u run migration and it goes to wrong DB (prod or test) => php artisan config:cache
+5. To see test errors =>  $this->withoutExceptionHandling(); //to see errors
+6. Test example => Tests\Feature\Http\Api\Owners\OwnerControllerTest;
+
 
 ## Passport
-https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport
- #to generate tokens (on login, register, etc)) u should firstly generate personal =>   php artisan passport:client --personal  
+<p> https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport </p>
+#to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
+<p> for tests, you run this command in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
+
 
 ## Spatie Laravel permission 5.3 
 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
-php artisan permission:cache-reset
-
+ <code> php artisan permission:cache-reset </code>
+ a.)define policy by model, e.g => App\Policies\OwnerPolicy
+ b.) register policy in AuthServiceProvider
+ c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails)
+ d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport"
+ 
 ## Spatie Laravel permission GUI 
 => https://github.com/LaravelDaily/laravel-permission-editor
 

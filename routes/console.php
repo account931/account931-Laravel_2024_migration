@@ -110,14 +110,14 @@ Artisan::command('spatie-permission:createRolePermissions', function () {
 
 //test Api Controller registration => App\Http\Controllers\API\AuthController; call => php artisan testApi -------------------------------------
 //was waorking, if fails, make sure to have Passport Personal access client in local DB. Generate by  { php artisan passport:client --personal }
-Artisan::command('testApi', function () {
+Artisan::command('testRegistrationViaApiAuth', function () {
 	$client = new Client();
 	try {
     
 		$response = $client->post('http://localhost/Laravel_2024_migration/public/api/register', [
 		    'http_errors' => false,     //to get response in json, not html
 			'headers'     => ['Accept' => 'application/json'],
-            'json'        => ['name' => 'dimmmnn', 'email' => 'dsd@gmail.com', 'password' => 'ddddddddd'] 
+            'json'        => ['name' => 'dimmmnn', 'email' => 'dsd@gmail.com', 'password' => 'somepassword', 'password_confirmation' => 'somepassword'] 
         ]);
 	 
 	 
@@ -147,8 +147,8 @@ Artisan::command('testApi', function () {
 	
 	
 	
-	//to test calling protected api endpoint (by Passport) (works) -------------------------------------------------------------------------
-	Artisan::command('testProtectedApiEndpoint', function () {
+	//to test calling protected api endpoint (by Passport) (works), should allow only auth users ------------------------------------
+	Artisan::command('test_api_route_protected_by_Passport', function () {
 		$client = new Client();
 		$user = User::find(1);
         $bearerToken = $user->createToken('UserToken', ['*'])->accessToken;
@@ -156,6 +156,23 @@ Artisan::command('testApi', function () {
 		//$response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work
 		
 		$response = $client->request('GET', 'http://localhost/Laravel_2024_migration/public/api/owners/quantity', [  //this works
+            'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]
+        ]); 
+		
+        dd($response->getBody()->getContents());
+	});
+	
+	
+	//to test calling protected api endpoint (by Passport) (works), should allow only auth users + user having Spatie RBAC permssion 'view owner admin quantity' ------------------------------------
+	Artisan::command('test_api_route_protected_by_Passport_and_Spatie', function () {
+		$client = new Client();
+		$user = User::find(1); //user 1 has permission, user 2 does not have (set in Seeders)
+		//dd($user->getAllPermissions()->pluck('name'));
+        $bearerToken = $user->createToken('UserToken', ['*'])->accessToken;
+		
+		//$response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work
+		
+		$response = $client->request('GET', 'http://localhost/Laravel_2024_migration/public/api/owners/quantity/admin', [  //this works
             'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]
         ]); 
 		

@@ -18,8 +18,9 @@ class Authenticate extends Middleware
             return route('login');
         }
 	}
-		
-	// Add new method. For Api requests, otherwise API request send without token with redirect to html login page
+	
+    //NB: ENABLING THIS METHOD CAUSES PASSPORT STOP WORKING (protected routes becomes open (even without token)??????	
+	// For Api requests. Otherwise API request  without token will be  redirected to html login page instead of json response 'UnAuthenticated'
     /*
 	protected function unauthenticated($request, array $guards)
     {

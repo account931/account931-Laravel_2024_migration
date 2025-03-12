@@ -15,8 +15,8 @@ $factory->define(\App\Models\Venue::class, function (Faker $faker) {
         //
 		'venue_name' => $faker->company, //Str::random(10),
 		'address'    => $faker->address,//$faker->lastName,
-		'active'     => $faker->boolean(),
-		//'owner_id'   => Owner::inRandomOrder()->first()->id //Owner::factory()  //assign BelongsTo
+		'active'     => 1, //$faker->boolean(),
+		//'owner_id'   => 1, //Owner::inRandomOrder()->first()->id //Owner::factory()  //assign BelongsTo
 		//'email_verified_at' => now(),
 
     ];

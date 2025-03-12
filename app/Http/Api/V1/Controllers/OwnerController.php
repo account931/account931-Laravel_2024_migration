@@ -1,5 +1,5 @@
 <?php
-
+//Api Controller for Owner
 namespace App\Http\Api\V1\Controllers;
 
 use App\Models\Owner;
@@ -12,6 +12,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Api\V1\Collections\Owners\OwnerCollection;
 use App\Models\Venue;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule; //for in: validation
 
 class OwnerController extends Controller
 {
@@ -58,8 +60,8 @@ class OwnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-	 //not tested
-	 /*
+	 //not tested!!!!!!!!!!!!!!!!!!!!!!!
+	
     public function store(Request $request)
     {
         $data = $request->all();
@@ -83,10 +85,13 @@ class OwnerController extends Controller
         }
 
         $owner = Owner::create($data);
+		
+		//my added line, as we need to attach venues to owner, same we do in http version
+		$owner->venues()->saveMany(Venue::find($request->owner_venue)); //save hasMany
 
         return response([ 'owner' => new OwnerResource($owner), 'message' => 'Created successfully'], 200);
     }
-	*/
+	
 	
 	/**
      * Update the specified resource in storage.
@@ -123,13 +128,25 @@ class OwnerController extends Controller
     */
 	
 	/**
-     * Returns owners quantity
+     * Returns owners quantity. Created to test Passport, user must be logged (tested in console and tests)
      * @return \Illuminate\Http\JsonResponse;
      */
 	public function quantity(): JsonResponse
 	{
 		//return response([ 'owners quantity' => Owner::count(), 'message' => 'Retrieved successfully']);
 		return response()->json([ 'status' => 'OK', 'owners quantity' => Owner::count(), ]);
+	}
+	
+	/**
+     * Returns owners quantity. Created to test Passport + Spatie RBAC(user must be logged and have permission 'view_owner_admin_quantity' (tested in console)
+     * @return \Illuminate\Http\JsonResponse;
+     */
+	public function quantityAdmin(): JsonResponse
+	{
+		$this->authorize('view_owner_admin_quantity', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy). Instead of this you can also use it directly on route =>Route::middleware(['auth:api', 'can:update,post'])
+
+		//return response([ 'owners quantity' => Owner::count(), 'message' => 'Retrieved successfully']);
+		return response()->json([ 'status' => 'OK/Admin', 'owners quantity' => Owner::count(), ]);
 	}
 	
 }

@@ -68,4 +68,14 @@ class OwnerPolicy
         return $user->id === $owner->user_id;
     }
 	*/
+	
+	//permission to test API Route::get('/owners/quantity/admin', user must be logged (Passport) + has a Spatie RBAC permission
+	public function view_owner_admin_quantity(User $user)
+    {
+		//return $user->hasPermissionTo('view owner admin quantity')
+		return $user->can('view owner admin quantity')   //return $user->id === 1
+		       ? Response::allow()
+			   : Response::deny('Sorry. Stopped by OwnerPolicy, the User does not have permission "view owner admin quantity"');; //way to add custom message
+    }
+	
 }

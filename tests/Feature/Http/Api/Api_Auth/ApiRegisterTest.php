@@ -25,9 +25,10 @@ class ApiRegisterTest extends TestCase
     //Passport::$hashesClientSecrets = false;
 	
     $payload = [
-        'name'      => 'Dima', //$faker->name,
-        'email'     => 'dima33f@gmail.com', //$faker->unique()->safeEmail,
-        'password'  => Hash::make('password'),
+        'name'                  => 'Dima', //$faker->name,
+        'email'                 => 'dima33f@gmail.com', //$faker->unique()->safeEmail,
+        'password'              => 'password',  //Hash::make('password'),
+		'password_confirmation' => 'password',
     ];
 	
 	//dd($this->json('post', '/api/register', $payload));
@@ -40,6 +41,7 @@ class ApiRegisterTest extends TestCase
     Artisan::call('passport:client', $parameters);
     //End Generate Passport personal token
 		
+	//dd($this->json('post', '/api/register', $payload));
 	
     $this->json('post', '/api/register', $payload)
          //->assertStatus(Response::HTTP_CREATED)

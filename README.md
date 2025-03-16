@@ -62,7 +62,7 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 ## Testing (PhpUnit)
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
-2. Before testing, first time ever do migrate tables to test database  <code> >php artisan migrate:fresh --env=testing </code>
+2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> >php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
 4. Run all tests    <code> php ./vendor/bin/phpunit </code>  OR  <code> php vendor/phpunit/phpunit/phpunit </code>  OR shortcut defined in composer.json <code>composer run-my-tests </code>
                         
@@ -76,16 +76,17 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 ## Passport
 <p> https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport </p>
 #to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
-<p> for tests, you run this command in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
+<p> for tests, you run this command programmatically in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
+<p>Api unathenticated message is set in App\Exceptions\Handler</p>
 
 
 ## Spatie Laravel permission 5.3 
 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
  <code> php artisan permission:cache-reset </code>
- a.)define policy by model, e.g => App\Policies\OwnerPolicy
- b.) register policy in AuthServiceProvider
- c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails)
- d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport"
+ <p> a.)define policy by model, e.g => App\Policies\OwnerPolicy </p>
+ <p>b.) register policy in AuthServiceProvider </p>
+ <p>c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) </p>
+ <p>d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" </p>
  
 ## Spatie Laravel permission GUI 
 => https://github.com/LaravelDaily/laravel-permission-editor

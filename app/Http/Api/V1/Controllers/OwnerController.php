@@ -146,7 +146,7 @@ class OwnerController extends Controller
 		$this->authorize('view_owner_admin_quantity', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy). Instead of this you can also use it directly on route =>Route::middleware(['auth:api', 'can:update,post'])
 
 		//return response([ 'owners quantity' => Owner::count(), 'message' => 'Retrieved successfully']);
-		return response()->json([ 'status' => 'OK/Admin', 'owners quantity' => Owner::count(), ]);
+		return response()->json([ 'status' => 'OK, Admin. You have Spatie permission', 'owners quantity' => Owner::count(), ]);
 	}
 	
 }

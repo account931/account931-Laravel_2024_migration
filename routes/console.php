@@ -146,7 +146,7 @@ Artisan::command('testRegistrationViaApiAuth', function () {
 	});
 	
 	
-	
+	//test Passport
 	//to test calling protected api endpoint (by Passport) (works), should allow only auth users ------------------------------------
 	Artisan::command('test_api_route_protected_by_Passport', function () {
 		$client = new Client();
@@ -155,14 +155,18 @@ Artisan::command('testRegistrationViaApiAuth', function () {
 		
 		//$response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work
 		
-		$response = $client->request('GET', 'http://localhost/Laravel_2024_migration/public/api/owners/quantity', [  //this works
-            'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]
-        ]); 
+		$response = $client->request('GET', 'http://localhost/Laravel_2024_migration/public/api/owners/quantity',   //this works
+            [ 'headers' => [ 
+			    'Accept'        => 'application/json',
+			    'Authorization' => 'Bearer ' . $bearerToken 
+			] ]
+        ); 
 		
         dd($response->getBody()->getContents());
 	});
 	
 	
+	//test Passport +  Spatie RBAC permssion 'view owner admin quantity'. Woks fine, if fail: make sure on prod, migrate:fresh, db:seed
 	//to test calling protected api endpoint (by Passport) (works), should allow only auth users + user having Spatie RBAC permssion 'view owner admin quantity' ------------------------------------
 	Artisan::command('test_api_route_protected_by_Passport_and_Spatie', function () {
 		$client = new Client();

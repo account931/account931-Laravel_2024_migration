@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,4 +53,15 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+	
+	//my edit. Without this: when you request api route protected by Passport, you are redirected to /login page, instead of giving 
+	protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->is('api/*')) {
+            return response()->json(['error' => 'App\Exceptions\Handler: The route is ptotected by Passport & Spatie. You should login via Api, get Passport token and have Spatie permission', 'status' => false], 401);
+        }
+
+        return redirect()->guest(route('login'));
+    }
+
 }

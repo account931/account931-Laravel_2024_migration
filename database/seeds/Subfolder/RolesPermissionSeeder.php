@@ -39,8 +39,13 @@ class RolesPermissionSeeder extends Seeder
 	    //Role permission (view my custom Laravel Spatie Gui
 		$permissionViewRole  = Permission::create(['name' => 'view roles']);
 		
+		//create Api permission 'view owner admin quantity'
 		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
 		$permissionViewOwnerQauantityAdmin  = Permission::create(['name' => 'view owner admin quantity', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
+		$updated = DB::table('permissions')->where('name', 'view owner admin quantity')->update([ 'guard_name' => 'api']);
+		//end create Api permission 'view owner admin quantity'
+		
 		
 	    $permissionNotForAdmin  = Permission::create(['name' => 'not admin permission']); //some permission for test
 		//End Create Permissions --------------------------------------------------------------------------------------------

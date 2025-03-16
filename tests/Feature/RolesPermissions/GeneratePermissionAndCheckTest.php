@@ -10,9 +10,19 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
 use App\User;
 
-class PermissionTest extends TestCase
+class GeneratePermissionAndCheck extends TestCase
 {
 	use DatabaseTransactions; //clear your table after every test
+	
+	protected function setUp(): void
+    {
+        // first include all the normal setUp operations
+        parent::setUp();
+
+        // now de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    }
+	
 	
     /**
      * Test Admin permissions
@@ -22,6 +32,8 @@ class PermissionTest extends TestCase
     public function testPermissions()
     {
 		//$this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+		
+		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
         DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
         DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
 		DB::table('permissions')->truncate();

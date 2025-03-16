@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Api\Owners;
 
-
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -239,17 +238,7 @@ class OwnerControllerTest extends TestCase
 	}
 	
 	
-	
-    /**
-	* Test for GET protected endpoint 'api/owners/quantity' (Passport)
-	* api response structure 
-	*/
-	public function testShouldNotSeeQuantityWithoutPassport()
-    {
-		$response = $this->get('/api/owners/quantity');
-        $response->assertStatus(302); // should get 'UnAuthenticated' without Passport token
-	}		
-		
+
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	/**
 	* Test for /Post to create one owner 'api/owner/create'
@@ -365,7 +354,7 @@ class OwnerControllerTest extends TestCase
 		
 		
 	/**
-	* Test for GET protected endpoint 'api/owners/quantity' (Passport)
+	* Test for GET protected endpoint 'api/owners/quantity' (Passport). Duplicate is in Tests\Feature\Passport; May delete this test later
 	* api response structure 
 	*/
 	public function testShouldSeeQuantityWithPassport()
@@ -399,12 +388,12 @@ class OwnerControllerTest extends TestCase
 				
 		
 		$user = factory(\App\User::class, 1)->create(); 
-		$this->actingAs(User::first(), 'api');
+		$this->actingAs(User::first(), 'api');  //otherwise get error: AuthenticationException: Unauthenticated. Sending token in request does not help
 		
         $bearerToken = User::first()->createToken('UserToken', ['*'])->accessToken;
 		
-		$response = $this->get('/api/owners/quantity', 
-		    [ 'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]]
+		$response = $this->get('/api/owners/quantity' //, 
+		    //[ 'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]]  //may drop this line, as all u need is using => $this->actingAs(User::first(), 'api'); 
 			); 
         $response
 		    ->assertStatus(200)       // should get 'UnAuthenticated' without Passport token
@@ -417,6 +406,19 @@ class OwnerControllerTest extends TestCase
 				'status'          => 'OK'
 			]);
 	}
+	
+		
+    /**
+	* Test for GET protected endpoint 'api/owners/quantity' (Passport). Duplicate is in Tests\Feature\Passport; May delete this test later
+	* api response structure 
+	*/
+	public function testShouldNotSeeQuantityWithoutPassport()
+    {
+		
+		$response = $this->get('/api/owners/quantity'); //dd($response);
+        $response->assertStatus(401); // should get 'UnAuthenticated' without Passport token
+	}		
+		
 		
 	
 	

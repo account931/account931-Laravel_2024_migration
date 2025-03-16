@@ -48,8 +48,22 @@ class OwnerTest extends TestCase
         $this->assertCount(24,  Venue::all());
         $this->assertCount(48,  Equipment::all());		
         //$this->assertEquals(3, 3);			
-       
     }
 	
+	// Example of testing a method that interacts with a database or external system
+    public function testCreateOwner()
+    {
+        // Create a mock or a real owner object
+        $owner = new Owner();
+        $owner->create(['first_name' => 'Dima', 'last_name' => 'D', 'email' => 'dima@example.com', 'phone' => '+380975545566', 'location' => 'EUR']);
+
+        // Assertions
+        $this->assertDatabaseHas('owners', ['first_name' => 'Dima', 'email' => 'dima@example.com']);
+		
+		//v2
+		$result = factory(\App\Models\Owner::class, 1)->create();
+		//dd($result->first()->first_name);
+        $this->assertDatabaseHas('owners', ['first_name' => $result->first()->getOriginal('first_name'), 'email' => $result->first()->email]); ////ignore accessor
+    }
 	
 }

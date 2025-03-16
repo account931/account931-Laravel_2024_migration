@@ -67,7 +67,7 @@
 						</li>
 						
 											
-						<!---------- Submenu DropDown!!!! (Bootsrap 4) ------------------>
+						<!---------- Submenu_1 DropDown!!!! (Bootsrap 4) ------------------>
 					    <div class="dropdown dropleft">
                             <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
                                  Spatie menu
@@ -94,8 +94,29 @@
 						    
                             </div>
                         </div>
-					    <!------------- END Submenu DropDown!!!! (Bootsrap 4) ------------->
+					    <!------------- END Submenu_1 DropDown!!!! (Bootsrap 4) ------------->
 					 
+					 
+					 
+					 
+					    <!---------- Submenu_2 DropDown!!!! (Bootsrap 4) ------------------>
+					    <div class="dropdown dropleft">
+                            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
+                                 VA
+                            </button>
+                            <div class="dropdown-menu">
+							
+							<ul>
+                                <!-- Api route protected by Passport and Spatie permission -->
+						        <li class="nav-item {{ Request::is('spatie-permission-gui*') ? 'active' : '' }}">
+							        <a class="nav-link" href="{{ route('api/owners/quantity') }}">{{ __('Protected Route(Passport+Spatie)') }}</a>
+						        </li>
+								
+							</ul>
+						    
+                            </div>
+                        </div>
+					    <!------------- END Submenu_2 DropDown!!!! (Bootsrap 4) ------------->
 					 
 					 
 					 

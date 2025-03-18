@@ -8,6 +8,7 @@ use Database\Seeds\Subfolder\VenueSeeder;
 use Database\Seeds\Subfolder\RolesPermissionSeeder;
 use Database\Seeds\Subfolder\PassportTokenSeeder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+		if (App::environment() === 'production') {
+            exit('I just stopped you getting fired.');
+        }
+		
 		Owner::unsetEventDispatcher(); //fix not to fire Events on creating Owner (we have custom Event/Listener on Owner created in console (for test purpose)
 		                               //and dont need it to fire in Seeder
 		

@@ -45,8 +45,8 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 
 ## New features
 <ul>
-<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create),
-policies, Spatie RBAC, middleware, Bootstrap Icons 5
+<li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create), Github workflow
+policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github Actions CI/CD
 </li>
 </ul>
 
@@ -87,6 +87,9 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
  <p>b.) register policy in AuthServiceProvider </p>
  <p>c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) </p>
  <p>d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" </p>
+
+##Github workflow action CI/CD
+For example run tests on github on every commit push, see  => .github/workflow/ci.yml
  
 ## Spatie Laravel permission GUI 
 => https://github.com/LaravelDaily/laravel-permission-editor

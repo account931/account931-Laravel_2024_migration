@@ -1,0 +1,116 @@
+#set up for Github workflow (on "Main" branch push: we set up php, sql, migrate and run PhpUnit tests)
+#PhpUnit test (biggest error were: 
+                #error "LogicException: Invalid key supplied"  => because of missing Passport set up => php artisan passport:keys --force)
+                #error 'SQLSTATE[HY000]: General error: 1 near "SET": syntax error (SQL: SET FOREIGN_KEY_CHECKS=0)' => because of using SQLLite
+name: Laravel
+
+on:
+  push:
+    branches: [ main ]  # Trigger on push to main branch
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  my-laravel-tests:
+
+    runs-on: ubuntu-latest
+    
+    services:
+      # init SQL container (check version) *********
+      mysql:
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel_2024_migration_testing
+          MYSQL_USER: user1
+          MYSQL_PASSWORD: userpassword
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin --user=root --password=password ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      # end  init SQL container *******
+      
+      
+    steps:
+    - uses: actions/checkout@v2 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access i
+    
+    # Set up PHP version (check version)-------------------
+    - name: Set up PHP 7.2
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.2.10' # fix here ->Specify the PHP version here
+        coverage: xdebug      # Optional: Enable coverage with Xdebug
+    # End Set up PHP
+    
+    #Copy env ------------------------------
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      
+    # Install Dependencies ------------------
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress
+    - name: Generate laravel key
+      run: php artisan key:generate
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+      
+    #
+    #- name: Create Database
+      #run: |
+        #mysql -u user1 -p${{ 'password' }} -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS laravel_2024_migration_testing;"
+      #run: |
+        #mkdir -p database
+        #touch database/database.sqlite
+        
+    #Compile js asserts -------------------
+    - name: Compile assets
+      run: |
+        npm install
+        npm run production
+        
+    #Set up environment for testing -------
+    - name: Set up environment for testing
+      run: cp .env.testing .env
+      
+    #get sql ready ------------------------
+    - name: Wait for MySQL service to be ready
+      run: |
+          for i in {30..0}; do
+            if mysqladmin ping --host=127.0.0.1 --port=3306 --user=root --password=root_password --silent; then
+              break
+            fi
+            echo 'Waiting for MySQL to start...'
+            sleep 1
+          done
+          
+    # Run database migrations -------------
+    - name: Run database migrations
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1  # Assuming MySQL is on the same container
+        DB_PORT: 3306
+        DB_DATABASE: laravel_2024_migration_testing
+        DB_USERNAME: user1
+        DB_PASSWORD: userpassword  # Replace with the correct password or leave empty if not used
+      run: php artisan migrate --force  # --force is required to run in CI environment
+      
+    #Run phpUnit tests   -------------------
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1  # Assuming MySQL is on the same container
+        DB_PORT: 3306
+        DB_DATABASE: laravel_2024_migration_testing
+        DB_USERNAME: user1
+        DB_PASSWORD: userpassword   # Replace with the correct password or leave empty if not used
+      run: |
+        php artisan config:cache --env=testing 
+        #php artisan migrate --env=testing --force
+        php artisan passport:client --personal --name=SomeName 
+        php artisan passport:install
+        php artisan passport:keys --force         
+        #php artisan db:disable-foreign-key   # we do it in prev step
+        php ./vendor/bin/phpunit

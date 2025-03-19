@@ -25,7 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Reset password page....
 
-//Auth only
+//Auth (logged) users only
 Route::middleware(['web', 'auth'])->group(function (): void {
 	
     //Owners list all

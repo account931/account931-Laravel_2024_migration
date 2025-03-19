@@ -19,7 +19,7 @@ class OwnerControllerTest extends TestCase
 	use DatabaseTransactions; //clear your table after every test
 	
 	/**
-	* Test for GET all 'api/owners'
+	* Test for GET all 'api/owners'. Open route
 	* api response structure {"data":[{"id":1,"first_name":"Petro","last_name":"Bins", ,"venues":[ {"id":1,"venue_name":"Some1","address":"Some1","equipments":[{"id":1,"trademark_name":"tname1","model_name":"name1"}, {"id":1,"venue_name":"Some1","address":"Some1","equipments":[{"id":2,"trademark_name":"tname2","model_name":"name3"} ]}, ...'owners_count': 12, 'owners_confirmed_count': 4], 
 	*/
 	public function testOwnerApi()
@@ -89,8 +89,8 @@ class OwnerControllerTest extends TestCase
 					//'venues.equipments', 
 			    ]
 			],
-			'owners_count'           => 'owners_count',
-			'owners_confirmed_count' => 'owners_confirmed_count'
+			'owners_count',
+			'owners_confirmed_count'
 			
 			
 		])
@@ -238,8 +238,7 @@ class OwnerControllerTest extends TestCase
 	}
 	
 	
-
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
 	/**
 	* Test for /Post to create one owner 'api/owner/create'
 	* api response structure:

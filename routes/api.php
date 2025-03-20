@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Api\V1\Controllers\OwnerController;
 use App\Models\Owner;
 use App\Http\Api\V1\Resources\OwnerResource;
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\Auth_Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

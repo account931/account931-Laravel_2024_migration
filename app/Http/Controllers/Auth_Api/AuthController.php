@@ -1,7 +1,7 @@
 <?php
 
 //Auth controller for REST (via token, not session)
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Auth_Api;
 
 use App\Http\Controllers\Controller;
 use App\User;

@@ -13,6 +13,8 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class OwnerControllerTest extends TestCase
 {
@@ -82,8 +84,7 @@ class OwnerControllerTest extends TestCase
 							       'trademark_name',
 								   'model_name',
 								]	   
-						   ]
-						   
+						   ] 
 					    ]
 					],
 					//'venues.equipments', 
@@ -195,7 +196,6 @@ class OwnerControllerTest extends TestCase
 								       'model_name',
 								    ]	   
 						        ]
-						   
 						    ]
 						],	
 						'status'
@@ -209,8 +209,6 @@ class OwnerControllerTest extends TestCase
 		        ]);
 				*/
 			
-				
-				
 				
 				// Since arrow function is available from PHP 7.4 only, we test types manuualy as  we cannot use => $response->assertJson(fn ($json) =>  $json->whereType('data.id', 'integer')->whereType('data.name', 'string') 
 				$this->assertIsInt($response['data']['id']);
@@ -314,22 +312,256 @@ class OwnerControllerTest extends TestCase
 	
 	
 	
+	/**
+	* Test for /PUT to update one owner 'api/owner/update/{owner}'
+	* api response structure:
+	*/
+	public function testUpdateWithCorrectValidation()
+    { 
+		//$this->withoutExceptionHandling(); //to see errors
+        
+		//create 6 owners
+		$result = factory(\App\Models\Owner::class, 6)->create(['first_name' => 'Petro', 'confirmed' => 1 ])->each(function ($owner){
+				
+			//create hasMany relation (Venues attached to Owners) ->has() is not supported in L6
+			 factory(\App\Models\Venue::class, 2)->create(['owner_id' => $owner->id ])->each(function ($venue){
+										
+			    //create Many to Many relation (pivot)(Equipments attached to Venues) 
+                $equipments = factory(\App\Models\Equipment::class, 2)->create();
+				//$venue->equipments()->saveMany($equipments);
+				$venue->equipments()->sync($equipments->pluck('id')); //Eloquent:relationship
+					
+			});
+				
+		});
+		
+		//dd($venues->first()->equipments);
+		 //$validated = $request->validated();
+		
+		$newFirstName = 'Dima_new';
+		$newLasttName = 'DimaLast_new';
+		
+	    //update owner
+		$response = $this->json("put", "api/owner/update/{$result->first()->id}", [
+		    'http_errors' => false,     //to get response in json, not html
+			//'headers'     => ['Accept' => 'application/json'],
+            //'json'        => [
+                'first_name'    => $newFirstName,
+                'last_name'     => $newLasttName,
+                'location'      => 'EUR',
+			    'email'         => 'dimqqq@gmail.com',  //email is unique on create only, not on update
+			    'phone'         => '+380975654455',	
+			    'owner_venue'   => $result->first()->venues->pluck('id'), //array of venues ids to be  attached to owner (later in Api Controller)
+	        //]
+        ]);
+
+		//dd($response->getBody()->getContents());
+		
+		$response->assertStatus(200)
+		    ->assertJsonCount(2, 'owner.venues')
+			->assertJsonCount(2, 'owner.venues.0.equipments') //1st array of  => venues[0].equipments
+			->assertJsonCount(2, 'owner.venues.1.equipments')
+				
+			->assertJsonFragment([
+		            'first_name'    => $newFirstName, //ignore accessor 
+		            'last_name'     => $newLasttName,
+					'venue_name'    => $result->first()->venues->first()->venue_name, //$response['owner']['venues'][0]['venue_name'], 
+				])
+				
+                ->assertJsonStructure([   //same as checking with has(): ->assertJson(function ($json) {$json->has('data') ->has('data.id')       
+		            'owner' => [
+			            'id',
+					    'first_name',
+			            'last_name',
+					    'confirmed',
+						'venues' => [  //venues: ['venue_name', 'address', 'equipments':[]]
+					        '*' => [
+					            'venue_name',
+						        'address',
+								 'active',
+						   
+						        'equipments' => [
+						           '*' => [
+							           'trademark_name',
+								       'model_name',
+								    ]	   
+						        ]
+						    ]
+						],	
+						'status'
+					],
+					//'message' => 'Created successfully'  //why failing???
+				]);
+	}
 	
 	
 	
 	
+	/**
+	* Test for /PUT to update one owner 'api/owner/update/{owner}' with incorrect validation
+	* api response structure:
+	*/
+	public function testUpdateWillFailWithoutValidation()
+    { 
+		//$this->withoutExceptionHandling(); //to see errors. Here, it will break the test, as it will stop the test with just  "Data invalid"
+        
+		//create 6 owners
+		$result = factory(\App\Models\Owner::class, 6)->create();
+		
+	    //update owner (with validation errors)
+		$response = $this->json("put", "api/owner/update/{$result->first()->id}", [
+		    'http_errors' => false,     //to get response in json, not html
+			//'headers'     => ['Accept' => 'application/json'],
+            //'json'        => [
+                'first_name'    => 'SomeName',
+	        //]
+        ]);
+
+		//dd($response->getBody()->getContents());
+				
+		$response->assertStatus(422) //validation failed
+			->assertJsonFragment([
+		        'email'        => ['The email field is required.'],
+                'last_name'    => ['Kindly asking for a last name'], 
+                'location'     => ['The location field is required.'],
+			    'phone'        => ['The phone field is required.'],
+				'owner_venue'  => ['Select venue'],
+				'message'      => 'The given data was invalid.'
+				])
+            ->assertJsonStructure([	
+			    'errors' => [
+				    'email',
+					'last_name',
+					'location',
+					'phone',
+					'owner_venue'
+				],
+				'message'
+           ]);			
+	}
 	
 	
 	
+
+	/**
+	* Test for /DELETE to delete one owner 'api/owner/delete/{owner}' (Protected by Passport and Spatie permission 'delete owner'). User has both Passport token and permission 'delete owners'
+	* api response structure:
+	*/
+	public function testDeleteOwner()
+    { 
+		$this->withoutExceptionHandling(); //to see errors. Here, it will break the test, as it will stop the test with just  "Data invalid"
+		
+		//Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
+		$parameters = [
+            '--personal' => true,
+            '--name' => 'Central Panel Personal Access Client', // You can customize the client name here
+        ];
+        Artisan::call('passport:client', $parameters);
+		//End Generate Passport personal token
+						
+		
+		//create Api permission 'delete owners'
+		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+		$permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
+		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
+		//end create Api permission 'view owner admin quantity'
+		
+		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
+		$role = Role::create(['name' => 'admin']);
 	
-	//test owner update
-	//test owner delete
+	    //$role->givePermissionTo($permission);
+	    $role = Role::findByName('admin');
+	    $role->syncPermissions([
+			$permissionDeleteOwner
+		]);  //multiple permission to role
+
+		//dd(User::count());
+		
+	    $user = factory(\App\User::class, 2)->create(/*['id' => 1]*/);  //$user = User::factory()->create();
+	    User::first()->assignRole('admin');
+		
+		$this->actingAs(User::first(), 'api');  //otherwise get error: AuthenticationException: Unauthenticated. Sending token in request does not help
+        //$bearerToken = User::first()->createToken('UserToken', ['*'])->accessToken;
+		
+		//create 6 owners
+		$result = factory(\App\Models\Owner::class, 6)->create();
+		
+	    //delete  1 owner, user has both Passport token and permission 'delet owners'
+		$response = $this->json("delete", "api/owner/delete/{$result->first()->id}", [
+		    'http_errors' => false,     //to get response in json, not html
+        ]);
+
+		//dd($response);
+				
+		$response->assertStatus(200) //
+			->assertJsonFragment([
+		        'message'        => "Deleted owner {$result->first()->id}",
+			])
+            ->assertJsonStructure([	
+				'message'
+           ]);			
+	}
 
 
 
 
+    /**
+	* Test for /DELETE,, try with unauthorized user to delete one owner 'api/owner/delete/{owner}' (Protected by Passport and Spatie permission 'delete owner')
+	* api response structure:
+	*/
+	public function testUserWithoutPermissionCanNotDeleteOwner()
+    { 
+		//$this->withoutExceptionHandling(); //to see errors. Here, it will break the test, as it will stop the test with just  "This action is unauthorized"
+		
+		//Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
+		$parameters = [
+            '--personal' => true,
+            '--name' => 'Central Panel Personal Access Client', // You can customize the client name here
+        ];
+        Artisan::call('passport:client', $parameters);
+		//End Generate Passport personal token
+						
+		
+		//create Api permission 'delete owners'
+		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+		$permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
+		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
+		//end create Api permission 'view owner admin quantity'
+		
+		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
+		$role = Role::create(['name' => 'admin']);
+	
+	    //$role->givePermissionTo($permission);
+	    $role = Role::findByName('admin');
+	    $role->syncPermissions([
+			$permissionDeleteOwner
+		]);  //multiple permission to role
 
+		
+	    $users = factory(\App\User::class, 2)->create(/*['id' => 1]*/);  //$user = User::factory()->create();
+		
+	    User::first()->assignRole('admin');
+		
+		$userWithoutPermission = User::skip(1)->first();
+		
+		$this->actingAs($userWithoutPermission, 'api');  //otherwise get error: AuthenticationException: Unauthenticated. Sending token in request does not help
+        //$bearerToken = User::first()->createToken('UserToken', ['*'])->accessToken;
+		
+		//create 6 owners
+		$result = factory(\App\Models\Owner::class, 6)->create();
+		
+	    //try delete  1 owner, but user has Passport token but does not have permission 'delet owners'
+		$response = $this->json("delete", "api/owner/delete/{$result->first()->id}", [
+		    'http_errors' => false,     //to get response in json, not html
+        ]);
 
+		//dd($response);
+				
+		$response->assertStatus(403); // "This action is unauthorized"
+			
+	}
 
 
 
@@ -359,6 +591,8 @@ class OwnerControllerTest extends TestCase
 	public function testShouldSeeQuantityWithPassport()
     {
 		$this->withoutExceptionHandling();
+		
+		//DB::table('owners')->truncate(); //way to set auto increment back to 1 before seeding a table  //fix
 		
 		$ownersQuantity = 4;
 		

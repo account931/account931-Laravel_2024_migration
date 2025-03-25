@@ -8,6 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule; //for in: validation
 use App\Models\Venue;
+use Illuminate\Http\Request;
 
 class OwnerRequest extends FormRequest
 {
@@ -72,10 +73,45 @@ class OwnerRequest extends FormRequest
     public function withValidator(Validator $validator)
     {
 	
-	    if ($validator->fails()) {
+	    if ($validator->fails()) { 
+		    
+			//if is json (case when it is  API)........
+		    //dd($validator->errors()); //tempo, works,  get validation errors
+			if($this->wantsJson()){
+				//dd($validator->errors());
+				//return response([ 'message' => 'Updated successfully'], 200);
+			} 
+			
+			//redirect fot normal http requests
+			//return response(['error' => $validator->errors(), 'Validation Error']);
             return redirect('/owner/create-new')->withInput()->with('flashMessageFailX', 'Validation Failed!!!' )->withErrors($validator);
         }
 	}
+	
+	/**
+     * Custom validation failed response.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+	/*
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        // Check if validation fails and return a custom JSON response
+        if ($this->isJson()) {
+            // If the request is JSON, send a JSON response with validation errors
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Default response if it's not JSON
+        parent::failedValidation($validator);
+    }
+	
+    */
+	
+	
 	 
 	
 

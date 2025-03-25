@@ -58,16 +58,19 @@ class OwnerPolicy
     {
 		return $user->can('edit owners')   //return $user->id === 1
 		       ? Response::allow()
-			   : Response::deny('Cant update, Stopped by OwnerPolicy, the User does not have permission "edit owners"');; //way to add custom message
+			   : Response::deny('Cant update, Stopped by OwnerPolicy, the User does not have permission "edit owners"'); //way to add custom message
     }
 	
 
-	/*
-    public function delete(User $user, Owner owner)
+	
+    public function delete(User $user)
     {
-        return $user->id === $owner->user_id;
+        //return $user->id === $owner->user_id;
+		return $user->can('delete owners')   //return $user->id === 1
+		       ? Response::allow()
+			   : Response::deny('Cant delete, Stopped by OwnerPolicy, the User does not have permission "delete owners"'); //way to add custom message
     }
-	*/
+	
 	
 	//permission to test API Route::get('/owners/quantity/admin', user must be logged (Passport) + has a Spatie RBAC permission
 	public function view_owner_admin_quantity(User $user)
@@ -75,7 +78,7 @@ class OwnerPolicy
 		//return $user->hasPermissionTo('view owner admin quantity')
 		return $user->can('view owner admin quantity')   //return $user->id === 1
 		       ? Response::allow()
-			   : Response::deny('Sorry. Stopped by OwnerPolicy, the User does not have permission "view owner admin quantity"');; //way to add custom message
+			   : Response::deny('Sorry. Stopped by OwnerPolicy, the User does not have permission "view owner admin quantity"'); //way to add custom message
     }
 	
 }

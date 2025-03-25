@@ -14,6 +14,7 @@ use App\Models\Venue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule; //for in: validation
+use App\Http\Requests\Owner\OwnerRequest; //my custom Form validation via Request Class (to create new blog & images in tables {wpressimages_blog_post} & {wpressimage_imagesstock})
 
 class OwnerController extends Controller
 {
@@ -57,15 +58,14 @@ class OwnerController extends Controller
 	 /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Owner\OwnerRequest $request
      * @return \Illuminate\Http\Response
      */
-	 //not tested!!!!!!!!!!!!!!!!!!!!!!!
-	
-    public function store(Request $request)
+    public function store(OwnerRequest $request)     //was Request $request    @param  \Illuminate\Http\Request  $request
     {
         $data = $request->all();
 		
+		/*
 		$RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
 		
 		$existingVenues = Venue::active()->pluck('id'); 
@@ -79,10 +79,12 @@ class OwnerController extends Controller
 			'owner_venue'   => ['required', 'array',  ],               //Rule::in($existingVenues)
 			"owner_venue.*" => Rule::in($existingVenues)
         ]);
+		
 
         if($validator->fails()){
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
+		*/
 
         $owner = Owner::create($data);
 		
@@ -96,36 +98,51 @@ class OwnerController extends Controller
 	/**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Owner\OwnerRequest $request
      * @param  \App\Models\Owner $owner
      * @return \Illuminate\Http\Response
      */
-	 /*
-	 //not tested
-    public function update(Request $request, Owner  $owner)
+	 //not tested!!!!!!!!!!!!!!!
+    public function update(OwnerRequest $request, Owner $owner)    //OwnerRequest $request  
     {
+		/* if (!$request->validated()){
+			dd('zzzz');
+		} */
+		
+		$data = $request->all();
+		
+		//do not get here
+		/*
+		if(!$request->wantsJson()){
+			return response([ 'id' =>$id, 'message' => 'Retrieved successfully'], 200);
+		} */
 
-        $onwer->update($request->all());
-
-        return response([ 'owner' => new ownerResource($ceo), 'message' => 'Retrieved successfully'], 200);
+        //return response([ 'id' =>$id, 'message' => 'Retrieved successfully'], 200);
+			
+        $owner->update($request->all());
+        return response([ 'owner' => new ownerResource($owner), 'message' => 'Updated successfully'], 200);
     }
-    */
+    
+
+	
 	
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage. Protected by Passport and Spatie permission delete owners',
      *
      * @param \App\Models\Owner $owner
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-	 /*
+	
     public function destroy(Owner $owner)
     {
+		$this->authorize('delete owners', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy). Instead of this you can also use it directly on route =>Route::middleware(['auth:api', 'can:update,post'])
+
         $owner->delete();
 
-        return response(['message' => 'Deleted']);
+        return response(['message' => 'Deleted owner ' . $owner->id]);
     }
-    */
+    
 	
 	/**
      * Returns owners quantity. Created to test Passport, user must be logged (tested in console and tests)

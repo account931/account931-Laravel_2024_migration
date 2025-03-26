@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\RolesPermissions;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Owner;
@@ -16,7 +17,7 @@ use App\Models\Equipment;
 
 class ApiPermissionTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //clear your table after every test
 	
 	
 	protected function setUp(): void   // optional, initialize any necessary dependencies or objects
@@ -37,7 +38,10 @@ class ApiPermissionTest extends TestCase
      */
     public function test_user_with_permission_can_view_api_route_should_see_api_route()   
     {
-		$this->withoutExceptionHandling(); 
+		//$this->withoutExceptionHandling(); 
+		
+		// now de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
         DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
@@ -62,7 +66,7 @@ class ApiPermissionTest extends TestCase
 		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
 		$permissionViewOwnerQauantityAdmin  = Permission::create(['name' => 'view owner admin quantity', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
 		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
-		$updated = DB::table('permissions')->where('name', 'view owner admin quantity')->update([ 'guard_name' => 'api']);
+		$updated = DB::table('permissions')->where('name', 'view owner admin quantity')->update(['guard_name' => 'api']);
 		//end create Api permission 'view owner admin quantity'
 		
 		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
@@ -123,6 +127,9 @@ class ApiPermissionTest extends TestCase
         //!!!!!!!!!!!!!!!!!!!!!!
 		
 		$this->withoutExceptionHandling(); 
+		
+		// now de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
         DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())

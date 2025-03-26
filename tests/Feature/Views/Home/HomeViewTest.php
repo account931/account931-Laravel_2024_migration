@@ -26,7 +26,7 @@ class HomeViewTest extends TestCase
         //$view = $this->view('home', ['user' => Auth::user()]);
         //$view->assertSee(Auth::user()->name);
 		
-		$user = factory(\App\User::class, 1)->create(); 
+		$user = factory(\App\User::class, 1)->create(['name' => 'Dima']); //to avoid test crash when name is O'Conel, etc
 		$this->actingAs(User::first(), 'web');  
 		
 		$response = $this->get('/home');  // Route you want to test

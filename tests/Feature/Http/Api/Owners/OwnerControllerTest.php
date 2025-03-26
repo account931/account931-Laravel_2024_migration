@@ -11,6 +11,7 @@ use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\RefreshDatabase;       //trait to clear your table after every test
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
 use Spatie\Permission\Models\Role;
@@ -18,7 +19,17 @@ use Spatie\Permission\Models\Permission;
 
 class OwnerControllerTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //clear your table after every test
+	
+	
+	protected function setUp(): void   // optional, initialize any necessary dependencies or objects
+    {
+        // first include all the normal setUp operations
+        parent::setUp();
+
+        // now unset/ de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    }
 	
 	/**
 	* Test for GET all 'api/owners'. Open route
@@ -451,10 +462,13 @@ class OwnerControllerTest extends TestCase
     { 
 		$this->withoutExceptionHandling(); //to see errors. Here, it will break the test, as it will stop the test with just  "Data invalid"
 		
+		// now unset/ de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		//Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
 		$parameters = [
@@ -464,17 +478,22 @@ class OwnerControllerTest extends TestCase
         Artisan::call('passport:client', $parameters);
 		//End Generate Passport personal token
 						
-		
-		//create Api permission 'delete owners'
-		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
-		$permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		if(!$permissionDeleteOwner = Permission::findByName('delete owners', null)) { // Find the permission by name
+		    //create Api permission 'delete owners'
+		    //NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+		    $permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		    //end create Api permission 'view owner admin quantity'
+		}
 		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
 		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
-		//end create Api permission 'view owner admin quantity'
+	
+		
 		
 		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
-		$role = Role::create(['name' => 'admin']);
-	
+		if(!Role::findByName('admin', null)) {
+		    $role = Role::create(['name' => 'admin']);
+	    }
+		
 	    //$role->givePermissionTo($permission);
 	    $role = Role::findByName('admin');
 	    $role->syncPermissions([
@@ -517,12 +536,19 @@ class OwnerControllerTest extends TestCase
 	*/
 	public function testUserWithoutPermissionCanNotDeleteOwner()
     { 
+	    //$this->assertTrue(true);  //here we fake success test result
+		//return;
+		
 		//$this->withoutExceptionHandling(); //to see errors. Here, it will break the test, as it will stop the test with just  "This action is unauthorized"
 		
+		// now unset/ de-register all the roles and permissions by clearing the permission cache
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+		
+		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		//Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
 		$parameters = [
@@ -534,14 +560,18 @@ class OwnerControllerTest extends TestCase
 						
 		
 		//create Api permission 'delete owners'
-		//NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
-		$permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
-		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
-		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
+		if(!$permissionDeleteOwner = Permission::findByName('delete owners', null)) { // Find the permission by name
+		    //NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+		    $permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
+		    //fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
+		    $updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
+		}
 		//end create Api permission 'view owner admin quantity'
 		
 		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
-		$role = Role::create(['name' => 'admin']);
+		if(!Role::findByName('admin', null)) {
+		    $role = Role::create(['name' => 'admin']);
+		}
 	
 	    //$role->givePermissionTo($permission);
 	    $role = Role::findByName('admin');

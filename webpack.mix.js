@@ -12,4 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+   //.js('resources/js/vue-pages/vue-start-page.js',    'public/js/Vue-Pages')    //Vue.js; Source -> Destination folder //Moved to 'resources/js/app.js'
    .sass('resources/sass/app.scss', 'public/css');

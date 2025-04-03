@@ -12,6 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -22,7 +24,13 @@
 	
 	<!-- added Bootstrap 4 icons -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-</head>
+    
+	<!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">--> <!-- crash menu -->
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">-->
+	
+	</head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -67,7 +75,7 @@
 						</li>
 						
 											
-						<!---------- Submenu_1 DropDown!!!! (Bootsrap 4) ------------------>
+						<!---------- Links Submenu_1 DropDown!!!! (Bootsrap 4) ------------------>
 					    <div class="dropdown dropleft">
                             <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
                                  Spatie menu
@@ -94,7 +102,7 @@
 						    
                             </div>
                         </div>
-					    <!------------- END Submenu_1 DropDown!!!! (Bootsrap 4) ------------->
+					    <!------------- END Links Submenu_1 DropDown!!!! (Bootsrap 4) ------------->
 					 
 					 
 					 
@@ -107,12 +115,21 @@
                             <div class="dropdown-menu">
 							
 							<ul>
+							
                                 <!-- Api route protected by Passport and Spatie permission -->
 						        <li class="nav-item {{ Request::is('spatie-permission-gui*') ? 'active' : '' }}">
 							        <a class="nav-link" href="{{ route('api/owners/quantity') }}">{{ __('Protected Route(Passport+Spatie)') }}</a>
 						        </li>
 								
+								 <!----------- Vue Pages --------------- -->
+						        <li class="nav-item {{ Request::is('vue-start-page') ? 'active' : '' }}" style="white-space: nowrap;">
+							        <a class="nav-link" href="{{ route('vue-start-page') }}">{{ __('Vue Pages') }}</a>
+						        </li> 
+								
 							</ul>
+							
+							
+								
 						    
                             </div>
                         </div>
@@ -162,5 +179,24 @@
             @yield('content')
         </main>
     </div>
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>                 <!-- Mega Fix (collapsed main menu won't open)-->	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css"> <!-- Sweet Alert CSS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js'></script>     <!-- Sweet Alert JS-->  
+	
+	<!-- (for Vue.js + Vuex Framework asset only -->
+	<!-- To register JS file for specific view only (In layout template) (for Owner Vue.js + Vuex Framework asset only) -->
+    @if (in_array(Route::getFacadeRoot()->current()->uri(), ['vue-start-page'])) <!--Route::getFacadeRoot()->current()->uri()  returns testRest--> 
+        <!--<script src="{{ asset('js/Vue-Pages/vue-start-page.js') }}"> defer</script> --> <!-- wpress Vue JS --> 
+
+		<!--<link  href="{{ asset('css/Wpress_Vue_JS/wpVue_css.css') }}" rel="stylesheet">-->
+        <link  href="{{ asset('css/Wpress_Vue_JS/Element_UI/theme-chalk/index.css') }}" rel="stylesheet"><!-- Elememt-UI icons (fix)  -->		
+	@endif
+	
+	
+	
+	
 </body>
 </html>

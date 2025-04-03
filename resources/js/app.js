@@ -5,8 +5,13 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
+
+import store from './store/index'; //import Vuex Store
+import ElementUI from 'element-ui'; //import ElementUI pop-up modal window
+import 'element-ui/lib/theme-chalk/index.css'; //moved as sepearate CSS Fileto css in /layout/app.php
+
+Vue.use(ElementUI); //connect Vue to use with ElementUI
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,7 +24,9 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('example-component',     require('./components/ExampleComponent.vue').default);
+Vue.component('owners-list-component', require('./components/OwnersListComponents/GetOwnersListComponent.vue').default); //register component (default is a must fix)
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,5 +35,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
+	store,
     el: '#app',
 });
+
+
+

@@ -59,4 +59,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 	Route::resource('roles',      Laraveldaily\LaravelPermissionEditor\RoleController::class);
     Route::resource('permissions',Laraveldaily\LaravelPermissionEditor\PermissionController::class);
 
+	//Vue Page
+	Route::get('/vue-start-page',  'VuePages\VuePagesController@index')->name('vue-start-page');  
+	
 });

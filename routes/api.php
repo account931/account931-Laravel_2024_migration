@@ -29,7 +29,7 @@ Route::get('/owners', [OwnerController::class, 'index'])->name('api/owners');   
 //Route::get('/owners', function () { return new OwnerResource(Owner::find(1)); }); //same as above, working
 Route::get('/owner/{owner}',           [OwnerController::class, 'show'])->name('api/owner/');   //public/api/owner/{owner}  //1 owner  //Implicit Route Model Binding
 Route::post('/owner/create',           [OwnerController::class, 'store'])->name('api/owner/create');
-Route::put('/owner/update/{owner}',    [OwnerController::class, 'update']); //->name('api/owner/update');
+Route::put('/owner/update/{owner}',    [OwnerController::class, 'update']); //->name('api/owner/update');  //should be potected too
 
 
 //User Api Registration/Login
@@ -41,6 +41,7 @@ Route::post('/login',    [AuthController::class, 'login'])   ->name('api/login')
 //----------------------------- Passport Protected routes -------------------------------
 //protected routes (Passport)
 Route::middleware('auth:api')->group(function() {
+	
 	Route::delete('/owner/delete/{owner}', [OwnerController::class, 'destroy']);
 	
 	Route::get('/owners/quantity',       [OwnerController::class, 'quantity'])      ->name('api/owners/quantity');        //simply Protected by Passport

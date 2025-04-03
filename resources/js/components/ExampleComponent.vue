@@ -7,6 +7,8 @@
 
                     <div class="card-body">
                         I'm an example component.
+					    <button class='btn btn-success' @click="sendAlert"> Click Me! </button>
+
                     </div>
                 </div>
             </div>
@@ -18,6 +20,11 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+		 methods: {
+		    sendAlert() {
+			    alert(11);
+			},	
         }
     }
 </script>

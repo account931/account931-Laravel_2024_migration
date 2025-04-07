@@ -121,10 +121,15 @@
 							        <a class="nav-link" href="{{ route('api/owners/quantity') }}">{{ __('Protected Route(Passport+Spatie)') }}</a>
 						        </li>
 								
-								 <!----------- Vue Pages --------------- -->
+								<!----------- Vue Pages --------------- -->
 						        <li class="nav-item {{ Request::is('vue-start-page') ? 'active' : '' }}" style="white-space: nowrap;">
 							        <a class="nav-link" href="{{ route('vue-start-page') }}">{{ __('Vue Pages') }}</a>
-						        </li> 
+						        </li>
+
+                                <!----------- Vue Pages with router --------------- -->
+						        <li class="nav-item {{ Request::is('vue-pages-with-router') ? 'active' : '' }}" style="white-space: nowrap;">
+							        <a class="nav-link" href="{{ route('vue-pages-with-router') }}">{{ __('Vue pages with router') }}</a>
+						        </li> 								
 								
 							</ul>
 							

@@ -59,7 +59,10 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 	Route::resource('roles',      Laraveldaily\LaravelPermissionEditor\RoleController::class);
     Route::resource('permissions',Laraveldaily\LaravelPermissionEditor\PermissionController::class);
 
-	//Vue Page
+	//Vue Page (show response from open /api/owners)
 	Route::get('/vue-start-page',  'VuePages\VuePagesController@index')->name('vue-start-page');  
+	
+	//Vue Pages with router (show response from open /api/owners, login, register pages, etc)
+	Route::get('/vue-pages-with-router',  'VuePagesWithRouter\VuePagesWithRouterController@index')->name('vue-pages-with-router'); 
 	
 });

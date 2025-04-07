@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Vue Pages</div>
+                <div class="card-header">Vue Pages, request to <b> /api/owners </b> (open route, does not require Passport(access token))</div>
 
                 <div class="card-body">
                     @if (session('status'))

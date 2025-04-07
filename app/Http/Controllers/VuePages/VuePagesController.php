@@ -1,4 +1,5 @@
 <?php
+//open route, does not require Passport(access token)
 
 namespace App\Http\Controllers\VuePages;
 
@@ -21,7 +22,7 @@ class VuePagesController extends  Controller
 	}
 	
 	/**
-     * Show start page with all owners list
+     * Show start page with all owners list, open route, does not require Passport(access token)
      * @return \Illuminate\Http\Response
      */
     public function index() 

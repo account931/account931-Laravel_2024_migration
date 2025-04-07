@@ -8,6 +8,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import store from './store/index'; //import Vuex Store
+import router from './router/index.js';
+
 import ElementUI from 'element-ui'; //import ElementUI pop-up modal window
 import 'element-ui/lib/theme-chalk/index.css'; //moved as sepearate CSS Fileto css in /layout/app.php
 
@@ -24,8 +26,9 @@ Vue.use(ElementUI); //connect Vue to use with ElementUI
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component',     require('./components/ExampleComponent.vue').default);
-Vue.component('owners-list-component', require('./components/OwnersListComponents/GetOwnersListComponent.vue').default); //register component (default is a must fix)
+Vue.component('example-component',           require('./components/ExampleComponent.vue').default);
+Vue.component('owners-list-component',       require('./components/OwnersListComponents/GetOwnersListComponent.vue').default); //register component (default is a must fix)
+Vue.component('vue-router-menu-with-links',  require('./components/OwnersListComponentsWithRouter/VueRouterMenu.vue').default); //register component dispalying vue-router-menu (used in \resources\views\vue-pages-with-router\index.php)
 
 
 /**
@@ -34,10 +37,20 @@ Vue.component('owners-list-component', require('./components/OwnersListComponent
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ //One for both 'owners-list-component' and 'vue-router-menu-with-links' ???
 const app = new Vue({
 	store,
+	router, //must-have for Vue routing
     el: '#app',
 });
 
+//Component => Div with Vue route menu and area to dispaly selected menu (Blog list, create new, etc)  
+/* 
+const appMenu = new Vue({
+	store, //connect Vuex store, must-have
+	router, //must-have for Vue routing
+    el: '#vue-menu'
+});
+*/
 
 

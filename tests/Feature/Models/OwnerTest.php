@@ -47,7 +47,14 @@ class OwnerTest extends TestCase
         $this->assertCount(12,  Owner::all());
         $this->assertCount(24,  Venue::all());
         $this->assertCount(48,  Equipment::all());		
-        //$this->assertEquals(3, 3);			
+        //$this->assertEquals(3, 3);	
+
+	    // Since arrow function is available from PHP 7.4 only, we test types manuualy as  we cannot use => $response->assertJson(fn ($json) =>  $json->whereType('data.id', 'integer')->whereType('data.name', 'string') 
+        $this->assertIsInt($result->first()->id);
+        $this->assertIsString($result->first()->first_name);
+        $this->assertIsObject($result->first()->venues());  //assertIsArray
+	    $this->assertIsString($result->first()->venues->first()->venue_name);
+		$this->assertIsString($result->first()->venues->first()->equipments->first()->trademark_name);		
     }
 	
 	// Example of testing a method that interacts with a database or external system

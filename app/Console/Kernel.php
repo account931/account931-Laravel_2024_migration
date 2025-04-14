@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\MyTestCronJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +25,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // $schedule->command('inspire')->hourly(); //->daily();
+		
+		//2 ways to call the same job
+		$schedule->job(new MyTestCronJob())->everyMinute();  //V.1 - call directtly the job
+		//$schedule->command('my:testcronjob')->everyMinute(); //V.2 - call the command & it will call the job
     }
 
     /**

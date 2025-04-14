@@ -1,9 +1,12 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
-   Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), Font Awesome 5 Icons, Vue JS (Vuex store, router) etc.
+   Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
+   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router) etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
+
+<p> ----------------------------------------------------------------------------------------- </p>
 
 ## Install Laravel 6 LTS, php 7.2
 
@@ -28,8 +31,10 @@ add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength
 </p>
 	 
 <p>6. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
-If new route is not found => <code>php artisan route:clear</code> </br>
-                             <code> composer dump-autoload </code>
+If new route is not found => <code>php artisan route:clear</code> </br>                            <code> composer dump-autoload </code>
+</p>
+
+<p>6. Install Passport personal token (is needed to issue user tokens) => <code>php artisan passport:client --personal </code> 
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
@@ -37,11 +42,14 @@ return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation vi
 #If after install css crashes (not found app.css & app.js) -> npm intall -> npm run production
 </p>
 
+<p> ----------------------------------------------------------------------------------------- </p>
 
 ## Tables
 Owners, venues, equipment
 Owner can has many Venues, each Venue has 1 Owner (One to Many Relationships: HasMany)
 Venues can have many equipments, each equipment may be present in many Venues (Many to Many Relationships: BelongsToMany). Pivot table.
+
+<p> ----------------------------------------------------------------------------------------- </p>
 
 ## New features
 <ul>
@@ -50,6 +58,8 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github A
 </li>
 </ul>
 
+<p> ----------------------------------------------------------------------------------------- </p>
+
 ## Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
@@ -57,8 +67,14 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github A
 composer dump-autoload
 <p>git restore . is supported from git 2.23+ only, use git checkout . (or git checkout --compose.json)  ==== git clean -fd </p>
 
+<p> ----------------------------------------------------------------------------------------- </p>
+
 ##Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
 
 ## Testing (PhpUnit)
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
@@ -70,7 +86,9 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 4.1 If u run migration and it goes to wrong DB (prod or test) => php artisan config:cache
 5. To see test errors =>  $this->withoutExceptionHandling(); //to see errors
-6. Test example => Tests\Feature\Http\Api\Owners\OwnerControllerTest;
+6. Best Test example => Tests\Feature\Http\Api\Owners\OwnerControllerTest;
+
+<p> ----------------------------------------------------------------------------------------- </p>
 
 
 ## Passport
@@ -78,6 +96,8 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 #to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
 <p> for tests, you run this command programmatically in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
 <p>Api unathenticated message is set in App\Exceptions\Handler</p>
+
+<p> ----------------------------------------------------------------------------------------- </p>
 
 
 ## Spatie Laravel permission 5.3 
@@ -88,8 +108,15 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
  <p>c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) </p>
  <p>d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" </p>
 
+ <p> ----------------------------------------------------------------------------------------- </p>
+ 
+ 
 ##Github workflow action CI/CD
-For example run tests on github on every commit push, see  => .github/workflow/ci.yml
+For example run tests (CI) on github on every commit push, see  => .github/workflow/ci.yml
+<p>See CD part => https://medium.com/@ikbenezer/automate-your-laravel-app-deployment-with-github-actions-ab7b2f7417f2  </p>
+ 
+<p> ----------------------------------------------------------------------------------------- </p>
+ 
  
 ## Spatie Laravel permission GUI 
 => https://github.com/LaravelDaily/laravel-permission-editor
@@ -103,6 +130,9 @@ https://snippets.khromov.se/composer-use-your-own-fork-for-a-package/
 https://github.com/account931/laravel-permission-editor-my-modified
 
 <p>Final result for Spatie Laravel permission GUI  : fork is not finished, used just for test, has copy-paste package https://github.com/LaravelDaily/laravel-permission-editor and modified it + re-wrote from TailWind Css to Bootstrap 4 </p>
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
 
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
@@ -127,6 +157,9 @@ https://github.com/account931/laravel-permission-editor-my-modified
 > Spatie Laravel permission UI package, re-written from TailWind Css to Bootstrap 4  
 ![Screenshot](public/img/screenshots/spatie-ui-mine-edited-package.png)
 ![Screenshot](public/img/screenshots/spatie-ui-mine-edited-package-2.png)
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>

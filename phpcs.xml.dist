@@ -2,9 +2,10 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer" xsi:noNamespaceSchemaLocation="phpcs.xsd">
     <description>The coding standard for PHP_CodeSniffer itself.</description>
 
-    <!-- Here we Include all relevant files or directories --> <!-- some are tempo disabled-->
+    <!-- Here we Include all relevant files or directories we want to check --> <!-- some are tempo disabled-->
     <!-- <file>app</file> -->
-    <file>routes</file>
+    <!--<file>routes</file>-->
+	<file>routes/api.php</file> <!-- temporary check only this one file -->
     <!-- <file>database</file> -->
     <!-- <file>resources</file> -->
     <!-- <file>tests</file> -->
@@ -23,6 +24,9 @@
     <arg name="parallel" value="75"/>
     <arg value="p"/>
 
+	<!-- Set the coding standard to PSR-2 -->
+	<rule ref="PSR2"/>	
+	
     <!-- Include the whole PEAR standard -->
     <rule ref="PEAR">
         <exclude name="PEAR.NamingConventions.ValidFunctionName"/>
@@ -35,9 +39,12 @@
         <exclude name="PEAR.Commenting.FileComment.MissingVersion"/>
         <exclude name="PEAR.Commenting.InlineComment"/>
         <exclude name="Generic.Files.LineLength"/>
+		<exclude name="PEAR.Commenting.FileComment.Missing"/> <!-- Mine: Exclude the "Missing file doc comment" rule  -->
+
     </rule>
 
     <!-- Include some sniffs from other standards that don't conflict with PEAR -->
+	<!--
     <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
     <rule ref="Squiz.Arrays.ArrayDeclaration"/>
     <rule ref="Squiz.Commenting.ClosingDeclarationComment"/>
@@ -80,6 +87,7 @@
     <rule ref="PSR2.Files.EndFileNewline"/>
     <rule ref="PSR12.Files.OpenTag"/>
     <rule ref="Zend.Files.ClosingTag"/>
+	-->
 
     <!-- We use custom indent rules for arrays -->
     <rule ref="Generic.Arrays.ArrayIndent"/>

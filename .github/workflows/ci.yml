@@ -1,4 +1,4 @@
-#set up for Github workflow (on "Main" branch push: we set up php, sql, migrate and run PhpUnit tests)
+#set up for Github workflow (happens on "Main" branch push: here we set up php, sql, migrate and run PhpUnit tests)
 #PhpUnit test (biggest error were: 
                 #error "LogicException: Invalid key supplied"  => because of missing Passport set up => php artisan passport:keys --force)
                 #error 'SQLSTATE[HY000]: General error: 1 near "SET": syntax error (SQL: SET FOREIGN_KEY_CHECKS=0)' => because of using SQLLite
@@ -11,7 +11,7 @@ on:
     branches: [ main ]
 
 jobs:
-  my-laravel-tests:
+  my-laravel-phpunit-tests-and-codesniffer-check:
 
     runs-on: ubuntu-latest
     
@@ -114,3 +114,7 @@ jobs:
         php artisan passport:keys --force         
         #php artisan db:disable-foreign-key   # we do it in prev step
         php ./vendor/bin/phpunit
+        
+     # Run Php Codesniffer check, so fat we check /routes only (set in phpcs.xml.dist) -------------
+    - name: Run Php Codesniffer check
+      run: composer codesniffer-check  # this command is set in composer.json, same as "php vendor/bin/phpcs"

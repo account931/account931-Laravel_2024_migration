@@ -20,6 +20,8 @@
 - [4. Some notes]       (#4-some-notes)
 - [5. Event/Listener]   (#5-eventlistener)
 - [6. Testing (PhpUnit)](#6-testing-phpunit)
+- [7. ]()
+- [104. Several commits to one)](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
@@ -154,6 +156,9 @@ https://github.com/account931/laravel-permission-editor-my-modified
 <p> Run check (if Globally installed)   => <code> phpcs c:\Users\user\Downloads\OSPanel\domains\localhost\Laravel_2024_migration </code> </p>
 <p> Run check (if installed in project) =>  <code> php vendor/bin/phpcs </code>   OR as defined in composer.json script <code> composer codesniffer-check </code> </p>
 <p> Run fix   (if installed in project) =>  <code> php vendor/bin/phpcbf </code>
+
+If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> php vendor/bin/phpcs -s </code> and see details like <b>  Missing file doc comment (PEAR.Commenting.FileComment.Missing) </b>
+, after add it to /phpcs.xml.dist  => <exclude name="PEAR.Commenting.FileComment.Missing"/>
 <p> ----------------------------------------------------------------------------------------- </p>
 
 

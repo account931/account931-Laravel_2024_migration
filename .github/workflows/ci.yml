@@ -115,6 +115,42 @@ jobs:
         #php artisan db:disable-foreign-key   # we do it in prev step
         php ./vendor/bin/phpunit
         
-     # Run Php Codesniffer check, so fat we check /routes only (set in phpcs.xml.dist) -------------
+     # Run Php Codesniffer check, so far we check /routes only (set in phpcs.xml.dist) -------------
     - name: Run Php Codesniffer check
       run: composer codesniffer-check  # this command is set in composer.json, same as "php vendor/bin/phpcs"
+      
+      #The rest part is testing dockerfile and docker-compose.yml
+      # Set up Docker Buildx (for building multi-platform images)
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # Cache Docker layers to speed up subsequent builds
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    # Build the Docker image from the Dockerfile
+    - name: Build Docker image
+      run: |
+        docker build -t my-laravel-app .
+
+    # Test the Docker container to ensure it runs correctly
+    - name: Run Docker container
+      run: |
+        docker run -d --name laravel_test -p 9000:9000 --link mysql:db my-laravel-app
+
+    # Run tests inside the Docker container
+    - name: Run PHPUnit tests
+      run: |
+        docker exec laravel_test php artisan migrate
+        docker exec laravel_test php artisan test
+
+    # Stop and remove the Docker container after tests
+    - name: Clean up
+      run: |
+        docker stop laravel_test
+        docker rm laravel_test

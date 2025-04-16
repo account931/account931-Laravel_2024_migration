@@ -1,14 +1,29 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
+<!-- Status badges -->
+[![Laravel](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml)
+![PHP Version](https://img.shields.io/badge/PHP-7.2.10-blue)
+
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
-   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router) etc.
+   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## Install Laravel 6 LTS, php 7.2
+
+### Content
+- [1. Install Laravel 6 LTS, php 7.2](#1-install-laravel-6-lts-php-72)
+- [2. Tables]           (#2-tables) 
+- [3. New features]     (#3-new-features) 
+- [4. Some notes]       (#4-some-notes)
+- [5. Event/Listener]   (#5-eventlistener)
+- [6. Testing (PhpUnit)](#6-testing-phpunit)
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
+## 1.Install Laravel 6 LTS, php 7.2
 
 <p>1. Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
 <p>2. In browser can navigate to /public/  => the project should open </p>
@@ -44,14 +59,14 @@ return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation vi
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## Tables
+## 2. Tables
 Owners, venues, equipment
 Owner can has many Venues, each Venue has 1 Owner (One to Many Relationships: HasMany)
 Venues can have many equipments, each equipment may be present in many Venues (Many to Many Relationships: BelongsToMany). Pivot table.
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## New features
+## 3. New features
 <ul>
 <li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create), Github workflow
 policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github Actions CI/CD
@@ -60,7 +75,7 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github A
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## Some notes
+## 4. Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
@@ -69,14 +84,14 @@ composer dump-autoload
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-##Event/Listener
+## 5. Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
 
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
-## Testing (PhpUnit)
+## 6. Testing (PhpUnit)
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
@@ -134,6 +149,18 @@ https://github.com/account931/laravel-permission-editor-my-modified
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
+## PHP_CodeSniffe 
+> config goes to => phpcs.xml.dist
+<p> Run check (if Globally installed)   => <code> phpcs c:\Users\user\Downloads\OSPanel\domains\localhost\Laravel_2024_migration </code> </p>
+<p> Run check (if installed in project) =>  <code> php vendor/bin/phpcs </code>   OR as defined in composer.json script <code> composer codesniffer-check </code> </p>
+<p> Run fix   (if installed in project) =>  <code> php vendor/bin/phpcbf </code>
+<p> ----------------------------------------------------------------------------------------- </p>
+
+
+
+
+
+
 ## Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
 ![Screenshot](public/img/screenshots/ownerOne4.png)
@@ -158,8 +185,22 @@ https://github.com/account931/laravel-permission-editor-my-modified
 ![Screenshot](public/img/screenshots/spatie-ui-mine-edited-package.png)
 ![Screenshot](public/img/screenshots/spatie-ui-mine-edited-package-2.png)
 
+> Vue, Vuex store, router
+![Screenshot](public/img/screenshots/vue-1.png)
+![Screenshot](public/img/screenshots/vue-2.png)
+
+
+
 
 <p> ----------------------------------------------------------------------------------------- </p>
+
+
+
+
+
+
+
+
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -237,6 +278,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
 
 ## Several commits to one (for example 2 last)
 <code>git reset --soft HEAD~2 </code>

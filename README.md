@@ -21,6 +21,7 @@
 - [5. Event/Listener]   (#5-eventlistener)
 - [6. Testing (PhpUnit)](#6-testing-phpunit)
 - [7. ]()
+  Codesniffer, Docker, etc
 - [104. Several commits to one)](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -148,6 +149,7 @@ https://github.com/account931/laravel-permission-editor-my-modified
 
 <p>Final result for Spatie Laravel permission GUI  : fork is not finished, used just for test, has copy-paste package https://github.com/LaravelDaily/laravel-permission-editor and modified it + re-wrote from TailWind Css to Bootstrap 4 </p>
 
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
@@ -159,6 +161,21 @@ https://github.com/account931/laravel-permission-editor-my-modified
 
 If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> php vendor/bin/phpcs -s </code> and see details like <b>  Missing file doc comment (PEAR.Commenting.FileComment.Missing) </b>
 , after add it to /phpcs.xml.dist  => <exclude name="PEAR.Commenting.FileComment.Missing"/>
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
+## Docker 
+/docker/Dockerfile         => it is instruction for building container images
+/docker/docker-compose.yml => configuration for launching containers from images
+
+<code> docker-compose build </code>  => build images
+<code> docker-compose up -d </code>  => start containers 
+<code>docker-compose exec app composer install </code> => install dependencies in container
+<code>docker-compose exec app php artisan migrate </code>
+
+http://localhost:9000.
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
 

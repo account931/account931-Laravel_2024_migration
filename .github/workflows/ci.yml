@@ -11,6 +11,8 @@ on:
     branches: [ main ]
 
 jobs:
+  
+  # Job 1 (phpunit tests and codesniffer) -------------------------------------------------------------------------------------------
   my-laravel-phpunit-tests-and-codesniffer-check:
 
     runs-on: ubuntu-latest
@@ -115,6 +117,23 @@ jobs:
         #php artisan db:disable-foreign-key   # we do it in prev step
         php ./vendor/bin/phpunit
         
-     # Run Php Codesniffer check, so far we check /routes only (set in phpcs.xml.dist) -------------
+     # Run Php Codesniffer check, so far we check /routes only (set in phpcs.xml.dist) (if want can run as a separated job) -------------
     - name: Run Php Codesniffer check
       run: composer codesniffer-check  # this command is set in composer.json, same as "php vendor/bin/phpcs"
+      
+      
+   
+  #---------------------------------------------------------------------------------------------------------------------------
+  # Job 2(run Psalm static analysis as a separated job. If want can run as in Job 1)
+  psalm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+      - name: Install dependencies
+        run: composer install
+      - name: Run Psalm static 
+        run: vendor/bin/psalm --output-format=github

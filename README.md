@@ -6,7 +6,7 @@
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
-   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, etc.
+   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool,  etc.
 
 ## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
 
@@ -21,8 +21,10 @@
 - [5. Event/Listener]   (#5-eventlistener)
 - [6. Testing (PhpUnit)](#6-testing-phpunit)
 - [7. ]()
-  Codesniffer, Docker, etc
-- [104. Several commits to one)](#104-several-commits-to-one-for-example-2-last)
+  Codesniffer, 
+  Docker,
+  Psalm
+- [104. Several commits to one](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
@@ -153,7 +155,7 @@ https://github.com/account931/laravel-permission-editor-my-modified
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
-## PHP_CodeSniffe 
+## PHP_CodeSniffer
 > config goes to => phpcs.xml.dist
 <p> Run check (if Globally installed)   => <code> phpcs c:\Users\user\Downloads\OSPanel\domains\localhost\Laravel_2024_migration </code> </p>
 <p> Run check (if installed in project) =>  <code> php vendor/bin/phpcs </code>   OR as defined in composer.json script <code> composer codesniffer-check </code> </p>
@@ -169,6 +171,8 @@ If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> 
 /docker/Dockerfile         => it is instruction for building container images
 /docker/docker-compose.yml => configuration for launching containers from images
 
+5f u use Sail, you dont need Dockerfile, as Sail uses pre-build images
+
 <code> docker-compose build </code>  => build images
 <code> docker-compose up -d </code>  => start containers 
 <code>docker-compose exec app composer install </code> => install dependencies in container
@@ -176,9 +180,17 @@ If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> 
 
 http://localhost:9000.
 
+
+
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
+## Psalm static analysis tool
+Run Psalm check          => php vendor/bin/psalm --no-cache
+Generate a baseline file => php vendor/bin/psalm --set-baseline   (psalm-baseline.xml)
+Config goes to           => psalm.xml
+<p> ----------------------------------------------------------------------------------------- </p>
 
 
 

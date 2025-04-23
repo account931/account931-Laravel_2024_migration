@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.9.3@4c262932602b9bbab5020863d1eb22d49de0dbf4">
+  <file src="app/Exceptions/Handler.php">
+    <ParamNameMismatch occurrences="2">
+      <code>$exception</code>
+      <code>$exception</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="app/Http/Api/V1/Controllers/OwnerController.php">
+    <UndefinedDocblockClass occurrences="2">
+      <code>App\Http\Requests\Owner\OwnerRequest</code>
+      <code>App\Http\Requests\Owner\OwnerRequest</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="app/Http/Controllers/Owner/OwnerController.php">
+    <UndefinedClass occurrences="2">
+      <code>Exception</code>
+      <code>Exception</code>
+    </UndefinedClass>
+  </file>
+</files>

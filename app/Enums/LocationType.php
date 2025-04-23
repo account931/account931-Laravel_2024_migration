@@ -3,10 +3,13 @@
 namespace App\Enums;
 //https://www.csrhymes.com/2023/07/04/using-php-enums-in-laravel.html
 
-enum LocationType: string 
-{
+
+//enum LocationType: string 
+//{
+	/*
     case UA  = 'ua';
     case EU  = 'eu';
+	*/
 
     /*
 	public function getLabel(): string
@@ -17,4 +20,4 @@ enum LocationType: string
         };
     }
 	*/
-}
+//}

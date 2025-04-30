@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: laravel_app  #container name to address, i.e to run inside container => docker-compose exec -T laravel_app php artisan quiz:start
+    volumes:
+      - .:/var/www
+    ports:
+      - 9000:9000
+    networks:
+      - app-network
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - app-network
+    healthcheck:  # check sql is running before connecting it to app
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      retries: 3
+      start_period: 5s
+      timeout: 10s
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

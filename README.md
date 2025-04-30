@@ -6,9 +6,9 @@
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
-   Github workflow, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool,  etc.
+   Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker  etc.
 
-## User login credentials, see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory
+### User login credentials <p> see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory </p>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
@@ -30,7 +30,8 @@
 
 ## 1.Install Laravel 6 LTS, php 7.2
 
-<p>1. Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
+<p>1.  Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
+<p>1.2. Install dependencies => <code > composer install </code> </p>
 <p>2. In browser can navigate to /public/  => the project should open </p>
 <p>3. In console CLI <code> cd NAME_HERE </code> , and <code>git init   git add.   git commit</code> if necessary </p>
 <p>4. Create DB and set in <code>.env (DB_DATABASE)</code> </p>
@@ -74,7 +75,7 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 ## 3. New features
 <ul>
 <li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create), Github workflow
-policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github Actions CI/CD
+policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github Actions CI/CD, Docker
 </li>
 </ul>
 
@@ -132,8 +133,8 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
  
  
 ##Github workflow action CI/CD
-For example run tests (CI) on github on every commit push, see  => .github/workflow/ci.yml
-<p>See CD part => https://medium.com/@ikbenezer/automate-your-laravel-app-deployment-with-github-actions-ab7b2f7417f2  </p>
+For example how to run PhpUnit tests, codesniffer, Pslam on github CI on every commit push, see  => .github/workflow/ci.yml
+<p>See CD deploy part example  => https://medium.com/@ikbenezer/automate-your-laravel-app-deployment-with-github-actions-ab7b2f7417f2  </p>
  
 <p> ----------------------------------------------------------------------------------------- </p>
  
@@ -169,16 +170,26 @@ If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> 
 
 ## Docker 
 /docker/Dockerfile         => it is instruction for building container images
-/docker/docker-compose.yml => configuration for launching containers from images
+/docker-compose.yml        => configuration for launching containers from images
 
-5f u use Sail, you dont need Dockerfile, as Sail uses pre-build images
+If u use Sail, you dont need Dockerfile, as Sail uses pre-build images
 
 <code> docker-compose build </code>  => build images
 <code> docker-compose up -d </code>  => start containers 
-<code>docker-compose exec app composer install </code> => install dependencies in container
-<code>docker-compose exec app php artisan migrate </code>
 
-http://localhost:9000.
+<p>After containers are running, do ususual stuff to launch Laravel </p>
+<code>docker-compose exec my_larav_931_app composer install </code> => install dependencies in container, {my_larav_931_app} is php/apache container
+<code>docker-compose exec my_larav_931_app php artisan migrate </code>
+
+Laravel goes to    => http://localhost                 </br>
+PhpMyAdmin goes to => http://localhost:8080
+
+<p> Using Docker on localhost </p>
+<p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to .env & .env.testing that correspond to values in {docker-compose.yml}, e.g (DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password ), see example in {/env_donor_for_cicd}</p>
+<p> 
+To connect to SQL docker container, make sure .env has correct setting to connect to SQL docker container (should match to values in docker-compose.yml).
+When we test Docker in github CI we have to create .env manually, as it is in .gitignore & .env is not in github.
+</p>
 
 
 

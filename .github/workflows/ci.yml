@@ -12,7 +12,7 @@ on:
 
 jobs:
   
-  # Job 1 (phpunit tests and codesniffer) -------------------------------------------------------------------------------------------
+  # Job 1 (phpunit tests and codesniffer). It is run in CI & has nothing to do with Dockerfile & docker-compose.yml --------------------
   my-laravel-phpunit-tests-and-codesniffer-check:
 
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
         coverage: xdebug      # Optional: Enable coverage with Xdebug
     # End Set up PHP
     
-    #Copy env ------------------------------
+    #Copy env, makes a copy of '.env.example' & rename it to '.env', as '.env' is under Git ignore (not uploaded to github) ------------------------------
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       
@@ -74,6 +74,7 @@ jobs:
         npm run production
         
     #Set up environment for testing -------
+    #copies the contents of the .env.testing file into .env. This is often used when you want your Laravel application to temporarily use the testing configuration as its main environment setup.
     - name: Set up environment for testing
       run: cp .env.testing .env
       
@@ -95,7 +96,7 @@ jobs:
         DB_HOST: 127.0.0.1  # Assuming MySQL is on the same container
         DB_PORT: 3306
         DB_DATABASE: laravel_2024_migration_testing
-        DB_USERNAME: user1
+        DB_USERNAME: user1         #does not matter what u have in .env, as .env is not on github & created from .env.example in this CI
         DB_PASSWORD: userpassword  # Replace with the correct password or leave empty if not used
       run: php artisan migrate --force  # --force is required to run in CI environment
       
@@ -109,10 +110,10 @@ jobs:
         DB_USERNAME: user1
         DB_PASSWORD: userpassword   # Replace with the correct password or leave empty if not used
       run: |
-        php artisan config:cache --env=testing 
-        #php artisan migrate --env=testing --force
-        php artisan passport:client --personal --name=SomeName 
-        php artisan passport:install
+        php artisan config:cache --env=testing                 #set up for testing
+        #php artisan migrate --env=testing --force    
+        php artisan passport:client --personal --name=SomeName #generate Passport personal token
+        php artisan passport:install                           #Passport install
         php artisan passport:keys --force         
         #php artisan db:disable-foreign-key   # we do it in prev step
         php ./vendor/bin/phpunit
@@ -121,7 +122,15 @@ jobs:
     - name: Run Php Codesniffer check
       run: composer codesniffer-check  # this command is set in composer.json, same as "php vendor/bin/phpcs"
       
-      
+   
+
+
+   
+   
+   
+   
+
+   
    
   #---------------------------------------------------------------------------------------------------------------------------
   # Job 2(run Psalm static analysis as a separated job. If want can run as in Job 1)
@@ -137,3 +146,148 @@ jobs:
         run: composer install
       - name: Run Psalm static 
         run: vendor/bin/psalm --output-format=github
+        
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   # Job-3 (test docker-compose.yml & Dockerfile are working, check php/apache & sql containers) ---------------------------------------------------
+  test-docker-compose-yml-images-build-and-run-containers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Install Docker Compose
+        run: |
+          curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          docker-compose --version  # Verify installation
+          
+      - name: Build Docker image and start containers
+        run: |
+          # Build images first
+          docker-compose -f docker-compose.yml build
+          
+          #copy content of the file {'env_donor_for_CI_CD/.env-donor-to-run-check-of-docker-in-github-ci-job'} to '.env'. We need this as donored file has settings for connection to SQL Docker container, but so far we want to keep original '.env' with settings for localhost, not Docker
+          #Create .env(in CI github we dont have .env file, so we create it manuall), makes a copy of '.env.example' & rename it to '.env', as '.env' is under Git ignore (not uploaded to github) 
+          #We use 'env_donor_for_CI_CD/.env-donor-to-run-check-of-docker-in-github-ci-job' and we have set there  Environment Variables needed for SQL container connection (DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD)  (because in CI github we dont have .env file, so we create it manually in a prev step). Without it all further connection will fail (e.g migrate)
+          #php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php -r "file_exists('.env') || copy('env_donor_for_CI_CD/.env-donor-to-run-check-of-docker-in-github-ci-job', '.env');"
+
+          
+          # Start containers in detached mode
+          docker-compose  -f docker-compose.yml up -d
+          
+          # Show the running containers (can see them in github/actions)
+          docker-compose ps
+      
+      #to be sure docker containers fully ready, wait till containers are ready
+      #- name: Wait for Laravel app to be ready
+        #run: |
+          #until docker-compose exec my_larav_931_app curl -s http://localhost:8080 > /dev/null; do
+          #echo "Waiting for Laravel app to be ready..."
+          #sleep 5
+          #done
+    
+      - name: Wait for Laravel app to be ready
+        run: |
+          until curl -s http://localhost > /dev/null; do
+          echo "Waiting for Laravel app to be ready..."
+          sleep 5
+          done
+      
+          
+
+      
+      
+      
+      # docker-compose exec -T laravel_app vendor/bin/phpunit
+      # docker-compose exec -T laravel_app php artisan
+            
+
+      # test if php/apache Container is OK, see output in github/actions
+      - name: test if Php/apache Docker container {my_larav_931_app} is OK
+        run: |
+          #test php version, {my_larav_931_app} is php/apache container
+          docker-compose exec -T my_larav_931_app php -v
+          
+          #install dependencies, but u do not have to do it as it is in docker/Dockerfile????
+          docker-compose exec -T my_larav_931_app composer install --no-interaction
+          
+          #see folder structure 
+          docker-compose exec -T my_larav_931_app ls -la
+          
+          #test if console command is running, returns 'phone is 115'
+          docker-compose exec -T  my_larav_931_app php artisan quiz:start -v
+        
+
+       
+       
+        
+      # Run database migrations & seeds in the container-------------!!!!!!!!!!!!!  #DB_HOST  127.0.0.1 # Will fail without copying env_donor_for_CI_CD/.env-donor-to-run-check-of-docker-in-github-ci-job in prev step
+      - name: Run database migrations in the container
+        #env: #env settings not working for container, so we set them in '.env-docker-test-github-ci.example
+          #DB_CONNECTION: mysql
+          #DB_HOST: my_sql_db_container  # 127.0.0.1 Assuming MySQL is on the same container
+          #DB_PORT: 3306
+          #DB_DATABASE: laravel_2024_migration
+          #DB_USERNAME: user
+          #DB_PASSWORD: password   # Replace with the correct password or leave empty if not used
+        run: |
+          docker-compose exec -T my_larav_931_app php artisan migrate --force
+          docker-compose exec -T my_larav_931_app php artisan db:seed
+          
+          
+
+       # test if SQL Container is OK, see output in github/actions
+      - name: test if SQL Docker container {my_sql_db_container} is OK
+        run: | 
+          #test sql, {-ppassword} = The password follows immediately after -p, without any space (in this case, password) {my_sql_db_container} is sql docker container
+          docker-compose exec -T my_sql_db_container mysql -u user -ppassword -e "SELECT COUNT(*) FROM laravel_2024_migration.users"
+
+      
+          
+       #run phpUnit tests inside php/apache container {my_larav_931_app} using SQL container
+      - name: Run PHPUnit tests
+        run: |
+          #copy content of the file {env_donor_for_CI_CD/.env.testing-donor-to-run-check-of-docker-in-github-ci-job} to '.env.testing'. We need this as donored file has settings for connection to SQL Docker container, but so far we want to keep original '.env.testing' with settings for localhost, not Docker
+          php -r "if (!copy('env_donor_for_CI_CD/.env.testing-donor-to-run-check-of-docker-in-github-ci-job', '.env.testing')) { echo 'Failed to copy file.\n'; exit(1); }" #rewrite '.env.testing' with content of that  file as it has connection for SQL docker container
+          
+          #generate Laravel key, it addds APP_KEY to .env only, 
+          docker-compose exec -T my_larav_931_app php artisan key:generate 
+          
+          # step 1 to fix tests failure: Extract the generated {APP_KEY} from .env, because {env.testing} does not have {APP_KEY}. We need to get it and paste to {env.testing}  because PhpUnit test will fail with  {"RuntimeException: No application encryption key has been specified"}
+          APP_KEY=$(docker-compose exec -T my_larav_931_app cat /var/www/html/.env | grep -E '^APP_KEY' | cut -d '=' -f2)
+
+          # step 2: Update .env.testing with the same {APP_KEY} extracted from .env
+          docker-compose exec -T my_larav_931_app sh -c "echo 'APP_KEY=$APP_KEY' >> /var/www/html/.env.testing"
+
+          #set up for testing
+          docker-compose exec -T my_larav_931_app php artisan config:cache --env=testing                 
+          
+          #docker-compose exec -T my_sql_db_container mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS laravel_2024_migration_testing;"
+          #docker-compose exec -T my_sql_db_container mysql -u root -proot -e \"GRANT ALL PRIVILEGES ON laravel_2024_migration_testing.* TO 'user'@'%'; FLUSH PRIVILEGES;\"
+          
+          #run migration
+          docker-compose exec -T my_larav_931_app php artisan migrate --env=testing --force 
+          
+          # Run set up for Passport, otherwise some tests will fail (some tests will return 500 instead 401)
+          docker-compose exec -T my_larav_931_app php artisan passport:client --personal --name=SomeName #generate Passport personal token
+          docker-compose exec -T my_larav_931_app php artisan passport:install                           #Passport install
+          docker-compose exec -T my_larav_931_app php artisan passport:keys --force 
+
+          # finally run PhpUnit tests          
+          docker-compose exec -T my_larav_931_app php ./vendor/bin/phpunit
+        
+      - name: Tear down Docker Compose
+        run: docker-compose down

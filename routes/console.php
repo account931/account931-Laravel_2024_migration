@@ -38,7 +38,7 @@ Artisan::command(
             }
         }
 
-        dd("phone is ".$s);
+        echo "phone is ".$s;  //"phone is 115"
         // $this->info("Sending email to: !");
     }
 );

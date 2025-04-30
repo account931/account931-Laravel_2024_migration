@@ -8,7 +8,8 @@
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
    Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker  etc.
 
-### User login credentials <p> see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory </p>
+### User login credentials 
+<p> see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory </p>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
@@ -169,26 +170,27 @@ If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> 
 <p> ----------------------------------------------------------------------------------------- </p>
 
 ## Docker 
-/docker/Dockerfile         => it is instruction for building container images
-/docker-compose.yml        => configuration for launching containers from images
+<p><b> /docker/Dockerfile  </b>    => it is instruction for building container images    </p>
+<p><b> /docker-compose.yml </b>    => configuration for launching containers from images </p>
 
 If u use Sail, you dont need Dockerfile, as Sail uses pre-build images
 
 <code> docker-compose build </code>  => build images
 <code> docker-compose up -d </code>  => start containers 
 
-<p>After containers are running, do ususual stuff to launch Laravel </p>
-<code>docker-compose exec my_larav_931_app composer install </code> => install dependencies in container, {my_larav_931_app} is php/apache container
-<code>docker-compose exec my_larav_931_app php artisan migrate </code>
+<p>After containers are running, do usual stuff to launch Laravel </p>
+<p>To run inside container: </p>
+<p><code>docker-compose exec my_larav_931_app composer install </code> => install dependencies in container, {my_larav_931_app} is php/apache container </p>
+<p><code>docker-compose exec my_larav_931_app php artisan migrate </code> </p>
 
 Laravel goes to    => http://localhost                 </br>
 PhpMyAdmin goes to => http://localhost:8080
 
 <p> Using Docker on localhost </p>
-<p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to .env & .env.testing that correspond to values in {docker-compose.yml}, e.g (DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password ), see example in {/env_donor_for_cicd}</p>
+<p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to <b>.env </b> & <b>.env.testing </b> that correspond to values in <b>{docker-compose.yml}</b>, e.g <b>(DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password )</b>, see example in <b> /env_donor_for_cicd </b></p>
 <p> 
-To connect to SQL docker container, make sure .env has correct setting to connect to SQL docker container (should match to values in docker-compose.yml).
-When we test Docker in github CI we have to create .env manually, as it is in .gitignore & .env is not in github.
+To connect to SQL docker container, make sure <b> .env </b>has correct setting to connect to SQL docker container (should match to values in <b> docker-compose.yml </b>). </br>
+When we test Docker in github CI we have to create <b>.env  </b> manually, as it is in .gitignore & .env is not in github.
 </p>
 
 
@@ -198,9 +200,9 @@ When we test Docker in github CI we have to create .env manually, as it is in .g
 
 
 ## Psalm static analysis tool
-Run Psalm check          => php vendor/bin/psalm --no-cache
-Generate a baseline file => php vendor/bin/psalm --set-baseline   (psalm-baseline.xml)
-Config goes to           => psalm.xml
+Run Psalm check          => <code> php vendor/bin/psalm --no-cache </code> </br>
+Generate a baseline file => <code> php vendor/bin/psalm --set-baseline </code>  (psalm-baseline.xml) </br>
+Config goes to           => <b> psalm.xml </b>
 <p> ----------------------------------------------------------------------------------------- </p>
 
 

@@ -37,7 +37,9 @@ class HomeController extends Controller
     }
 
     /**
-     * change password POST
+     * change password via POST
+	 * @param \Illuminate\Http\Request $request The incoming HTTP request containing the old and new passwords.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a status or error message based on the outcome of the operation.
      */
     public function updatePassword(Request $request)
     {

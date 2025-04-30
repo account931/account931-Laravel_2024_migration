@@ -23,7 +23,7 @@ class OwnerController extends  Controller
 	
 	/**
      * Show start page with all owners list
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View The view that displays the owners' list.
      */
     public function index() 
     {   
@@ -52,8 +52,8 @@ class OwnerController extends  Controller
 	
 	/**
      * Show one owner. By Implicit Route Model Binding
-     * @param Owner $owner
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Owner $owner The owner model instance, automatically resolved by route-model binding.
+     * @return \Illuminate\View\View The view that displays the details of the specified owner
      */
 	public function show(Owner $owner) {  
 	    //$equipment = Owner::where('id', $id)->firstOrFail(); 		   
@@ -62,8 +62,8 @@ class OwnerController extends  Controller
 	
 	/**
      * Show one owner. By traditional id
-     * @param integer $id 
-     * @return \Illuminate\Http\Response
+     * @param int $id  The ID of the owner to be displayed.
+     * @return \Illuminate\View\View
      */
 	public function showById($id) { 
         
@@ -75,7 +75,7 @@ class OwnerController extends  Controller
 	
 	/**
      * Create new owner form
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\View\View
      */
 	public function create() {   
 	    $venues = Venue::active()->get();//gets venues for dropdown select
@@ -84,8 +84,9 @@ class OwnerController extends  Controller
 	
     /**
      * Save new owner form data
-     * @param  OwnerRequest $request       \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Owner\OwnerRequest $request The validated request containing owner details and associated venue IDs.  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the owner creation page with a success or failure message.
+	 * @throws \Exception If there is any issue during the database operations.
      */
 	public function save(OwnerRequest $request) { 
         //dd($request->all());	
@@ -114,8 +115,8 @@ class OwnerController extends  Controller
 	
 	/**
      * Edit owner form
-	 * @param Owner $owner
-     * @return \Illuminate\Contracts\Support\Renderable
+	 * @param \App\Models\Owner $owner The owner model instance, automatically resolved by route-model binding.
+     * @return \Illuminate\View\View
      */
 	public function edit(Owner $owner) {  
 	    $this->authorize('update', Owner::class); //must have, Spatie RBAC Policy permission check (403 if fails (set in Policy)
@@ -163,8 +164,8 @@ class OwnerController extends  Controller
 	
 	 /**
      * Delete one owner
-     * @param  Owner $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request The incoming HTTP request containing the owner ID to be deleted.
+     * @return \Illuminate\Http\RedirectResponse Redirects to the owners listing page with a success message.
      */
 	public function delete(Request $request) { 
 	   //dd($request);

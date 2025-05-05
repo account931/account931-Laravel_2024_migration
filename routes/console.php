@@ -25,7 +25,7 @@ Artisan::command(
     }
 )->describe('Display an inspiring quote');
 
-// My phone quiz test to console
+// My phone quiz test to run in console
 Artisan::command(
     'quiz:start',
     function () {
@@ -42,6 +42,36 @@ Artisan::command(
         // $this->info("Sending email to: !");
     }
 );
+
+// My console command to build tree with "*"
+Artisan::command(
+    'build:tree',
+    function () {
+        $width  = 37;
+        $height = 35;
+		if($height > $width){
+			echo"Height can not be bigger than width";
+			return;
+		}
+		
+		if($height > 50 || $width > 50){
+			echo"Height, width  can not be bigger than 50";
+			return;
+		}
+
+        for ($i = 1; $i < $height; $i++) {
+			$asterixCount = $height - ($height - $i) + $i;
+			$balnksCount = $width - $i;
+			
+            echo "\n ";
+			echo str_repeat(' ', $balnksCount );  
+			echo str_repeat('*', $asterixCount  );  
+			//echo str_repeat(' ', ($width - $i)/2); 
+			echo "\n ";
+        } 
+    }
+);
+
 
 // test event/listener, it creates a 1 owner & the listener will deleted the created owner at once. Listener fires in console only (defined in Listener)
 // Deletion is defined in Models\Owner => $dispatchesEvents = [event/listener

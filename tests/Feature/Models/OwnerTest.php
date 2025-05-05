@@ -54,7 +54,8 @@ class OwnerTest extends TestCase
         $this->assertIsString($result->first()->first_name);
         $this->assertIsObject($result->first()->venues());  //assertIsArray
 	    $this->assertIsString($result->first()->venues->first()->venue_name);
-		$this->assertIsString($result->first()->venues->first()->equipments->first()->trademark_name);		
+		$this->assertIsArray($result->first()->venues->first()->location);	 //Point type	
+		$this->assertIsString($result->first()->venues->first()->equipments->first()->trademark_name);	
     }
 	
 	// Example of testing a method that interacts with a database or external system

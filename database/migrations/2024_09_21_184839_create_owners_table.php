@@ -20,7 +20,7 @@ class CreateOwnersTable extends Migration
 			$table->string('email');
 			$table->string('phone');
 			$table->boolean('confirmed')->default(true);
-			$table->string('location');
+			$table->string('location');  // i.e ['UA', 'EU'], not lon/lat
 			//$table->enum('location', ['UA', 'EU']);
             $table->timestamps();
 			$table->softDeletes();

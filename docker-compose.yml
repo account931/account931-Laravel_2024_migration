@@ -35,7 +35,7 @@ services:
     networks:
       - laravel_network
       
-  #MySQL service container (for running PhpUnit tests) -----------------------------------------
+  #MySQL service container (for running PhpUnit tests) (so far, it needed for testing Docker image in Github CI/CD only(job 3 in workflows/ci.yml)) -----------------------------------------
   my_sql_db_testing_container:
     image: mysql:5.7
     container_name: mysql_db_testing

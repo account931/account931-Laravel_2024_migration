@@ -30,6 +30,10 @@ Vue.component('example-component',           require('./components/ExampleCompon
 Vue.component('owners-list-component',       require('./components/OwnersListComponents/GetOwnersListComponent.vue').default); //register component (default is a must fix)
 Vue.component('vue-router-menu-with-links',  require('./components/OwnersListComponentsWithRouter/VueRouterMenu.vue').default); //register component dispalying vue-router-menu (used in \resources\views\vue-pages-with-router\index.php)
 
+// Venues store Locator
+Vue.component('venues-locator-component',    require('./components/VenuesStoreLocatorComponent/VenuesLocatorComponent.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,6 +47,13 @@ const app = new Vue({
 	router, //must-have for Vue routing
     el: '#app',
 });
+
+/*
+const appStoreLocator = new Vue({
+    el: '#hello',
+});
+*/
+
 
 //Component => Div with Vue route menu and area to dispaly selected menu (Blog list, create new, etc)  
 /* 

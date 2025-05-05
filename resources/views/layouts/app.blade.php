@@ -131,6 +131,13 @@
 							        <a class="nav-link" href="{{ route('vue-pages-with-router') }}">{{ __('Vue pages with router') }}</a>
 						        </li> 								
 								
+								<!----------- Venues Locator (in Vue) --------------- -->
+						        <li class="nav-item {{ Request::is('venue-locator') ? 'active' : '' }}" style="white-space: nowrap;">
+							        <a class="nav-link" href="{{ route('venue-locator') }}">{{ __('Venue store locator') }}</a>
+						        </li> 	
+								
+													
+			
 							</ul>
 							
 							

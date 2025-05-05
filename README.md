@@ -4,6 +4,8 @@
 [![Laravel](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml)
 ![PHP Version](https://img.shields.io/badge/PHP-7.2.10-blue)
 
+> Php 7.2, mysql 5.6
+
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
    Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker  etc.
@@ -25,6 +27,7 @@
   Codesniffer, 
   Docker,
   Psalm
+  Vue
 - [104. Several commits to one](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -186,10 +189,9 @@ If u use Sail, you dont need Dockerfile, as Sail uses pre-build images
 Laravel goes to    => http://localhost                 </br>
 PhpMyAdmin goes to => http://localhost:8080
 
-<p> Using Docker on localhost </p>
-<p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to <b>.env </b> & <b>.env.testing </b> that correspond to values in <b>{docker-compose.yml}</b>, e.g <b>(DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password )</b>, see example in <b> /env_donor_for_cicd </b></p>
+<p><b> Using Docker on localhost: </b> </p>
+<p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to <b>.env </b> & <b>.env.testing </b> that correspond to values in <b>{docker-compose.yml}</b>, e.g <b>(DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password )</b>, or u can simply copy/paste from in <b> /env_donor_for_cicd </b></p>
 <p> 
-To connect to SQL docker container, make sure <b> .env </b>has correct setting to connect to SQL docker container (should match to values in <b> docker-compose.yml </b>). </br>
 When we test Docker in github CI we have to create <b>.env  </b> manually, as it is in .gitignore & .env is not in github.
 </p>
 
@@ -204,6 +206,19 @@ Run Psalm check          => <code> php vendor/bin/psalm --no-cache </code> </br>
 Generate a baseline file => <code> php vendor/bin/psalm --set-baseline </code>  (psalm-baseline.xml) </br>
 Config goes to           => <b> psalm.xml </b>
 <p> ----------------------------------------------------------------------------------------- </p>
+
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
+  ##Vue
+  Run {npm run watch} to watch changes
+  
+  Mapbox => npm install mapbox-gl
+<p> ----------------------------------------------------------------------------------------- </p>
+
+
+
 
 
 
@@ -236,7 +251,8 @@ Config goes to           => <b> psalm.xml </b>
 ![Screenshot](public/img/screenshots/vue-1.png)
 ![Screenshot](public/img/screenshots/vue-2.png)
 
-
+> Venues store locator
+![Screenshot](public/img/screenshots/storeLocator.png)
 
 
 <p> ----------------------------------------------------------------------------------------- </p>

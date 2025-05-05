@@ -67,5 +67,8 @@ Route::middleware(['web', 'auth'])->group(
 
         // Vue Pages with router (show response from open /api/owners, login, register pages, etc)
         Route::get('/vue-pages-with-router',  'VuePagesWithRouter\VuePagesWithRouterController@index')->name('vue-pages-with-router');
+		
+		// Venues store locator in Vue (show venues location response from open /api/owners)
+        Route::get('/venue-locator',  'VenuesStoreLocator\VenuesLocatorController@index')->name('venue-locator');
     }
 );

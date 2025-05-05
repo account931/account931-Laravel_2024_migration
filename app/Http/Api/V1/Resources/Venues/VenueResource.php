@@ -14,7 +14,8 @@ class VenueResource extends JsonResource
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
-     */
+	*/
+    
     public function toArray($request)
     {
         //return parent::toArray($request);  //working, will return all fields
@@ -22,6 +23,7 @@ class VenueResource extends JsonResource
             'id'            => $this->id,
             'venue_name'    => $this->venue_name,
 			'address'       => $this->address,
+			'location'      => $this->location,  //type "Point, uses getter getLocationAttribute in model/Venue to return array of coordinates
             'active'        => $this->active,
 			'equipments'    => EquipmentResource::collection($this->equipments), //add many to Many relation ($this->equipments)
 			'status'        => 'success',

@@ -64,6 +64,7 @@
                                 @foreach ($owner->venues as $venue)
 								    <div class="one" style="border: 1px solid black; padding: 1em; margin-bottom:1em; border-radius: 1em;">
                                     <p>Venue {{ $loop->iteration }}: {{ $venue->venue_name }}</p>
+									<p>Location: {{ implode(', ', $venue->location) }}       </p>  <!--  "using getter getLocationAttribute in model/Venue -->
 									
 									
 									{{-- Equipment Many to Many  --}}

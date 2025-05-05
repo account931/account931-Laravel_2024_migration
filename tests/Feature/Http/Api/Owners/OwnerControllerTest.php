@@ -73,7 +73,7 @@ class OwnerControllerTest extends TestCase
 		        'first_name' => 'Petro', //set in this file in  factory(\App\Models\Owner::class, 12)->create(['first_name' => 'Petro', 'confirmed' => 1 ])
 		        'last_name'  => $result->first()->last_name,
 				'first_name' => $result->first()->getOriginal('first_name'), //ignore accessor
-				'venue_name'    => $result->first()->venues[0]['venue_name'], 
+				'venue_name' => $result->first()->venues[0]['venue_name'], 
 			])
 				
 		 ->assertJsonStructure([    //same as checking with has(): ->assertJson(function ($json) {$json->has('data') ->has('data.id')
@@ -89,6 +89,7 @@ class OwnerControllerTest extends TestCase
 					       'venue_name',
 						   'address',
 						   'active',
+						   'location',  //Point type, uses getter to return array of coordinates
 						   
 						   'equipments' => [
 						       '*' => [
@@ -117,6 +118,7 @@ class OwnerControllerTest extends TestCase
 		$this->assertIsString($response['data'][0]['first_name']);
         $this->assertIsArray($response['data'][0]['venues']);
 	    $this->assertIsString($response['data'][0]['venues'][0]['venue_name']);
+		$this->assertIsArray($response['data'][0]['venues'][0]['location']);  //Point type, uses getter to return array of coordinates
 		$this->assertIsString($response['data'][0]['venues'][0]['equipments'][0]['trademark_name']);
 		
 
@@ -200,6 +202,7 @@ class OwnerControllerTest extends TestCase
 					            'venue_name',
 						        'address',
 								 'active',
+								 'location',  //Point type, uses getter to return array of coordinates
 						   
 						        'equipments' => [
 						           '*' => [
@@ -226,6 +229,7 @@ class OwnerControllerTest extends TestCase
 				$this->assertIsString($response['data']['first_name']);
                 $this->assertIsArray($response['data']['venues']);
 				$this->assertIsString($response['data']['venues'][0]['venue_name']);
+				$this->assertIsArray( $response['data']['venues'][0]['location']);  //Point type, uses getter to return array of coordinates
 				$this->assertIsString($response['data']['venues'][0]['equipments'][0]['trademark_name']);
 				
 				/*

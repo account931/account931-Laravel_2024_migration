@@ -70,5 +70,9 @@ Route::middleware(['web', 'auth'])->group(
 		
 		// Venues store locator in Vue (show venues location response from open /api/owners)
         Route::get('/venue-locator',  'VenuesStoreLocator\VenuesLocatorController@index')->name('venue-locator');
+		
+		// Send Notification
+        Route::get('/send-notification',  'SendNotification\NotificationController@index')->name('send-notification');
+		Route::post('/send-notif',        'SendNotification\NotificationController@handleNotificationAndSend') ->name('send-notif');
     }
 );

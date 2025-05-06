@@ -4,7 +4,7 @@
 [![Laravel](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml)
 ![PHP Version](https://img.shields.io/badge/PHP-7.2.10-blue)
 
-> Php 7.2, mysql 5.6
+> Php 7.2, mysql 5.6, db: 'laravel_2024_migration'
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
@@ -28,6 +28,7 @@
   Docker,
   Psalm
   Vue
+  Notifications
 - [104. Several commits to one](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -216,6 +217,16 @@ Config goes to           => <b> psalm.xml </b>
   
   Mapbox => npm install mapbox-gl
 <p> ----------------------------------------------------------------------------------------- </p>
+
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
+## Notification (via database)
+php artisan notifications:table  => create migration for table 'notifications'. Then run <code> php artisan migrate </b>
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
 
 
 

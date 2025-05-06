@@ -11,16 +11,18 @@ class SendMyNotification extends Notification
 {
     use Queueable;
     
-	private $message;
+	public $user;
+	public $message;
 	
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($user, $message)
     {
         //
+		$this->user     = $user;
 		$this->message = $message;
     }
 
@@ -36,6 +38,7 @@ class SendMyNotification extends Notification
     }
 
     /**
+	 *  Notification via e-mail
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -44,13 +47,26 @@ class SendMyNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
+		            ->subject("Subject for {$this->user->name}")
+					/*
+					->greeting('It is greeting')
+                    ->line("Hello Dear  {$this->user->name} ")
+					->line( $this->message)
                     ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+					->salutation('Best Regards, Dima'); // acts like a footer
+					*/
+					
+					
+					->markdown('emails.notification-mail', [
+                       'user' => $notifiable,
+                       'invoice' => 'INV123456',
+					   'text'    => $this->message,
+                    ]);
+					
     }
 
     /**
-	 * Database  notification
+	 * Database notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -59,7 +75,7 @@ class SendMyNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-           'data' => $this->message   //Your deposit of  was successful'
+           'data' => "Hello {$this->user->name} " . $this->message   //notification text
         ];
     }
 }

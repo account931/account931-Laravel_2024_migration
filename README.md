@@ -212,7 +212,7 @@ Config goes to           => <b> psalm.xml </b>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-  ##Vue
+  ## Vue
   Run {npm run watch} to watch changes
   
   Mapbox => npm install mapbox-gl
@@ -222,9 +222,15 @@ Config goes to           => <b> psalm.xml </b>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## Notification (via database)
+## Notification (via database )
 php artisan notifications:table  => create migration for table 'notifications'. Then run <code> php artisan migrate </b>
 
+ public function via($notifiable){return ['database', 'mail']; 
+ 
+ 
+## Notification (via email) (https://mailtrap.io/)
+Register at https://mailtrap.io/ get and add credentials to .env =>  MAIL_HOST=sandbox.smtp.mailtrap.io, MAIL_USERNAME, etc  </br>
+Could see received email at => https://mailtrap.io/
 <p> ----------------------------------------------------------------------------------------- </p>
 
 

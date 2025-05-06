@@ -99,12 +99,15 @@
 
 								
 								<!------------ Display auth user notifications (from DB) ----------------->
-								<div></br>Logged user notifications (for testing):</div>
-								@foreach(auth()->user()->notifications as $notification)
+								<div></br>Logged user's database notifications (emails check at https://mailtrap.io/):</div>
+								@foreach(/*auth()->user()->notifications*/ $currentUserNotifications as $notification)
                                     <div class="alert alert-info">
                                        {{ $notification->created_at }}   {{ $notification->data['data'] }} <!-- Display the message -->
                                     </div>
                                 @endforeach 
+								
+								<!-- Pagination links -->
+                               {{ $currentUserNotifications->links() }}
                                 <!------------ end Display auth user notifications ----------------->
 
 

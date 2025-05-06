@@ -31,8 +31,11 @@ class NotificationController extends  Controller
 	    //$this->authorize('index', Owner::class); //must have, Policy check (403 if fails)
 
 		$users = User::all();
-        return view('send-notification.index')->with(compact('users'));
+		$currentUserNotifications = auth()->user()->notifications() ->paginate(10);
+		
+        return view('send-notification.index')->with(compact('users', 'currentUserNotifications'));
     }
+	
 	
 	public function handleNotificationAndSend(Request $request) 
     {  
@@ -52,10 +55,10 @@ class NotificationController extends  Controller
 
 		 foreach($users as $user){
             // Send notification with a message
-             $user->notify(new SendMyNotification( "Dear {$user->name}, the message is :   " . $data['message'] ));
+             $user->notify(new SendMyNotification($user,  $data['message'] ));
 		 }
 		 
-		 return redirect()->back()->with('flashSuccess','Your notification was sent successfully to user ' . $users->pluck('name'));
+		 return redirect()->back()->with('flashSuccess','Your database and email notification was sent successfully to user ' . $users->pluck('name'));
 	}	
 	
 	

@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Send notification <b>  </b> </div>
+                <div class="card-header">Send notification via database & email (also it send usual Mail) <b>  </b> </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -68,7 +68,7 @@
 								<!-- end Display validation errors -->
 
 								
-								<!------------ Form ----------------->
+								<!------------ Form to create notification ----------------->
 								<form action="{{ route('send-notif') }}" method="POST" class="my-form">
                                     @csrf
                                     <div class="form-group">
@@ -94,7 +94,7 @@
 									</div>
 									
                                 </form>
-								<!------------ End Form ----------------->
+								<!------------ End Form to create notification ----------------->
 
 
 								

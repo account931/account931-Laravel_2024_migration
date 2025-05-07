@@ -31,12 +31,15 @@ class NotificationController extends  Controller
 	    //$this->authorize('index', Owner::class); //must have, Policy check (403 if fails)
 
 		$users = User::all();
-		$currentUserNotifications = auth()->user()->notifications() ->paginate(10);
+		$currentUserNotifications = auth()->user()->notifications() ->paginate(10); //get currnet user DB notifications
 		
         return view('send-notification.index')->with(compact('users', 'currentUserNotifications'));
     }
 	
-	
+	/**
+     * Handles notification form $_POST request, sends DB & emal notification + sends usual mail
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the notification creation page
+     */
 	public function handleNotificationAndSend(Request $request) 
     {  
 	//dd($request->input()['users']);

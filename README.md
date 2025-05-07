@@ -103,6 +103,8 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 
 ## 6. Testing (PhpUnit)
+OK (65 tests, 974 assertions) </br>
+
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>

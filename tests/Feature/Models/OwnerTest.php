@@ -13,7 +13,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your t
 
 class OwnerTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	//use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //change
 	
     /**
      * Test "owner", "venue", "equipment".  //split to differen

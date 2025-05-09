@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Listeners;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +11,7 @@ use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use App\Events\OwnerCreated;
 use App\Listeners\SendOwnerCreatedNotification;
@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Event;
 
 class ListenerTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
-
+	//use DatabaseTransactions; //clear your table after every test
+    use RefreshDatabase; //change
    /**
 	* Test for listener
 	* 

@@ -57,8 +57,12 @@ class NotificationController extends  Controller
 		 $users = User::find($data['users']);
 
 		 foreach($users as $user){
-            // Send notification with a message
+			 
+            // Send notification with a message (goes both to DB & email)
              $user->notify(new SendMyNotification($user,  $data['message'] ));
+			 
+			 //send usual email (just to test)
+			 //
 		 }
 		 
 		 return redirect()->back()->with('flashSuccess','Your database and email notification was sent successfully to user ' . $users->pluck('name'));

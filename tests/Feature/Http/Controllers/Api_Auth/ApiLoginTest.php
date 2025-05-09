@@ -1,7 +1,7 @@
 <?php
 
 //testing REST API Login (via token),  
-namespace Tests\Feature\Http\Api\Api_Auth;
+namespace Tests\Feature\Http\Controllers\Api_Auth;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

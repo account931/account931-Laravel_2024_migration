@@ -9,6 +9,7 @@ use Database\Seeds\Subfolder\RolesPermissionSeeder;
 use Database\Seeds\Subfolder\PassportTokenSeeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,13 @@ class DatabaseSeeder extends Seeder
 		if (App::environment() === 'production') {
             exit('I just stopped you getting fired.');
         }
+		
+		// Call migrate:fresh programmatically to clear all tables content
+        Artisan::call('migrate:fresh', [
+            '--seed' => false, // prevent infinite loop
+            '--force' => true  // required in production/scripting contexts
+        ]);
+	
 		
 		Owner::unsetEventDispatcher(); //fix not to fire Events on creating Owner (we have custom Event/Listener on Owner created in console (for test purpose)
 		                               //and dont need it to fire in Seeder

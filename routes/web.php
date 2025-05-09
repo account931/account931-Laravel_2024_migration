@@ -1,5 +1,7 @@
 <?php
 
+//use App\Http\Controllers\Owner\OwnerController;
+
 /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -32,23 +34,27 @@ Route::middleware(['web', 'auth'])->group(
         Route::get('owners', 'Owner\OwnerController@index')->name('/owners');
 
         // Owner show one (below 2 possible ways of the same result, 2 different controller methods, one view)
+		// Traditional route by id
         Route::get('/owner/{id}',    'Owner\OwnerController@showById')->name('ownerOneId');
-        // Traditional route by id
+        
+		 // Implicit Route Model Binding
         Route::get('/owner/{owner}', 'Owner\OwnerController@show')    ->name('ownerOne');
-        // Implicit Route Model Binding
-        // Create new owner
+		
+        // Create new owner html form
         Route::get('/owner-create', 'Owner\OwnerController@create')->name('owner/create-new');
-        // create new owner form
+		
+        // create new owner upon form request // saving owner form fields via POST
         Route::post('/owner/save',   'Owner\OwnerController@save')    ->name('owner/save');
-        // saving owner form fields via POST
+        
         // Edit owner (Implicit Route Model Binding)
         Route::get('/owner-edit/{owner}', 'Owner\OwnerController@edit')   ->name('ownerEdit');
-        // edit owner form
+		
+        // edit owner form // updating owner form fields via POST
         Route::put('/owner/update',       'Owner\OwnerController@update') ->name('owner/update');
-        // updating owner form fields via POST
-        // Delete owner
+        
+        // Delete owner // delete an owner
         Route::post('/owner-delete', 'Owner\OwnerController@delete')->name('owner/delete-one-owner');
-        // delete an owner
+        
         // change password
         Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');
         Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');

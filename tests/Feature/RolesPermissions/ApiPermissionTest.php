@@ -44,9 +44,9 @@ class ApiPermissionTest extends TestCase
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		$ownersQuantity = 5;
 		
@@ -81,7 +81,7 @@ class ApiPermissionTest extends TestCase
 		//dd(User::count());
 		
 	    $user = factory(\App\User::class, 1)->create(/*['id' => 1]*/);  //$user = User::factory()->create();
-	    User::find(1)->assignRole('admin');
+	    User::first()->assignRole('admin');
 		
 		 //Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
 		$parameters = [
@@ -132,11 +132,11 @@ class ApiPermissionTest extends TestCase
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
-		DB::table('owners')->truncate(); //it should not be like that, but DatabaseTransactions is not working
-		DB::table('users')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
+		//DB::table('owners')->truncate(); //it should not be like that, but DatabaseTransactions is not working
+		//DB::table('users')->truncate();
 		
 		$ownersQuantity = 5;
 		

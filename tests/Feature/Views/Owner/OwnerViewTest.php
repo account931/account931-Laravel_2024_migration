@@ -18,34 +18,53 @@ use Spatie\Permission\Models\Permission;
 
 class OwnerViewTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	//use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase;  //change
 	
 	//Route::get('owners', 'Owner\OwnerController@index')->name('/owners');    App\Http\Controllers\Owner\OwnerController
 	public function test_owner_index_can_be_rendered(): void
     {
-		$this->withoutExceptionHandling(); 
+		//$this->withoutExceptionHandling(); 
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		
 		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
-		$permissionViewOwner    = Permission::create(['name' => 'view owner']);
-	    $permissionViewOwners   = Permission::create(['name' => 'view owners']);
+		//$permissionViewOwner    = Permission::create(['name' => 'view owner']);
+	    //$permissionViewOwners   = Permission::create(['name' => 'view owners']);
 		
-		$role = Role::create(['name' => 'admin']);
-	
-	    //$role->givePermissionTo($permission);
-	    $role = Role::findByName('admin');
-	    $role->syncPermissions([
-			$permissionViewOwner,
-			$permissionViewOwners
-		]);  //multiple permission to role
+		//create web permission 'view owners'
+		$permissionViewOwner = Permission::firstOrCreate([  //mega PhpUnit test fix for error 'There is no permission named `view owners` for guard `web`.'
+            'name' => 'view owner',
+            'guard_name' => 'web'
+        ]);
+		
+		//create web permission 'view owners'
+		$permissionViewOwners = Permission::firstOrCreate([  //mega PhpUnit test fix for error 'There is no permission named `view owners` for guard `web`.'
+            'name' => 'view owners',
+            'guard_name' => 'web'
+        ]);
+		
+		
+	   //Create admin role and give him permissions and assign role to some user/users  
+		$adminRole = Role::firstOrCreate([  //mega PhpUnit test fix for error 'There is no role named `admin` for guard `web`.'
+            'name' => 'admin',
+            'guard_name' => 'web'
+        ]);
+		
+	    $adminRole->syncPermissions([
+		    $permissionViewOwner,
+			$permissionViewOwners  // can add multiple permission to role
+		]);
+		
+		
+		
 
 		$user = factory(\App\User::class, 1)->create();  
-	    User::find(1)->assignRole('admin'); //user has no admin role and threfore permission
+	    User::first()->assignRole('admin'); //user has no admin role and threfore permission
 		
         $this->actingAs(User::first(), 'web'); 
 		

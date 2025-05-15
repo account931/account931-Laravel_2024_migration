@@ -138,7 +138,7 @@
 								
 								<!----------- Send-notification --------------- -->
 						        <li class="nav-item {{ Request::is('send-notification') ? 'active' : '' }}" style="white-space: nowrap;">
-							        <a class="nav-link" href="{{ route('send-notification') }}">{{ __('Send notification') }}</a>
+							        <a class="nav-link" href="{{ route('send-notification') }}">{{ __('Send notification & Mailtrap Mail') }}</a>
 						        </li					
 			                    
 							</ul>

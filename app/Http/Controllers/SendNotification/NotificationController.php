@@ -11,7 +11,9 @@ use App\Http\Controllers\Controller; //to place controller in subfolder
 use App\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
-use App\Notifications\SendMyNotification;
+use App\Notifications\SendMyNotification; //my notification class (both db and email)
+use App\Mail\WelcomeEmail;  //usual email
+use Illuminate\Support\Facades\Mail;
 
 class NotificationController extends  Controller
 {
@@ -58,14 +60,20 @@ class NotificationController extends  Controller
 
 		 foreach($users as $user){
 			 
-            // Send notification with a message (goes both to DB & email)
-             $user->notify(new SendMyNotification($user,  $data['message'] ));
+            // Send notification with a message (goes both via DB & Email notifications, as it is specified in function via($notifiable) in App\Notifications\SendMyNotification)
+            $user->notify(new SendMyNotification($user,  $data['message'] ));
 			 
-			 //send usual email (just to test)
-			 //
+			//Mail Facade, Variant 1, send usual email via Mail facade (just to test)
+			//Mail::to($user->email)->send(new WelcomeEmail($user, $data['message']));
+			
+			//Mail Facade, Variant 2, If you want to queue the email instead of sending it immediately:
+			Mail::to($user->email)->queue(new WelcomeEmail($user, $data['message']));  
 		 }
 		 
-		 return redirect()->back()->with('flashSuccess','Your database and email notification was sent successfully to user ' . $users->pluck('name'));
+		 
+		 return redirect()->back()->with('flashSuccess', 'Your DB + email notifications & Mail Facade letter was sent successfully to user' 
+                                                                  . (count($users) > 1  ? 's': ' ') 	 //add 's'	for plural														  
+																  . ' ' .$users->pluck('name'));              //list names
 	}	
 	
 	

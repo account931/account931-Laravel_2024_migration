@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\OwnerCreated;
 use App\Listeners\SendOwnerCreatedNotification;
+use App\Listeners\UserLoggedInListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -20,10 +21,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-		//my
-		  OwnerCreated::class => [
-            SendOwnerCreatedNotification::class,
-        ],
+		
+		//my event/listener
+		  OwnerCreated::class => [ SendOwnerCreatedNotification::class ],
+		
+		// register listening to built-in event 'Login'
+		\Illuminate\Auth\Events\Login::class => [ UserLoggedInListener::class ],
     ];
 
     /**

@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Send notification via database & email (also it send usual Mail) <b>  </b> </div>
+                <div class="card-header">Send notification via database & email ( + also it sends usual Facade Mail in queque) <b>  </b> </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -75,18 +75,20 @@
                                         <label class="form-label" for="tags">Select Userss:</label>
 								    </div>
 									
+									<!--------- Select usesrs ---------->
 									<div class="form-group">
 									
                                         <select class="selectpicker" data-live-search="true" name="users[]" id="users" multiple style="width:20em;">
 									        @foreach($users as $user)
-                                            <option  value="{{ $user->id }}">   {{ $user->name }}  </option>
+                                            <option  value="{{ $user->id }}"  {{ in_array($user->id , old('users', [])) ? 'selected' : '' }} >   {{ $user->name }}  </option>  <!-- in_array... keeps prev filled values if validation fails -->
 									        @endforeach
                                         </select>
 									</div>
 									
+									<!--------- Message ---------->
 									<div class="form-group">
 									   <label for="message" class="form-label">Your Message:</label>
-                                       <textarea name="message" id="message" rows="4" class="form-control" placeholder="Enter your message here..."></textarea>
+                                       <textarea name="message" id="message" rows="4" class="form-control" placeholder="Enter your message here...">{{ old('message') }}</textarea> <!-- old() keeps prev filled value if validation fails -->
 									</div>
 
 									<div class="form-group">

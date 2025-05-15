@@ -3,11 +3,8 @@
 
 Message: <span style="color:red">{{ $text }} </span>
 
-NB: Sent via notification!!!
 
-Your invoice **{{ $invoice }}** has been paid successfully.
-
-@component('mail::button', ['url' => url('/invoices/'.$invoice)])
+@component('mail::button', ['url' => url('/')])
 View Invoice
 @endcomponent
 

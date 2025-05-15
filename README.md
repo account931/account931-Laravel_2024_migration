@@ -24,13 +24,13 @@
 - [5. Event/Listener]   (#5-eventlistener)
 - [6. Testing (PhpUnit)](#6-testing-phpunit)
 - [7. ]()
-  Codesniffer, 
-  Docker,
-  Psalm
-  Vue
-  Notifications (db& email)
-  Queque job
-  Known errors
+  Codesniffer, </br>
+  Docker,      </br>
+  Psalm        </br>
+  Vue          </br>
+  Notifications (db& email) </br>
+  Queque job    </br>
+  Known errors  </br>
 - [104. Several commits to one](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -55,7 +55,7 @@ add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength
 </p>
 
 <p>5.2. If any custom migration added later => <code>php artisan migrate </code></br>
-     If have seeder                      => <code>php artisan db:seed </code> 
+     If have seeder  => <code>php artisan db:seed </code>     (we need seeders data in dev not testing, NB: now seeder also contains <code>php artisan migrate:fresh </code>, if not needed disable in seeder)        
 </p>
 	 
 <p>6. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
@@ -105,7 +105,7 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 
 ## 6. Testing (PhpUnit)
-OK (65 tests, 974 assertions) </br>
+OK (65 tests, 974 assertions) -> Tests: 75, Assertions: 1025  </br>
 
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> php artisan migrate:fresh --env=testing </code>

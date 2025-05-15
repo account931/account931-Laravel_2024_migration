@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
 use App\Notifications\SendMyNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class NotificationControllerTest extends TestCase
 {
@@ -78,10 +80,17 @@ class NotificationControllerTest extends TestCase
         $response->assertSessionHasErrors(['message', 'users']);
     }
 
-    /** @test */
+	
+	
+	/** @test */
     public function it_sends_notifications_to_selected_users()
     {
-        Notification::fake();
+        // Mock the notification sending
+        Notification::fake(); // Fakes notifications to prevent actual sending
+        
+        // Mock Mail sending
+        Mail::fake(); // Fakes mail sending to prevent actual sending
+
 
         $sender = factory(\App\User::class)->create();
         $this->actingAs($sender);
@@ -107,9 +116,28 @@ class NotificationControllerTest extends TestCase
             );
         }
 
-        $response->assertRedirect();
+		
+		//Assert: Validate that mail was queued
+		$user1 = $recipients->first();
+		$user2 = $recipients->skip(1)->first();
+		
+        Mail::assertQueued(\App\Mail\WelcomeEmail::class, function ($mail) use ($user1) {
+            return $mail->hasTo($user1->email);
+        });
+
+        Mail::assertQueued(\App\Mail\WelcomeEmail::class, function ($mail) use ($user2) {
+            return $mail->hasTo($user2->email);
+        });
+        
+		
+		$response->assertRedirect(); // Check if it redirects
         $response->assertSessionHas('flashSuccess');
+		 // Assert: Check the redirect response (flash message)
+        $response->assertSessionHas('flashSuccess', 'Your DB + email notifications & Mail Facade letter was sent successfully to users ' . $recipients->pluck('name'));
+		
     }
+	
+	
 
     /** @test */
     public function it_rejects_invalid_user_ids()

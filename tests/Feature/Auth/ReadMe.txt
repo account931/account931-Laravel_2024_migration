@@ -1,0 +1,1 @@
+Session Auth tests(login, register go to tests/Feature/Http/Controllers/Auth)

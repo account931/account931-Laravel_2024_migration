@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Artisan;
 
 class PassportTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	//use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //change
 
    /**
 	* Test for GET protected endpoint 'api/owners/quantity' (Passport)

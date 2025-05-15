@@ -1,7 +1,7 @@
 <?php
 
 //testing standart Login (via session),  see more Auth tests at => https://github.com/dczajkowski/auth-tests
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

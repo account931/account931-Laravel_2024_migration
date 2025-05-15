@@ -10,7 +10,7 @@ use App\Models\Venue;
 use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+//use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
 use Illuminate\Foundation\Testing\RefreshDatabase;       //trait to clear your table after every test
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
@@ -20,7 +20,6 @@ use Spatie\Permission\Models\Permission;
 class OwnerControllerTest extends TestCase
 {
 	use RefreshDatabase; //clear your table after every test
-	
 	
 	protected function setUp(): void   // optional, initialize any necessary dependencies or objects
     {
@@ -57,7 +56,6 @@ class OwnerControllerTest extends TestCase
 			});
 				
 		});
-		
 		
 		$response = $this->get('/api/owners');
         $response->assertStatus(200);
@@ -176,7 +174,6 @@ class OwnerControllerTest extends TestCase
 		//dd($result);
 		//$this->assertTrue(true);
 		$owner = Owner::first();
-	    //dd($owner);
 		
 		$response = $this->get('api/owner/' . $owner->id);
         $response->assertStatus(200)
@@ -481,26 +478,27 @@ class OwnerControllerTest extends TestCase
         ];
         Artisan::call('passport:client', $parameters);
 		//End Generate Passport personal token
-						
-		if(!$permissionDeleteOwner = Permission::findByName('delete owners', null)) { // Find the permission by name
-		    //create Api permission 'delete owners'
-		    //NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
-		    $permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
-		    //end create Api permission 'view owner admin quantity'
-		}
+		
+
+	   //create web permission 'delete owners'
+		$permissionDeleteOwner = Permission::firstOrCreate([  //mega PhpUnit test fix for error 'There is no permission named `delete owners` for guard `web`.'
+            'name' => 'delete owners',
+            'guard_name' => 'web'  //Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+        ]);
+
 		//fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
 		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
-	
+	    //end create web permission 'delete owners'
 		
 		
 		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
-		if(!Role::findByName('admin', null)) {
-		    $role = Role::create(['name' => 'admin']);
-	    }
+		$adminRole = Role::firstOrCreate([  //mega PhpUnit test fix for error 'There is no role named `admin` for guard `web`.'
+            'name' => 'admin',
+            'guard_name' => 'web'
+        ]);
 		
-	    //$role->givePermissionTo($permission);
-	    $role = Role::findByName('admin');
-	    $role->syncPermissions([
+		
+	    $adminRole->syncPermissions([
 			$permissionDeleteOwner
 		]);  //multiple permission to role
 
@@ -564,22 +562,22 @@ class OwnerControllerTest extends TestCase
 						
 		
 		//create Api permission 'delete owners'
-		if(!$permissionDeleteOwner = Permission::findByName('delete owners', null)) { // Find the permission by name
-		    //NB: API permission!!!!! Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
-		    $permissionDeleteOwner  = Permission::create(['name' => 'delete owners', 'guard_name' => 'web']); //permission to test API route /api/owner/quantity/admin
-		    //fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
-		    $updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
-		}
+		$permissionDeleteOwner = Permission::firstOrCreate([  //mega PhpUnit test fix for error 'There is no permission named `delete owners` for guard `web`.'
+            'name' => 'delete owners',
+            'guard_name' => 'web'  //Must have 'guard_name' => 'api', but gives an error. Fix: can run like this, then change in DB manually
+        ]);
+		
+        //fix (because it should be 'guard_name' => 'api'), but seedeing this causes the error
+		$updated = DB::table('permissions')->where('name', 'delete owners')->update([ 'guard_name' => 'api']);
 		//end create Api permission 'view owner admin quantity'
 		
-		//Create admin role and give him permissions and assign role to some user/users  --------------------------------------
-		if(!Role::findByName('admin', null)) {
-		    $role = Role::create(['name' => 'admin']);
-		}
-	
-	    //$role->givePermissionTo($permission);
-	    $role = Role::findByName('admin');
-	    $role->syncPermissions([
+	    //Create admin role and give him permissions and assign role to some user/users  --------------------------------------
+		$adminRole = Role::firstOrCreate([  //mega PhpUnit test fix for error 'There is no role named `admin` for guard `web`.'
+            'name' => 'admin',
+            'guard_name' => 'web'
+        ]);
+
+	    $adminRole->syncPermissions([
 			$permissionDeleteOwner
 		]);  //multiple permission to role
 

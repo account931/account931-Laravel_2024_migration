@@ -1,7 +1,7 @@
 <?php
 
 //testing REST API Register (via token),  
-namespace Tests\Feature\Http\Api\Api_Auth;
+namespace Tests\Feature\Http\Controllers\Api_Auth;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,7 +13,6 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-
 
 class ApiRegisterTest extends TestCase
 {

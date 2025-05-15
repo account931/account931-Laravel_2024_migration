@@ -1,7 +1,7 @@
 <?php
 
 //see more Auth tests at => https://github.com/dczajkowski/auth-tests
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Auth\Notifications\ResetPassword;

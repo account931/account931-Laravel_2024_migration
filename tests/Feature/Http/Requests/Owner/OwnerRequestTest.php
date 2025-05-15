@@ -10,13 +10,14 @@ use App\Models\Venue;
 use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+//use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
 
 class OwnerRequestTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase;
 	
 	public function testValidationFailsWithMissingLocation()
     {

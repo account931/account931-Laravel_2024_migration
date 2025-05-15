@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {		
-		DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('users')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('users')->truncate(); //way to set auto increment back to 1 before seeding a table
 		
 		factory(\App\User::class, 1)->create([
 		    'name'      => 'Dima',

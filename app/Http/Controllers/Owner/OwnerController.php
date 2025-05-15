@@ -167,9 +167,10 @@ class OwnerController extends  Controller
      * @param \Illuminate\Http\Request $request The incoming HTTP request containing the owner ID to be deleted.
      * @return \Illuminate\Http\RedirectResponse Redirects to the owners listing page with a success message.
      */
-	public function delete(Request $request) { 
-	   //dd($request);
-	   $owner = Owner::find($request->owner_id);
+	public function delete(Request $request) {
+		
+	   $owner = Owner::findOrFail($request->owner_id);
+	   //dd($owner->id);
 	   //dd($owner->venues->first()->venue_name);
 	   
 	   // remove relation connection in table 'Venues', otherwise when forceDeleting $owner it also deletes $venue from table 'venues' connected to $owner
@@ -179,7 +180,7 @@ class OwnerController extends  Controller
        $owner->save();
 	   
 	   //$owner->forceDelete();
-	   $owner->delete();
+	   $owner->forceDelete();
 	   
 	   return redirect('/owners')->with('flashSuccess', "Record " . $request->owner_id  . " was deleted successfully");
 	}

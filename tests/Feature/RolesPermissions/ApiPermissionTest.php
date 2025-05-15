@@ -19,7 +19,6 @@ class ApiPermissionTest extends TestCase
 {
 	use RefreshDatabase; //clear your table after every test
 	
-	
 	protected function setUp(): void   // optional, initialize any necessary dependencies or objects
     {
         // first include all the normal setUp operations
@@ -44,9 +43,9 @@ class ApiPermissionTest extends TestCase
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		$ownersQuantity = 5;
 		
@@ -81,7 +80,7 @@ class ApiPermissionTest extends TestCase
 		//dd(User::count());
 		
 	    $user = factory(\App\User::class, 1)->create(/*['id' => 1]*/);  //$user = User::factory()->create();
-	    User::find(1)->assignRole('admin');
+	    User::first()->assignRole('admin');
 		
 		 //Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
 		$parameters = [
@@ -97,7 +96,8 @@ class ApiPermissionTest extends TestCase
 		
 		$response = $this->get('/api/owners/quantity/admin', 
 		    [ 'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]]  //may drop this line, as all u need is using => $this->actingAs(User::first(), 'api'); 
-			); 
+		); 
+		
         $response
 		    ->assertStatus(200)       // should get 'UnAuthenticated' without Passport token
 		    ->assertJsonStructure([   //same as checking with has(): ->assertJson(function ($json) {$json->has('data') ->has('data.id')       
@@ -122,21 +122,21 @@ class ApiPermissionTest extends TestCase
     public function test_user_without_permission_can_view_api_route_should_not_see_api_route()   
     {
 		//!!!!!!!!!!!!!!!!!!!!!!
-		echo 'Be careful: 1 test is not working => Tests\Feature\RolesPermissions => test_user_without_permission_can_view_api_route_should_not_see_api_route';
-		return $this->assertTrue(true);  //here we fake success test result as it does not work as designed
+		//echo 'Be careful: 1 test is not working => Tests\Feature\RolesPermissions => test_user_without_permission_can_view_api_route_should_not_see_api_route';
+		//return $this->assertTrue(true);  //here we fake success test result as it does not work as designed
         //!!!!!!!!!!!!!!!!!!!!!!
 		
-		$this->withoutExceptionHandling(); 
+		//$this->withoutExceptionHandling(); 
 		
 		// now de-register all the roles and permissions by clearing the permission cache
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
-		DB::table('owners')->truncate(); //it should not be like that, but DatabaseTransactions is not working
-		DB::table('users')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
+		//DB::table('owners')->truncate(); //it should not be like that, but DatabaseTransactions is not working
+		//DB::table('users')->truncate();
 		
 		$ownersQuantity = 5;
 		
@@ -171,8 +171,9 @@ class ApiPermissionTest extends TestCase
 
 		//dd(User::count());
 		
-	    $user = factory(\App\User::class, 2)->create();  //$user = User::factory()->create();
-	    //User::find(1)->assignRole('admin'); //user has no admin role and threfore permission
+	    $users = factory(\App\User::class, 2)->create();  //$user = User::factory()->create();
+		//dd($users->pluck('id'));
+	    User::skip(1)->first()->assignRole('admin'); //user 1 has admin role and threfore permission, but we will test user 2
 		//dd(User::count());
 		
 		 //Generate Passport personal token, tests will fail without it as {->createToken} will fail. This personal token is required to generate user tokens. Normally, out of tests you create it one time in console manually => php artisan passport:client --personal 
@@ -183,22 +184,26 @@ class ApiPermissionTest extends TestCase
         Artisan::call('passport:client', $parameters);
 		//End Generate Passport personal token
 				
-        $bearerToken = User::first()->createToken('UserToken', ['*'])->accessToken;
+        $bearerToken = User::skip(1)->first()->createToken('UserToken', ['*'])->accessToken;
 		
 		//dd(User::first()->permissions()->pluck('name'));
 		//dd($response = $this->get('/api/owners/quantity/admin'));
 		
 		$this->actingAs(User::first(), 'api');  //otherwise get error: AuthenticationException: Unauthenticated. Sending token in request does not help
 
-		$response = $this->get('/api/owners/quantity/admin'//, 
+		$response = $this->get('/api/owners/quantity/admin' //, 
 		    //[ 'headers' => [ 'Authorization' => 'Bearer ' . $bearerToken ]]  //may drop this line, as all u need is using => $this->actingAs(User::first(), 'api'); 
-			); 
+		); 
+		
+		
         $response
-		    ->assertStatus(200)       // should get 'UnAuthenticated' without Passport token
+		    ->assertStatus(403)       // it is correct, it should get "403 Forbidden", as first Spatie checks for persmission, after Passport check s and should return '401 Unauthenticated' without Passport token
+			/*
 		    ->assertJsonStructure([   //same as checking with has(): ->assertJson(function ($json) {$json->has('data') ->has('data.id')       
 		        'owners quantity',
 				'status'
 			])
+			*/
 			->assertJsonMissing([
 		        'owners quantity' => 5,
 				'status'          => 'OK, Admin. You have Spatie permission'

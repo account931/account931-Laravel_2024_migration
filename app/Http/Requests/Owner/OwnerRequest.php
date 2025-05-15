@@ -33,6 +33,9 @@ class OwnerRequest extends FormRequest
 		$RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
 		
 		$existingVenues = Venue::active()->pluck('id'); 
+		
+		// Check if we're updating (using PUT or PATCH)
+        $isUpdate = $this->isMethod('put') || $this->isMethod('patch');
 	
         return [
 		    'first_name'    => 'required|string|min:3|max:255',
@@ -41,7 +44,9 @@ class OwnerRequest extends FormRequest
 			'email'         => 'required|email|unique:owners,id,',  //email is unique on create only, not on update
 			'phone'         => ['required', "regex: $RegExp_Phone" ],	
 			'owner_venue'   => ['required', 'array',  ],               //Rule::in($existingVenues)
-			"owner_venue.*" => Rule::in($existingVenues)
+			"owner_venue.*" => Rule::in($existingVenues),
+			//'owner_id' is required on update only // Required only on update
+			//'owner_id' => [ $isUpdate ? 'required' : 'nullable',  ],
 		];
 		
     }
@@ -78,11 +83,12 @@ class OwnerRequest extends FormRequest
 			//if is json (case when it is  API)........
 		    //dd($validator->errors()); //tempo, works,  get validation errors
 			if($this->wantsJson()){
-				//dd($validator->errors());
+				//dd($validator->errors()); // to see details, instead of of 'The given data was invalid'. Uncomment only tempotary to see validation errors !!!!!!
 				//return response([ 'message' => 'Updated successfully'], 200);
 			} 
 			
 			//redirect fot normal http requests
+			//dd($validator->errors());  // to see details, instead of of 'The given data was invalid'. Uncomment only tempotary to see validation errors !!!!!!
 			//return response(['error' => $validator->errors(), 'Validation Error']);
             return redirect('/owner/create-new')->withInput()->with('flashMessageFailX', 'Validation Failed!!!' )->withErrors($validator);
         }

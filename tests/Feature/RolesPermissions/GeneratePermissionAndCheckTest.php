@@ -12,7 +12,8 @@ use App\User;
 
 class GeneratePermissionAndCheck extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	//use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //change
 	
 	protected function setUp(): void
     {
@@ -34,9 +35,9 @@ class GeneratePermissionAndCheck extends TestCase
 		//$this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 		
 		//have to use this so far, {->forgetCachedPermissions() in setUp()} does not work (???) & tests crash as permissions already exist from other tests (test fail on creating permission with error 'Permission already exists')
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 			
 		 // Create a permission
         $permission = Permission::create(['name' => 'edit-posts']);

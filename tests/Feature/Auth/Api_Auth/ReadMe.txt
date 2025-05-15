@@ -1,1 +1,1 @@
-Api Auth tests(login, register go to tests/Feature/Http/Api/Api_Auth)
+Api Auth tests(login, register go to tests/Feature/Http/Controllers/Api_Auth)

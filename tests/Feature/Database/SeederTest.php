@@ -19,16 +19,14 @@ class RoleSeeder extends TestCase
      /** @test */
     public function testSeedsRolesPermissions()
     {
-		DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('users')->truncate();
-		DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+		
+		//DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('users')->truncate();
+		//DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		$users = factory(\App\User::class, 2)->create();  //$user = User::factory()->create();
-        //$user = $user->first();
-			
-
-        //dd($users->skip(1)->first());
+        //$user = $user->first();    //dd($users->skip(1)->first());
 		
         // Run the RoleSeeder
 		$parameters = [
@@ -52,7 +50,7 @@ class RoleSeeder extends TestCase
         ]);
 		
 
-        // Assert that the 'admin' role has the 'edit-posts' permission
+        // Assert that the 'admin' role has the 'view owner' permission
         $adminRole = Role::where('name', 'admin')->first();
         $this->assertTrue($adminRole->hasPermissionTo('view owner'));
     }

@@ -19,9 +19,9 @@ class RolesPermissionSeeder extends Seeder
      */
     public function run()
     {		
-		DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
-        DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
-		DB::table('permissions')->truncate();
+		//DB::statement('SET FOREIGN_KEY_CHECKS=0');       //way to set auto increment back to 1 before seeding a table (instead of ->delete())
+        //DB::table('roles')->truncate(); //way to set auto increment back to 1 before seeding a table
+		//DB::table('permissions')->truncate();
 		
 		/*
 		if (count(Role::findByName('admin')->get()) <= 0 ) {
@@ -67,10 +67,11 @@ class RolesPermissionSeeder extends Seeder
 			$permissionViewOwnerQauantityAdmin
 		]);  //multiple permission to role
 
-	    User::find(1)->assignRole('admin');
+	    
 		//End Create admin role and give him permissions  -----------------------------------------------------------------
 		
-		
+		//Assign 'Admin' role to User 1, see who is User 1 in UserSeeder
+		User::first()->assignRole('admin');
 		
 		
 		//Create user role and give him permissions and assign role to some user/users ------------------------------------
@@ -78,7 +79,8 @@ class RolesPermissionSeeder extends Seeder
 		$role = Role::findByName('user');
 	    $role->syncPermissions([$permissionViewOwner]);  //multiple permission to role
 		
-	    User::find(2)->assignRole('user');
+		//Assign 'User' role to User 2
+	    User::skip(1)->first()->assignRole('user');
 		
     
     }

@@ -18,8 +18,9 @@ use Spatie\Permission\Models\Permission;
 
 class HomeViewTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
-
+	//use DatabaseTransactions; //clear your table after every test
+    use RefreshDatabase; //change
+	
     public function test_home_can_be_rendered(): void
     {
 		//Not supported in L 6

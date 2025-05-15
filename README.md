@@ -28,7 +28,9 @@
   Docker,
   Psalm
   Vue
-  Notifications
+  Notifications (db& email)
+  Queque job
+  Known errors
 - [104. Several commits to one](#104-several-commits-to-one-for-example-2-last)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -41,7 +43,7 @@
 <p>3. In console CLI <code> cd NAME_HERE </code> , and <code>git init   git add.   git commit</code> if necessary </p>
 <p>4. Create DB and set in <code>.env (DB_DATABASE)</code> </p>
 
-<p>5. <code>php artisan migrate </code>  or take next step if need Auth. </br>If  on migration error "1071 Specified key was too long;", 
+<p>5. <code> php artisan migrate:fresh </code>  or take next step if need Auth. </br>If  on migration error "1071 Specified key was too long;", 
 add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength(191); </code> </p>
 <p>5.1. Add Auth to project (cd to folder /NANE_HERE) => 
 <ul> 
@@ -103,12 +105,16 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 
 ## 6. Testing (PhpUnit)
+OK (65 tests, 974 assertions) </br>
+
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> php artisan migrate:fresh --env=testing </code>
 3. If tests are failing, clear cache in testing environment <code> php artisan config:cache --env=testing </code>
 4. Run all tests    <code> php ./vendor/bin/phpunit </code>  OR  <code> php vendor/phpunit/phpunit/phpunit </code>  OR shortcut defined in composer.json <code>composer run-my-tests </code>
                         
-  <p>Run one test => <code>  php ./vendor/bin/phpunit tests/Feature/Http/Api/Owners/OwnerControllerTest.php </code> </p>
+  <p>Run one test Class => <code>  php ./vendor/bin/phpunit tests/Feature/Http/Api/Owners/OwnerControllerTest.php </code> </p>
+  
+  <p>Run one method from test Class =>   --filter {methodName} {pathToClass} => <code> php ./vendor/bin/phpunit --filter testCreatesNewOwnerWithVenues tests/Feature/Http/Controllers/Owner/OwnerControllerTest.php </code> </p>
 
 4.1 If u run migration and it goes to wrong DB (prod or test) => php artisan config:cache
 5. To see test errors =>  $this->withoutExceptionHandling(); //to see errors
@@ -129,10 +135,10 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 ## Spatie Laravel permission 5.3 
 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
  <code> php artisan permission:cache-reset </code>
- <p> a.)define policy by model, e.g => App\Policies\OwnerPolicy </p>
- <p>b.) register policy in AuthServiceProvider </p>
- <p>c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) </p>
- <p>d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" </p>
+  a.)define policy by model, e.g => App\Policies\OwnerPolicy 
+  b.) register policy in AuthServiceProvider 
+  c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) 
+  d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" 
 
  <p> ----------------------------------------------------------------------------------------- </p>
  
@@ -230,11 +236,34 @@ php artisan notifications:table  => create migration for table 'notifications'. 
  
 ## Notification (via email) (https://mailtrap.io/)
 Register at https://mailtrap.io/ get and add credentials to .env =>  MAIL_HOST=sandbox.smtp.mailtrap.io, MAIL_USERNAME, etc  </br>
-Could see received email at => https://mailtrap.io/
+Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
 
+<p> ----------------------------------------------------------------------------------------- </p>
+
+##  Queque job
+ Set up: 
+   </br> create db table 'jobs' => <code> php artisan queue:table </code>, run migration, add to  .env =>  QUEUE_CONNECTION=database </br>
+   </br> in .env => QUEUE_CONNECTION=database
+ 
+ <p>Run job => ProcessPodcast::dispatch($podcast);  </p>
+ php artisan queue:work  </br>
+<p> ----------------------------------------------------------------------------------------- </p>
+
+
+
+
+
+
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+## Known errors
+ Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>
+ Error on PhpUnit tests, when new test returns several Users from DB, while there should be zero =>  using in tests & in /database/seeds this => DB::table('users') ->truncate();
+ <p> ----------------------------------------------------------------------------------------- </p>
 
 
 

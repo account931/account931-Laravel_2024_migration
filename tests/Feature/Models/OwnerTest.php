@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\Models;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use App\Models\Owner;
 use App\Models\Venue;
 use App\Models\Equipment;
-use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
-
+use Illuminate\Foundation\Testing\RefreshDatabase;         //trait to clear your table after every test
+//use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
 
 class OwnerTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; 
 	
     /**
      * Test "owner", "venue", "equipment".  //split to differen

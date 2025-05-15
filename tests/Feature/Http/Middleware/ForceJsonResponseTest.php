@@ -10,14 +10,14 @@ use App\Models\Venue;
 use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+//use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
 
 class ForceJsonResponseTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
-	
+	use RefreshDatabase;
 	/**
      * Test a route that already returns JSON to ensure the middleware doesn't interfere.
      *

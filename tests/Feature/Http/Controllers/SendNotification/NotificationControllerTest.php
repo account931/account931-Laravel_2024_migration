@@ -22,15 +22,15 @@ use App\User;
 use App\Models\Equipment;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\DatabaseTransactions;  //trait to clear your table after every test
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 //use Illuminate\Testing\Fluent\AssertableJson; //in Laravel < 6 only
 use App\Notifications\SendMyNotification;
 use Illuminate\Support\Facades\Notification;
 
-
 class NotificationControllerTest extends TestCase
 {
-	use DatabaseTransactions; //clear your table after every test
+	use RefreshDatabase; //clear your table after every test //CHANGE!!!!!
 	
 	 /** @test */
     public function index_displays_users_and_notifications()

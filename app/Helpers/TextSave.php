@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use App\User;
 
 class TextSave 
 {
@@ -22,7 +23,7 @@ class TextSave
 	 /**
      * Save user login information to a text file.
      *
-     * @param \App\Models\User $user
+     * @param \App\User $user
      * @return void
      */
 	public static function saveUserLoginToTextFile($user){

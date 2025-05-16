@@ -105,7 +105,7 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 
 ## 6. Testing (PhpUnit)
-OK (65 tests, 974 assertions) -> Tests: 75, Assertions: 1025  </br>
+OK (65 tests, 974 assertions) -> Tests: 76, Assertions: 1028  </br>
 
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
 2. Before testing, first time ever, do migrate tables to test database (dont seed as we run them in test itself), if have issues  <code> php artisan migrate:fresh --env=testing </code>
@@ -128,6 +128,8 @@ OK (65 tests, 974 assertions) -> Tests: 75, Assertions: 1025  </br>
 #to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
 <p> for tests, you run this command programmatically in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
 <p>Api unathenticated message is set in App\Exceptions\Handler</p>
+<p> Passport is enabled in routes/api with => <b> Route::middleware('auth:api')->group(.. </b> <br>, to access Passport protected route you send a header with Passport token in request ('Authorization' => 'Bearer '.$bearerToken,). Can see example in routes/console => find => 'test_api_route_protected_by_Passport'
+Passport just checks if user is logged or not for API </p>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
@@ -139,7 +141,7 @@ OK (65 tests, 974 assertions) -> Tests: 75, Assertions: 1025  </br>
   b.) register policy in AuthServiceProvider 
   c.)use in  Controller => $this->authorize('view', Owner::class); //must have, Policy check (403 if fails) 
   d.) Spatie can be used both for http(sessions) and Api(token) requests (Api permission must be created with {'guard_name' => 'api'})  (No need for  additional set-up, like in "Laravel_Vue_Blog_V6_Passport" 
-
+  <p> Spatie checks if user has certain permission, if used together with Passport, Spatie works first, Passport second </p>
  <p> ----------------------------------------------------------------------------------------- </p>
  
  

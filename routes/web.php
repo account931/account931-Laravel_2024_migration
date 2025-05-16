@@ -46,14 +46,14 @@ Route::middleware(['web', 'auth'])->group(
         // create new owner upon form request // saving owner form fields via POST
         Route::post('/owner/save',   'Owner\OwnerController@save')    ->name('owner/save');
         
-        // Edit owner (Implicit Route Model Binding)
+        // Edit owner form (Implicit Route Model Binding)
         Route::get('/owner-edit/{owner}', 'Owner\OwnerController@edit')   ->name('ownerEdit');
 		
-        // edit owner form // updating owner form fields via POST
-        Route::put('/owner/update',       'Owner\OwnerController@update') ->name('owner/update');
+        // update owner, handles edit owner form data // updating owner form fields via POST
+        Route::put('/owner/update/{id}',       'Owner\OwnerController@update') ->name('owner/update');
         
         // Delete owner // delete an owner
-        Route::post('/owner-delete', 'Owner\OwnerController@delete')->name('owner/delete-one-owner');
+        Route::post('/owner-delete/{id}', 'Owner\OwnerController@delete')->name('owner/delete-one-owner');
         
         // change password
         Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');

@@ -42,7 +42,7 @@
 					<!-------------------------------  FORM ----------------------------------->	
                     <div class="row">
 					    
-                        <form method="post" action="{{url('owner/update')}}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('owner/update', $owner->id) }}" enctype="multipart/form-data">
 							{{-- Form::open(array('url' => 'owner/update')) --}}
 
 							<!-- Note: Since HTML forms only support POST and GET, PUT and DELETE methods will be spoofed by automatically adding a _method hidden field to your form. -->
@@ -50,7 +50,7 @@
 					
 							<input type="hidden" value="{{csrf_token()}}" name="_token" />
 							<!-- post id, hidden input -->
-						    <input type="hidden" value="{{ $owner->id }}"  name="owner_id" /> 
+						    <!--<input type="hidden" value="{{ $owner->id }}"  name="owner_id" /> -->
 							
                             <!-- First name -->							
                             <div class="form-group {{ $errors->has('first_name') ? ' has-error' : '' }}">

@@ -126,17 +126,18 @@ class OwnerController extends  Controller
 	}
 	
 	/**
-     * Update edited  owner form
+     * Handles Updating owner form (gets the form data)
 	 * @param  OwnerRequest $request 
+	 * @param  int $id 
      * @return \Illuminate\Http\Response
      */
-	public function update(OwnerRequest $request) {  
+	public function update(OwnerRequest $request, $id) {  
         //dd($request->all());	
 		//dd($request->owner_venue);
 		
 		//dd($request->owner_id);
-		$id = $request->owner_id;
-		$owner =  Owner::find($id); //->firstOrFail(); 
+		//$id = $request->owner_id;
+		$owner =  Owner::findOrFail($id); //->firstOrFail(); 
 		//dd($owner);
 		$data = $request->input();
 		
@@ -164,12 +165,12 @@ class OwnerController extends  Controller
 	
 	 /**
      * Delete one owner
-     * @param \Illuminate\Http\Request $request The incoming HTTP request containing the owner ID to be deleted.
+     * @param int $id The incoming HTTP request containing the owner ID to be deleted.
      * @return \Illuminate\Http\RedirectResponse Redirects to the owners listing page with a success message.
      */
-	public function delete(Request $request) {
+	public function delete(int $id) {
 		
-	   $owner = Owner::findOrFail($request->owner_id);
+	   $owner = Owner::findOrFail($id);
 	   //dd($owner->id);
 	   //dd($owner->venues->first()->venue_name);
 	   
@@ -182,7 +183,7 @@ class OwnerController extends  Controller
 	   //$owner->forceDelete();
 	   $owner->forceDelete();
 	   
-	   return redirect('/owners')->with('flashSuccess', "Record " . $request->owner_id  . " was deleted successfully");
+	   return redirect('/owners')->with('flashSuccess', "Record " . $id  . " was deleted successfully");
 	}
 	
 	

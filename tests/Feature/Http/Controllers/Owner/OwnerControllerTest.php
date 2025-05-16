@@ -323,8 +323,8 @@ class OwnerControllerTest extends TestCase
 		
 		//Test itself
         //send incomplete data, validation should fail
-        $response = $this->put(route('owner/update'), [
-		    'owner_id'   => $result->first()->id,
+        $response = $this->put(route('owner/update', $result->first()->id), [
+		   // 'owner_id'   => $result->first()->id,
             'first_name' => '',
             'last_name'  => '',
 			'email'      => 'realemail@gmail.com'
@@ -366,8 +366,8 @@ class OwnerControllerTest extends TestCase
 		
 		//testing itself
         //send validated request
-        $response = $this->put('owner/update', [
-		    'owner_id'    => $result->first()->id,
+        $response = $this->put(route('owner/update', $result->first()->id), [    // same as => put('owner/update/' . $result->first()->id, [
+		    //'owner_id'    => $result->first()->id,
             'first_name'  => 'Dima',
             'last_name'   => 'Dima',
 			'email'       => 'realemail2@gmail.com',
@@ -465,7 +465,7 @@ class OwnerControllerTest extends TestCase
 
         // Make a POST request to the route
         $response = $this->post(route('owner/delete-one-owner', [
-		    'owner_id' => $owner->id
+		    'id' => $owner->id
 		]));
 
 		//dd($response);

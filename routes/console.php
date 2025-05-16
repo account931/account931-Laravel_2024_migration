@@ -93,7 +93,7 @@ Artisan::command(
 );
 
 
-// Start Spatie Laravel permission -----
+// Test Spatie Laravel permission -----
 // Spatie Laravel permission => check user role/permission, call => php artisan spatie-permission:checkUser
 Artisan::command(
     'spatie-permission:checkUser',
@@ -146,6 +146,9 @@ Artisan::command(
     }
 );
 // End  Spatie Laravel permission -----
+
+
+
 // test Api Controller registration => App\Http\Controllers\API\AuthController; call => php artisan testApi -------------------------------------
 // was waorking, if fails, make sure to have Passport Personal access client in local DB. Generate by  { php artisan passport:client --personal }
 Artisan::command(
@@ -203,7 +206,7 @@ Artisan::command(
         'test_api_route_protected_by_Passport',
         function () {
             $client      = new Client();
-            $user        = User::find(1);
+            $user        = User::find(1);   //dd($user->getAllPermissions()->pluck('name'));
             $bearerToken = $user->createToken('UserToken', ['*'])->accessToken;
 
             // $response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work

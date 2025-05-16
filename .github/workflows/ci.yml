@@ -13,7 +13,7 @@ on:
 jobs:
   
   # Job 1 (phpunit tests and codesniffer). It is run in CI & has nothing to do with Dockerfile & docker-compose.yml --------------------
-  my-laravel-phpunit-tests-and-codesniffer-check:
+  job_1_my-phpunit-tests:      #job ID
 
     runs-on: ubuntu-latest
     
@@ -134,7 +134,7 @@ jobs:
    
   #---------------------------------------------------------------------------------------------------------------------------
   # Job 2(run Psalm static analysis as a separated job. If want can run as in Job 1)
-  psalm-static-check:
+  job_2_psalm-static-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -157,7 +157,7 @@ jobs:
  
  
    # Job-3 (test docker-compose.yml & Dockerfile are working, check php/apache & sql containers) ---------------------------------------------------
-  test-docker-compose-yml-images-build-and-run-containers:
+  job_3_test-docker-compose-yml-images-build-and-run-containers:
     runs-on: ubuntu-latest
 
     steps:
@@ -305,8 +305,9 @@ jobs:
     
     
   # Job-4 Codesniffer ---------------------------------------------------
-  codesniffer-check:
+  job_4_codesniffer-check:  # job ID
     runs-on: ubuntu-latest
+    needs: [job_2_psalm-static-check]  #will run only after Psalm check
     
     steps:
       - uses: actions/checkout@v3

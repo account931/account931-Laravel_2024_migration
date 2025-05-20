@@ -39,7 +39,7 @@
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 1.Install Laravel 6 LTS, php 7.2
+## 1. Install Laravel 6 LTS, php 7.2
 
 <p>1.  Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
 <p>1.2. Install dependencies => <code > composer install </code> </p>
@@ -83,7 +83,7 @@ return type, i.e function x():string {}( PHP 7.4.0), seeding hasMany relation vi
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 2.Tables
+## 2. Tables
 Owners, venues, equipment
 Owner can has many Venues, each Venue has 1 Owner (One to Many Relationships: HasMany)
 Venues can have many equipments, each equipment may be present in many Venues (Many to Many Relationships: BelongsToMany). Pivot table.
@@ -97,7 +97,7 @@ Venues can have many equipments, each equipment may be present in many Venues (M
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 3.New features
+## 3. New features
 <ul>
 <li>migration, seeder, factory, Implicit Route Model Binding, local scopes, accessor, Api Resources/Collections, phpUnit test, event/listener (on owner create), Github workflow
 policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github Actions CI/CD, Docker
@@ -112,7 +112,7 @@ policies, Spatie RBAC, middleware, Bootstrap Icons 5, console/Commands, Github A
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 4.Some notes
+## 4. Some notes
 {{ $owner->first_name  }}  escaped html </br>
 {!! $owner->first_name  !!}  unescaped thml
 {{-- This comment will not be present in the rendered HTML --}}   comment
@@ -126,7 +126,7 @@ composer dump-autoload
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 5.Event/Listener
+## 5. Event/Listener
 Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is bound to Listener in Providers\EventServiceProvider, app\Events\OwnerCreated & app\Listeners\SendOwnerCreatedNotification themselves.
 
 
@@ -136,7 +136,7 @@ Event/Listener => Models\Owner ($dispatchesEvents = [event/listener]), Event is 
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 6.Testing (PhpUnit)
+## 6. Testing (PhpUnit)
 OK (65 tests, 974 assertions) -> Tests: 76, Assertions: 1028  </br>
 
 1. create .env.testing and set 'DN_NAME_testing' there. Create a testing db itself, juxtapose to original DB in phpMyAdmin.i.e "laravel_2024_migration_testing"
@@ -152,10 +152,13 @@ OK (65 tests, 974 assertions) -> Tests: 76, Assertions: 1028  </br>
 5. To see test errors =>  $this->withoutExceptionHandling(); //to see errors
 6. Best Test example => Tests\Feature\Http\Api\Owners\OwnerControllerTest;
 
+
+
+
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
-
-## 7.Passport
+## 7. Passport
 <p> https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport </p>
 #to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
 <p> for tests, you run this command programmatically in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
@@ -166,7 +169,10 @@ Passport just checks if user is logged or not for API </p>
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
-## 8.Spatie Laravel permission 5.3 
+
+
+
+## 8. Spatie Laravel permission 5.3 
 => https://spatie.be/docs/laravel-permission/v6/installation-laravel
  <code> php artisan permission:cache-reset </code>
   a.)define policy by model, e.g => App\Policies\OwnerPolicy 
@@ -185,7 +191,7 @@ Passport just checks if user is logged or not for API </p>
  
  
  
-## 9.Github workflow action CI/CD
+## 9. Github workflow action CI/CD
 For example how to run PhpUnit tests, codesniffer, Pslam on github CI on every commit push, see  => .github/workflow/ci.yml
 <p>See CD deploy part example  => https://medium.com/@ikbenezer/automate-your-laravel-app-deployment-with-github-actions-ab7b2f7417f2  </p>
  
@@ -200,7 +206,7 @@ For example how to run PhpUnit tests, codesniffer, Pslam on github CI on every c
  
  
  
-## 10.Spatie Laravel permission GUI 
+## 10. Spatie Laravel permission GUI 
 => https://github.com/LaravelDaily/laravel-permission-editor
 
 ## Modifying package by fork 
@@ -220,7 +226,7 @@ https://github.com/account931/laravel-permission-editor-my-modified
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 11.PHP_CodeSniffer
+## 11. PHP_CodeSniffer
 > config goes to => phpcs.xml.dist
 <p> Run check (if Globally installed)   => <code> phpcs c:\Users\user\Downloads\OSPanel\domains\localhost\Laravel_2024_migration </code> </p>
 <p> Run check (if installed in project) =>  <code> php vendor/bin/phpcs </code>   OR as defined in composer.json script <code> composer codesniffer-check </code> </p>
@@ -235,7 +241,7 @@ If "php vendor/bin/phpcs" finds an error and u want to disable it => run <code> 
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 12.Docker 
+## 12. Docker 
 <p><b> /docker/Dockerfile  </b>    => it is instruction for building container images    </p>
 <p><b> /docker-compose.yml </b>    => configuration for launching containers from images </p>
 
@@ -263,7 +269,7 @@ When we test Docker in github CI we have to create <b>.env  </b> manually, as it
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 13.Psalm static analysis tool
+## 13. Psalm static analysis tool
 Run Psalm check          => <code> php vendor/bin/psalm --no-cache </code> </br>
 Generate a baseline file => <code> php vendor/bin/psalm --set-baseline </code>  (psalm-baseline.xml) </br>
 Config goes to           => <b> psalm.xml </b>
@@ -277,7 +283,7 @@ Config goes to           => <b> psalm.xml </b>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-  ## 14.Vue
+## 14. Vue
   Run {npm run watch} to watch changes
   
   Mapbox => npm install mapbox-gl
@@ -294,7 +300,7 @@ Config goes to           => <b> psalm.xml </b>
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 15.Notification (via database and email)
+## 15. Notification (via database and email)
 php artisan notifications:table  => create migration for table 'notifications'. Then run <code> php artisan migrate </b>
 
  public function via($notifiable){return ['database', 'mail']; 
@@ -315,7 +321,7 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-##  16.Queue Job
+## 16. Queue Job
  Set up: 
    </br> create db table 'jobs' => <code> php artisan queue:table </code>, run migration, add to  .env =>  QUEUE_CONNECTION=database </br>
    </br> in .env => QUEUE_CONNECTION=database
@@ -332,7 +338,7 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 
 <p> ----------------------------------------------------------------------------------------- </p>
-## 17.Known errors
+## 17. Known errors
  Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>
  Error on PhpUnit tests, when new test returns several Users from DB, while there should be zero =>  using in tests & in /database/seeds this => DB::table('users') ->truncate();
  
@@ -341,7 +347,7 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
  
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 18.Screenshots
+## 18. Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
 ![Screenshot](public/img/screenshots/ownerOne4.png)
 ![Screenshot](public/img/screenshots/List1.png)
@@ -463,7 +469,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
-## 104.Several commits to one 
+## 104. Several commits to one 
 (for example 2 last)
 <code>git reset --soft HEAD~2 </code>
 <code>git commit -m "new commit message" <code>

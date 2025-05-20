@@ -156,7 +156,7 @@ jobs:
  
  
  
-   # Job-3 (test docker-compose.yml & Dockerfile are working, check php/apache & sql containers) ---------------------------------------------------
+  # Job-3 (test docker-compose.yml & Dockerfile are working, check php/apache & sql containers) ---------------------------------------------------
   job_3_test-docker-compose-yml-images-build-and-run-containers:
     runs-on: ubuntu-latest
 
@@ -319,3 +319,58 @@ jobs:
         run: composer install
       - name: Run Codesniffer 
         run: composer codesniffer-check
+
+      
+
+
+
+
+
+
+
+
+
+
+      
+        
+  # Job-5 Deploy ---------------------------------------------------
+  # Authenticate to the the server via ssh 
+  # and run our deployment script
+  
+  #job_5_deploy_to_cloud:
+    #runs-on: ubuntu-latest
+    #needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after Psalm check
+    
+    #steps:
+      #- uses: actions/checkout@v2
+      #- name: Deploy to server
+        #uses: appleboy/ssh-action@master
+        #with:
+          #host: ${{ secrets.HOST }}
+          #username: ${{ secrets.USERNAME }}
+          #port: ${{ secrets.PORT }}
+          #key: ${{ secrets.SSHKEY }}
+          ##script: "cd /var/www/html && ./.scripts/deploy.sh"
+          #run: | 
+            
+            #set -e                         #When you use set -e, the script stops running as soon as any command fails.     #!/bin/bash
+
+            #echo "Deployment started ..."
+            
+            #(php artisan down) || true    # Enter maintenance mode or return true, if already is in maintenance mode
+
+            #git pull origin production    # Pull the latest version of the app
+
+            #composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader   # Install composer dependencies
+
+            #php artisan clear-compiled     # Clear the old cache
+
+            #php artisan optimize           # Recreate cache
+
+            #npm run prod                   # Compile npm assets
+
+            #php artisan migrate --force    # Run database migrations
+
+            #php artisan up                 # Exit maintenance mode
+
+            #echo "Deployment finished!"

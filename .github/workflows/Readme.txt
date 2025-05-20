@@ -7,3 +7,4 @@ So far, has 4 jobs:
 NB: Since we run it in github CI, there is no .env, we have to create it manually. When we start Laravel on Docker in normal way on localhost, there is always a .env.
 Info: we do this wierd test, as can not test Dokerfile and docker-compose.yml in normal way on localhost, since Docker in not supported on Win 7 we use.
 4. Codesniffer check
+5. Deploy (N/A)

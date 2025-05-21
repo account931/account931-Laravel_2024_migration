@@ -33,8 +33,11 @@
 - [14. Vue](#14-vue)
 - [15. Notification (via database and email)](#15-notification-via-database-and-email)
 - [16. Queue Job](#16-queue-job) 
-- [17. Known errors](#17-known-errors)
-- [18. Screenshots](#18-screenshots)
+- [17. Deploy CD](#17-deploy-cd)
+- [18. SSH](#17-shh)
+
+- [102. Known errors](#102-known-errors)
+- [103. Screenshots](#103-screenshots)
 - [104. Several commits to one](#104-several-commits-to-one)
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -332,13 +335,29 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 
 
+<p> ----------------------------------------------------------------------------------------- </p>
+
+## 17. Deploy cd
+
+php/apache  => render.com  (accou**1@ur*.n*t) </br>
+SQL service => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
+               https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
+               
+
+
+
+<p> ----------------------------------------------------------------------------------------- </p>
+
+## 18. SSH
+Putty
+ SSH host: ssh-di*****.alwaysdata.net  login:di*** 
 
 
 
 
 
 <p> ----------------------------------------------------------------------------------------- </p>
-## 17. Known errors
+## 102. Known errors
  Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>
  Error on PhpUnit tests, when new test returns several Users from DB, while there should be zero =>  using in tests & in /database/seeds this => DB::table('users') ->truncate();
  
@@ -347,7 +366,7 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
  
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 18. Screenshots
+## 103. Screenshots
 ![Screenshot](public/img/screenshots/owner2.png)
 ![Screenshot](public/img/screenshots/ownerOne4.png)
 ![Screenshot](public/img/screenshots/List1.png)

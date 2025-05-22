@@ -340,7 +340,7 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 ## 17. Deploy cd
 
 php/apache  => render.com  (accou**1@ur*.n*t) </br>
-SQL service => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
+SQL service => https://www.alwaysdata.com    => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
                https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
                
 

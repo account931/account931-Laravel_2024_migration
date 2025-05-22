@@ -358,10 +358,11 @@ Putty
 
 <p> ----------------------------------------------------------------------------------------- </p>
 ## 102. Known errors
- Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>
- Error on PhpUnit tests, when new test returns several Users from DB, while there should be zero =>  using in tests & in /database/seeds this => DB::table('users') ->truncate();
+ 1. Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>
+ 2. Error on PhpUnit tests, when new test returns several Users from DB, while there should be zero =>  using in tests & in /database/seeds this => DB::table('users') ->truncate(); </br>
  
- 
+ 3. Error on Render.com (css/js not loading) 'Mixed Content: The page at 'Your_page' was loaded over HTTPS, but requested an insecure stylesheet 'Your_page/public/css/app.css'. This request has been blocked; the content must be served over HTTPS.' </br>
+      =>    fix  see at =>  App\Http\Middleware\TrustProxies   </br>
  
  
 <p> ----------------------------------------------------------------------------------------- </p>

@@ -5,10 +5,11 @@ services:
     env: docker
     dockerfilePath: docker/Dockerfile
     plan: starter
-    deploy:
-      commands:
-        - php artisan migrate --force
-    envVars:
+    startCommand: sh -c "php artisan migrate --force && php-fpm"
+    #deploy:
+      #commands:
+        #- php artisan migrate --force
+    envVars:  # Vars here do not matter as they are set in render dashboar 
       - key: APP_ENV
         value: production
       - key: APP_KEY

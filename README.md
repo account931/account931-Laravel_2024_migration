@@ -4,7 +4,11 @@
 [![Laravel](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/account931/account931-Laravel_2024_migration/actions/workflows/ci.yml)
 ![PHP Version](https://img.shields.io/badge/PHP-7.2.10-blue)
 
-> Php 7.2, mysql 5.6, db: 'laravel_2024_migration'
+> Php 7.2, mysql 5.6, db: 'laravel_2024_migration',
+Visual Studio Code ()
+     -> VS package extension -> 
+           -> PHP Namespace Resolver (to import class -> RMC -> import class)(https://marketplace.visualstudio.com/items?itemName=MehediDracula.php-namespace-resolver)
+           -> Git History, GitLense, Php Intellisense, Prittier, Highlight Matching Tag
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
@@ -339,11 +343,14 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 ## 17. Deploy cd
 
-php/apache  => render.com  (accou**1@ur*.n*t) </br>
-SQL service => https://www.alwaysdata.com    => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
-               https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
+php/apache service is running at render.com, it is connected to SQL service located at https://www.alwaysdata.com 
+
+Php/apache     => render.com  (accou**1@ur*.n*t)  uses render.yaml </br>
+SQL DB service => https://www.alwaysdata.com    => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
+                 NOT USED =>  https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
                
 
+Grafana =>  https://acc****1.grafana.net/    =>   acc****1  (without mail) (ma***1 + coreletter)
 
 
 <p> ----------------------------------------------------------------------------------------- </p>
@@ -398,6 +405,8 @@ Putty
 > Venues store locator
 ![Screenshot](public/img/screenshots/storeLocator.png)
 
+> Grafana Live from alwaysdata.com
+![Screenshot](public/img/screenshots/grafana.png)
 
 <p> ----------------------------------------------------------------------------------------- </p>
 

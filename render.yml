@@ -5,10 +5,17 @@ services:
     env: docker
     dockerfilePath: docker/Dockerfile
     plan: starter
-    startCommand: sh -c "php artisan migrate --force && php-fpm"
+    #startCommand: sh -c "php artisan migrate --force && apache2-foreground"
     #deploy:
       #commands:
         #- php artisan migrate --force
+        
+ jobs:
+  - name: laravel-migrate
+    env: docker
+    dockerfilePath: docker/Dockerfile
+    startCommand: php artisan migrate --force
+    
     envVars:  # Vars here do not matter as they are set in render dashboar 
       - key: APP_ENV
         value: production

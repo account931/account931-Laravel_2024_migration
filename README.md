@@ -343,14 +343,19 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 ## 17. Deploy cd
 
-php/apache service is running at render.com, it is connected to SQL service located at https://www.alwaysdata.com 
+Php/apache service is running at render.com, it is connected to SQL service located at https://www.alwaysdata.com 
 
-Php/apache     => render.com  (accou**1@ur*.n*t)  uses render.yaml </br>
+Php/apache     => render.com  (accou**1@ur*.n*t)  uses render.yaml  https://account931-laravel-2024-migration.onrender.com  </br>
 SQL DB service => https://www.alwaysdata.com    => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
                  NOT USED =>  https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
                
 
-Grafana =>  https://acc****1.grafana.net/    =>   acc****1  (without mail) (ma***1 + coreletter)
+			   
+Grafana =>  https://acc****1.grafana.net/    =>   acc****1  (without mail) (ma***1 + coreletter) </br>
+Dashboards -> Live from AlwaysData_SQL (show data from DB at www.alwaysdata.com)  </br>
+
+Infinity data source (gets Api from https://account931-laravel-2024-migration.onrender.com/public/api/owners) (may be down as service sleeps when inactive)
+
 
 
 <p> ----------------------------------------------------------------------------------------- </p>

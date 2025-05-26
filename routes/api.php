@@ -46,10 +46,11 @@ Route::middleware('auth:api')->group(
 
         Route::delete('/owner/delete/{owner}', [OwnerController::class, 'destroy']);
 
+		// simply Protected by Passport (without Spatie RBAC), any user who logged via API Login Controller & obtained token, can access it
         Route::get('/owners/quantity',       [OwnerController::class, 'quantity'])      ->name('api/owners/quantity');
-        // simply Protected by Passport (without Spatie RBAC), any user who logged via API Login Controller & obtained token, can access it
-        Route::get('/owners/quantity/admin', [OwnerController::class, 'quantityAdmin'])->name('api/owners/quantity/admin');
+        
         // protected by Passport + Spatie RBAC (user must have permission 'view owner admin quantity')
+		Route::get('/owners/quantity/admin', [OwnerController::class, 'quantityAdmin'])->name('api/owners/quantity/admin');
           // ->middleware('permission:view_owner_admin_quantity');
     }
 );

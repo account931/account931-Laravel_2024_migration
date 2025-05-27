@@ -324,7 +324,7 @@ jobs:
 
 
   # Job-5 deploy one file to alwaysdata.com ---------------------------------------------------
-  job_5_deploy:
+  job_5_deploy_0ne_test_file:
     runs-on: ubuntu-latest
 
     steps:
@@ -336,12 +336,12 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
-          REMOTE_PATH: /www      #/path/on/remote/server/
+          REMOTE_PATH: www      #/path/on/remote/server/
         run: |
           # Create SSH directory and add private key
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          mkdir -p ~/.ssh                               #Creates a local .ssh folder on the GitHub runner.
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa       #Saves the private key from secrets into a file
+          chmod 600 ~/.ssh/id_rsa                       #Secures the key with proper file permissions (600).
 
           # Add remote host to known_hosts to avoid prompt
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts

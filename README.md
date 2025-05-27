@@ -367,6 +367,58 @@ Putty
 
 
 
+ <p>To set up ssh for github actions, we need to generate public and private ssh keys using Puttygen or similar: </p>
+ ---
+
+#Private key => id_rsa  =>(will go  to github secrets->SSH_PRIVATE_KEY & in git action we use secrete, like  secrets.SSH_PRIVATE_KEY )
+
+If Puttygen generated it as .ppk format, we need to convert it from private_key.pkk to  OpenSSH Format 
+
+In github secret we  paste everything, including:
+    <code>
+     -----BEGIN RSA PRIVATE KEY-----
+        .......
+     -----END RSA PRIVATE KEY-----
+	 </code>
+
+
+
+//--------------------------------------
+
+#Public key  => id_rsa.pub  (will go to remove srever)
+
+
+1. Make sure the .ssh directory and authorized_keys file exist on the remote server. They will be hidden, so check with ls -a. 
+You can create .ssh directory and authorized_keys file with:
+
+in SSH => 
+<code>
+mkdir -p ~/.ssh
+touch ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+</code>
+
+2. If public key on your local starts with 
+   <code>
+   ---- BEGIN SSH2 PUBLIC KEY ----
+   Comment: "rsa-key-20250527"
+   ...
+   </code>
+
+
+it should be converted to OpenSSH Format  before moving to remote server. Converted should start with "ssh-rsa AAAAB...."
+When have converted add the key to remote server with:
+
+<code>
+echo "ssh-rsa AAAAB3N........." >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+</code>
+
+ 
+ 
+ 
+ 
 
 <p> ----------------------------------------------------------------------------------------- </p>
 ## 102. Known errors

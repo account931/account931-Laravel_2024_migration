@@ -442,8 +442,10 @@ When have converted add the key to remote server with:
     o.first_name AS owner_name,
     COUNT(DISTINCT v.id) AS venue_count,
     COUNT(DISTINCT e.id) AS equip_count,
-    GROUP_CONCAT(DISTINCT v.venue_name ORDER BY v.venue_name SEPARATOR ', ') AS venue_names,
-    GROUP_CONCAT(DISTINCT e.trademark_name ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names
+    GROUP_CONCAT(DISTINCT v.venue_name ORDER BY v.venue_name SEPARATOR ', ') AS venue_names,                                        # all owner venues in one column
+    #GROUP_CONCAT(DISTINCT e.trademark_name ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names,                           #to list all owner 'trademark_name' in one column
+	GROUP_CONCAT(DISTINCT CONCAT(e.trademark_name, ' ', e.model_name) ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names  #to list owner 'trademark_name + model name' in one column
+
 FROM owners o
 LEFT JOIN venues v ON v.owner_id = o.id
 LEFT JOIN equipment_venue ev ON ev.venue_id = v.id

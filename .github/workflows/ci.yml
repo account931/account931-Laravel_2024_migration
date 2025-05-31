@@ -325,7 +325,7 @@ jobs:
       
 
 
-  # Job-5 deploy one file to alwaysdata.com ---------------------------------------------------
+  # Job-5 deploy one file 'last-deploy-info.php' to alwaysdata.com ---------------------------------------------------
   job_5_deploy_one_test_file:
     runs-on: ubuntu-latest
     needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
@@ -372,7 +372,58 @@ jobs:
           
 
 
+  # Job-6 deploy "Laravel_2024_migration" to alwaysdata.com ---------------------------------------------------
+  job_6_deploy_laravel_2024_migration_to_alwaysdata:
+    runs-on: ubuntu-latest
+    needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
+        
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.2.10
+        extensions: mbstring, bcmath, intl, mysql
+        tools: composer
+
+    - name: Install Composer Dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Add SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.SSH_HOST  }} >> ~/.ssh/known_hosts
+
+    
+    - name: Deploy via Rsync
+      run: |
+        rsync -avz --delete \
+          --exclude=".git*" \
+          --exclude="node_modules" \
+          --exclude="tests" \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:www/Laravel_2024_migration
+
+
+    - name: Set Permissions & Run Laravel Commands
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd www/Laravel_2024_migration
+        #cp .env.production .env
+        php artisan config:clear
+        php artisan config:cache
+        php artisan route:cache
+        php artisan view:cache
+        php artisan migrate --force
+        chmod -R 775 storage bootstrap/cache
+        EOF
+         
+          
+          
 
 
 

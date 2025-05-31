@@ -321,12 +321,16 @@ jobs:
         run: composer codesniffer-check
 
       
+      
+      
 
 
   # Job-5 deploy one file to alwaysdata.com ---------------------------------------------------
-  job_5_deploy_0ne_test_file:
+  job_5_deploy_one_test_file:
     runs-on: ubuntu-latest
+    needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
 
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -345,9 +349,25 @@ jobs:
 
           # Add remote host to known_hosts to avoid prompt
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          
+          
+          #create file last-deploy-info.php which contains current timestamp  dd-mm-yy hh::mm::ss
+          echo "<?php echo 'Deployed at  $(date +"%d-%m-%y %H::%M::%S")'; ?>" >> last-deploy-info.php     #creates a file 'last-deploy-info.php' with current time  , >> appends content to file , not overwrite, but since it is a new created in github ci, it always creates a new file
 
-          # Use scp to copy the file to the remote server
-          scp README.md $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
+          # Variant.1 Use scp to copy the file last-deploy-info.php to the remote server (works).  If exists already, it overwrite it 
+          scp last-deploy-info.php $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH   #goes to => https://dima.alwaysdata.net/last-deploy-info.php
+          
+          # Variant.2 Instead of creating new file, append content to existing
+          
+          #Conditionally copy deploy.php via SSH, only if does not exitst already
+          #ssh "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "test -e '${{ secrets.REMOTE_PATH }}/deploy.php'" || scp deploy.php "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }}"
+
+          #append content
+          #cat deploy.php | ssh "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "cat >> '${{ secrets.REMOTE_PATH }}/deploy.php'"
+
+          
+          # Use scp to copy the README.md file to the remote server (works)
+          #scp README.md $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH   #goes to => https://dima.alwaysdata.net/README.md
           
           
 
@@ -364,7 +384,7 @@ jobs:
   
   #job_6_deploy_to_cloud:
     #runs-on: ubuntu-latest
-    #needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after Psalm check
+    #needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
     
     #steps:
       #- uses: actions/checkout@v2

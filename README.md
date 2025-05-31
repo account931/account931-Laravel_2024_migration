@@ -38,7 +38,8 @@ Visual Studio Code ()
 - [15. Notification (via database and email)](#15-notification-via-database-and-email)
 - [16. Queue Job](#16-queue-job) 
 - [17. Deploy CD](#17-deploy-cd)
-- [18. SSH](#17-shh)
+- [18. SSH](#18-shh)
+- [19. SQL Grafana](#19-sql-grafana)
 
 - [102. Known errors](#102-known-errors)
 - [103. Screenshots](#103-screenshots)
@@ -341,7 +342,8 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
-## 17. Deploy cd
+## 17. Deploy CD
+(CD is the part of CI/CD)
 
 Php/apache service is running at render.com, it is connected to SQL service located at https://www.alwaysdata.com 
 
@@ -358,48 +360,55 @@ Infinity data source (gets Api from https://account931-laravel-2024-migration.on
 
 
 
+
+
+
+
+
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
 ## 18. SSH
-Putty
- SSH host: ssh-di*****.alwaysdata.net  login:di*** 
+How to set-up connection via SSH (in our case we just testing transferring 1 file to remote server https://www.alwaysdata.com  in github action job):
+Using SSH client:Putty
+ SSH host: ssh-di*****.alwaysdata.net  login:di***    p: m****+l
 
 
 
-
- <p>To set up ssh for github actions, we need to generate public and private ssh keys using Puttygen or similar: </p>
+ <p> To set up ssh for github actions, we need to generate public and private ssh keys using Puttygen or similar, in our case we save the keys to  C:\Users\user\Downloads\Putty_SSH\: </p>
  ---
 
-#Private key => id_rsa  =>(will go  to github secrets->SSH_PRIVATE_KEY & in git action we use secrete, like  secrets.SSH_PRIVATE_KEY )
+## Private key => id_rsa  =>(will go  to github secrets->SSH_PRIVATE_KEY & in git action we use secrets, like  secrets.SSH_PRIVATE_KEY )
 
-If Puttygen generated it as .ppk format, we need to convert it from private_key.pkk to  OpenSSH Format 
+If Puttygen generates private key as .ppk format, we need to convert it from id_rsa.pkk (or private_key.pkk) to OpenSSH Format (using Puttygen: select 'load' -> select private_key.pkk -> Conversions -> Export OpenSSH key -> save)
 
-In github secret we  paste everything, including:
+In github project: <b>Settings -> Secrets-> Actions-> New repo secrets </b>(if not created so far) and  paste everything from opened in editor private key file, including:
     <code>
      -----BEGIN RSA PRIVATE KEY-----
         .......
      -----END RSA PRIVATE KEY-----
 	 </code>
 
+and save as  <b> SSH_PRIVATE_KEY </b>
 
 
 //--------------------------------------
 
-#Public key  => id_rsa.pub  (will go to remove srever)
+## Public key  => id_rsa.pub  (will go to remote srever)
 
 
-1. Make sure the .ssh directory and authorized_keys file exist on the remote server. They will be hidden, so check with ls -a. 
+1. Make sure the .ssh directory and authorized_keys file exist on the remote server. They will be hidden, so check with <code> ls -a </code> 
 You can create .ssh directory and authorized_keys file with:
 
 in SSH => 
-<code>
-mkdir -p ~/.ssh
-touch ~/.ssh/authorized_keys
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys
-</code>
+    <code>
+        mkdir -p ~/.ssh                  #create directory
+        touch ~/.ssh/authorized_keys     #Creates the file authorized_keys in the ~/.ssh/ directory if it does not already exist. If the file does exist, touch simply updates the file's "last modified" timestamp without changing its content.
+        chmod 700 ~/.ssh                 #set permission
+        chmod 600 ~/.ssh/authorized_keys
+    </code>
 
-2. If public key on your local starts with 
+2. If public key on your local starts with (view in editor) :
    <code>
    ---- BEGIN SSH2 PUBLIC KEY ----
    Comment: "rsa-key-20250527"
@@ -411,15 +420,55 @@ it should be converted to OpenSSH Format  before moving to remote server. Conver
 When have converted add the key to remote server with:
 
 <code>
-echo "ssh-rsa AAAAB3N........." >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
+    echo "ssh-rsa AAAAB3N........." >> ~/.ssh/authorized_keys         #prints the public key string and appends that string to the file authorized_keys in your .ssh directory.
+    chmod 600 ~/.ssh/authorized_keys
 </code>
 
  
  
  
  
+ 
+ 
+ 
+<p> ----------------------------------------------------------------------------------------- </p>
+ 
+## 19. Sql Grafana
 
+<p> Select every owner, count his venues and equipment quantity< dislay owner's all venues </p>
+
+<code>
+ SELECT
+    o.first_name AS owner_name,
+    COUNT(DISTINCT v.id) AS venue_count,
+    COUNT(DISTINCT e.id) AS equip_count,
+    GROUP_CONCAT(DISTINCT v.venue_name ORDER BY v.venue_name SEPARATOR ', ') AS venue_names,
+    GROUP_CONCAT(DISTINCT e.trademark_name ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names
+FROM owners o
+LEFT JOIN venues v ON v.owner_id = o.id
+LEFT JOIN equipment_venue ev ON ev.venue_id = v.id
+LEFT JOIN equipments e ON e.id = ev.equipment_id
+GROUP BY o.id, o.first_name
+ORDER BY o.first_name;
+</code>
+
+ 
+ 
+ 
+ 
+The most important rule when using GROUP BY in SQL is: Every column in the SELECT clause that is not inside an aggregate function must appear in the GROUP BY clause.
+
+The GROUP BY clause in SQL is used to group rows that have the same values in specified columns into summary rows, like finding the total, average, or count. It's commonly used with aggregate functions like COUNT(), SUM(), AVG(), MIN(), and MAX().
+ 
+ HAVING is like WHERE but for groups.
+ <code>
+    SELECT customer_id, COUNT(*) AS orders_count
+    FROM orders
+    GROUP BY customer_id
+    HAVING COUNT(*) > 5;
+ </code>
+ 
+ 
 <p> ----------------------------------------------------------------------------------------- </p>
 ## 102. Known errors
  1. Error 'There is no permission named `delete owners` for guard `web`.'  => $permissionDeleteOwner = Permission::firstOrCreate([ 'name' => 'delete owners', 'guard_name' => 'web' ]);  </br>

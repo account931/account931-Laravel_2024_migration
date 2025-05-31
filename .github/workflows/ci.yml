@@ -401,7 +401,7 @@ jobs:
 
           echo "Deployment started ..."
             
-          (php artisan down) || true    # Enter maintenance mode or return true, if already is in maintenance mode
+          #(php artisan down) || true    # Enter maintenance mode or return true, if already is in maintenance mode
 
           git pull origin production    # Pull the latest version of the app
 

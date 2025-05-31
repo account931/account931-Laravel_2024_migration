@@ -325,7 +325,7 @@ jobs:
       
 
 
-  # Job-5 deploy one file to alwaysdata.com ---------------------------------------------------
+  # Job-5 deploy one file 'last-deploy-info.php' to alwaysdata.com ---------------------------------------------------
   job_5_deploy_one_test_file:
     runs-on: ubuntu-latest
     needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
@@ -372,7 +372,57 @@ jobs:
           
 
 
+  # Job-6 deploy "Laravel_2024_migration" to alwaysdata.com ---------------------------------------------------
+  job_6_deploy_laravel_2024_migration_to_alwaysdata:
+    runs-on: ubuntu-latest
+    needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check]  #will run only after these jobs
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Copy file to remote server via SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_PATH: www/Laravel_2024_migration      #/path/on/remote/server/
+        run: |
+          # Create SSH directory and add private key
+          mkdir -p ~/.ssh                               #Creates a local .ssh folder on the GitHub runner.
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa       #Saves the private key from secrets into a file
+          chmod 600 ~/.ssh/id_rsa                       #Secures the key with proper file permissions (600).
+
+          # Add remote host to known_hosts to avoid prompt
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          
+          #Deploy itself
+          set -e                         #When you use set -e, the script stops running as soon as any command fails.     #!/bin/bash
+
+          echo "Deployment started ..."
+            
+          (php artisan down) || true    # Enter maintenance mode or return true, if already is in maintenance mode
+
+          git pull origin production    # Pull the latest version of the app
+
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader   # Install composer dependencies
+
+          php artisan clear-compiled     # Clear the old cache
+
+          php artisan optimize           # Recreate cache
+
+          #npm run prod                   # Compile npm assets
+
+          php artisan migrate --force    # Run database migrations
+
+          php artisan up                 # Exit maintenance mode
+
+          echo "Deployment finished!"
+          
+          
+         
+          
+          
 
 
 

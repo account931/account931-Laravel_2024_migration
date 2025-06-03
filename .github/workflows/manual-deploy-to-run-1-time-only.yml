@@ -1,0 +1,47 @@
+#This deploy to production is run manually and one time only. To be triggered by a button in the GitHub Actions UI.
+#Trigger the workflow from the "Actions" tab > select workflow > "Run workflow".
+
+#Includes set-up necessary one time only, like Laravel new application key generate, Passport key generating
+# .github/workflows/manual-deploy.yml
+
+name: Manual One time Deployment
+
+on:
+  workflow_dispatch:  # Enables manual triggering.
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Add SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.SSH_HOST  }} >> ~/.ssh/known_hosts
+
+        
+      - name: Run deployment script
+        run: |
+          #Generate Passport personal token + Passport install + Generates Passport encryption keys +seed is not applicable in real production, so do in ssh
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'         #github secrets
+          cd www/Laravel_2024_migration
+          echo "Deploying alwaysdata.com branch '${{ github.event.inputs.branch }}' to '${{ github.event.inputs.environment }}' environment"
+          #php artisan key:generate
+          php artisan passport:client --personal --name=SomeName
+          php artisan passport:install
+          php artisan passport:keys --force
+          #php artisan db:seed
+          EOF

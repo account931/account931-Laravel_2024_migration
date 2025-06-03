@@ -12,7 +12,7 @@ Visual Studio Code ()
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
-   Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker  etc.
+   Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker, SSH, cookie consent banner  etc.
 
 ### User login credentials 
 <p> see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory </p>
@@ -49,15 +49,17 @@ Visual Studio Code ()
 
 ## 1. Install Laravel 6 LTS, php 7.2
 
-<p>1.  Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
-<p>1.2. Install dependencies => <code > composer install </code> </p>
-<p>2. In browser can navigate to /public/  => the project should open </p>
-<p>3. In console CLI <code> cd NAME_HERE </code> , and <code>git init   git add.   git commit</code> if necessary </p>
-<p>4. Create DB and set in <code>.env (DB_DATABASE)</code> </p>
+<p>1. Install => <code> composer create-project --prefer-dist laravel/laravel NAME_HERE "6.*"  </code> </p>
+<p>2. Install dependencies => <code> composer install </code> </p>
+<p>3. Generates the APP_KEY and writes it to .env => <code> php artisan key:generate </code> </p>
+<p>4. In browser can navigate to /public/  => the project should open </p>
+<p>5. In console CLI <code> cd NAME_HERE </code> , and <code>git init   git add.   git commit</code> if necessary </p>
+<p>6. Create DB and set in <code>.env (DB_DATABASE)</code> </p>
 
-<p>5. <code> php artisan migrate:fresh </code>  or take next step if need Auth. </br>If  on migration error "1071 Specified key was too long;", 
+<p>7. <code> php artisan migrate:fresh </code>  or take next step if need Auth. </br>If  on migration error "1071 Specified key was too long;", 
 add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength(191); </code> </p>
-<p>5.1. Add Auth to project (cd to folder /NANE_HERE) => 
+
+<p>8. Add Auth to project (cd to folder /NANE_HERE) => 
 <ul> 
       <li>composer require laravel/ui "^1.0" --dev    OR  composer require laravel/ui  </li>
 	  <li><code> php artisan ui vue --auth  </code>  (it will update routes in routes/web) </li>
@@ -66,15 +68,20 @@ add to app/Providers/AppServiceProvider boot() <code>Schema::defaultStringLength
 </ul>
 </p>
 
-<p>5.2. If any custom migration added later => <code>php artisan migrate </code></br>
+<p>9. If any custom migration added later => <code>php artisan migrate </code></br>
      If have seeder  => <code>php artisan db:seed </code>     (we need seeders data in dev not testing, NB: now seeder also contains <code>php artisan migrate:fresh </code>, if not needed disable in seeder)        
 </p>
 	 
-<p>6. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
-If new route is not found => <code>php artisan route:clear</code> </br>                            <code> composer dump-autoload </code>
+<p>10. Now can add your route menu links and update route '/' instead of return view('welcome'); </br>
+If new route is not found => <code>php artisan route:clear</code> </br>    <code> composer dump-autoload </code>
 </p>
 
-<p>6. Install Passport personal token (is needed to issue user tokens) => <code>php artisan passport:client --personal </code> 
+<p>11. Install Passport personal token (is needed to issue user tokens) => <code>php artisan passport:client --personal </code> 
+
+    php artisan passport:client --personal --name=SomeName #Generate Passport personal token
+    php artisan passport:install                           #Passport install
+    php artisan passport:keys --force                      #Generates Passport encryption keys
+		
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
@@ -174,6 +181,13 @@ OK (65 tests, 974 assertions) -> Tests: 76, Assertions: 1028  </br>
 <p> Passport is enabled in routes/api with => <b> Route::middleware('auth:api')->group(.. </b> <br>, to access Passport protected route you send a header with Passport token in request ('Authorization' => 'Bearer '.$bearerToken,). Can see example in routes/console => find => 'test_api_route_protected_by_Passport'
 Passport just checks if user is logged or not for API </p>
 
+
+Necessary set-up:
+  <code>
+   php artisan passport:client --personal --name=SomeName #Generate Passport personal token
+   php artisan passport:install                           #Passport install
+   php artisan passport:keys --force                      #Generates Passport encryption keys
+ </code>
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
@@ -342,21 +356,42 @@ Could see received email at => https://mailtrap.io/  (ac**@ukr.net, )
 
 <p> ----------------------------------------------------------------------------------------- </p>
 
+
+
 ## 17. Deploy CD
-(CD is the part of CI/CD)
+(CD is the part of CI/CD) </br>
 
-Php/apache service is running at render.com, it is connected to SQL service located at https://www.alwaysdata.com 
+Deploy is performed when u push smth to main branch in Github, via Github actions (CI/CD): 
+Steps
+1. If you deploy it first time ever, create folder on server 'Laravel_2024_migration' (as specified in job_6 in /github/workflows/ci.yml) 
+2. Manually copy.env to server (SSH || FTP)) 
+4. Push smth to main branch, it will trigger job_6 in /github/workflows/ci.yml (it will copy code, run composer install, migrate, etc) 
+3. Run one time job manually by a button in the GitHub Actions UI <b> github/workflows/manual-deploy-to-run-1-time-only.yml  </b>
+ or run this in SSH Manually:
+     <code>
+	   php artisan passport:client --personal --name=SomeName
+       php artisan passport:install
+       php artisan passport:keys --force
+	 </code>
 
-Php/apache     => render.com  (accou**1@ur*.n*t)  uses render.yaml  https://account931-laravel-2024-migration.onrender.com  </br>
-SQL DB service => https://www.alwaysdata.com    => https://admin.alwaysdata.com/ (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration   (use this)
-                 NOT USED =>  https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
+Laravel on production server is 57 Mb (without composer development dependencies (only production dependencies) and /node_modules) . NB: no need for node_modules on Production </br>
+
+# Current variant: now both Php/apache service and SQL DB are running at https://www.alwaysdata.com </br>
+     https://www.alwaysdata.com    =>  (acc**1@ur*.n*t)  (m**1 + letter)   DB: dima_laravel_2024_migration  
+           deployed web-site => https://dima.alwaysdata.net/Laravel_**********/   </br>
+		   
+
+# Old variant:Php/apache service was running at render.com, and was connected to SQL service located at https://www.alwaysdata.com        </br>
+   Php/apache     => render.com  (accou**1@ur*.n*t)  uses render.yaml  https://account931-laravel-2024-migration.onrender.com  </br>
+
+Tried also (DELETE this )=>  https://console.prisma.io/    (acc**1@ur*.n*t)  (m**1 + letter x2)   </br>
                
 
 			   
 Grafana =>  https://acc****1.grafana.net/    =>   acc****1  (without mail) (ma***1 + coreletter) </br>
 Dashboards -> Live from AlwaysData_SQL (show data from DB at www.alwaysdata.com)  </br>
 
-Infinity data source (gets Api from https://account931-laravel-2024-migration.onrender.com/public/api/owners) (may be down as service sleeps when inactive)
+Infinity data source used in Grafana (gets Api from https://account931-laravel-2024-migration.onrender.com/public/api/owners) (may be down as service sleeps when inactive)
 
 
 
@@ -435,7 +470,8 @@ When have converted add the key to remote server with:
  
 ## 19. Sql Grafana
 
-<p> Select every owner, count his venues and equipment quantity< dislay owner's all venues </p>
+
+<p>Example 1:  Select & display every owner, count his venues and equipment quantity, display owner's all venues, display equipment taht belongs to owner's venues </p>
 
 <code>
  SELECT
@@ -443,9 +479,9 @@ When have converted add the key to remote server with:
     COUNT(DISTINCT v.id) AS venue_count,
     COUNT(DISTINCT e.id) AS equip_count,
     GROUP_CONCAT(DISTINCT v.venue_name ORDER BY v.venue_name SEPARATOR ', ') AS venue_names,                                        # all owner venues in one column
-    #GROUP_CONCAT(DISTINCT e.trademark_name ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names,                           #to list all owner 'trademark_name' in one column
 	GROUP_CONCAT(DISTINCT CONCAT(e.trademark_name, ' ', e.model_name) ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names  #to list owner 'trademark_name + model name' in one column
-
+    #GROUP_CONCAT(DISTINCT e.trademark_name ORDER BY e.trademark_name SEPARATOR ', ') AS equipment_names,                           #to list all owner 'trademark_name' in one column: [eq_trade_name1,  eq_trade_name_2, eq_trade_name_3,  eq_trade_name_4]
+	#GROUP_CONCAT(DISTINCT e.model_name ORDER BY e.model_name SEPARATOR ', ') AS eq_model_names                                     # to list all owner  'model_name'in one column    : [eq_model_name1, eq_model_name_2, eq_model_name_3,  eq_model_name4 ]
 FROM owners o
 LEFT JOIN venues v ON v.owner_id = o.id
 LEFT JOIN equipment_venue ev ON ev.venue_id = v.id
@@ -454,11 +490,63 @@ GROUP BY o.id, o.first_name
 ORDER BY o.first_name;
 </code>
 
+ Result will be :
+ -----------------------------------------------------------------------------------------------------------------
+ |owner_name|venue_count|equip_count|venue_names   |     equipment_names                                          |
+  ----------------------------------------------------------------------------------------------------------------
+ |Owner_1   |    2      |     4     | venue1_name, | 1.trademark_name + model_name, 2.trademark_name + model_name |
+ |          |           |           | venue2_name  | 3.trademark_name + model_name, 4.trademark_name + model_name |
+ |          |           |           |              |                                                              |
+ ------------------------------------------------------------------------------------------------------------------
+ |Owner_2   |    2      |     4     | venue1_name, |  same.........                                               |
+ |          |           |           | venue2_name  |                                                              |
+ ------------------------------------------------------------------------------------------------------------------
  
  
  
  
-The most important rule when using GROUP BY in SQL is: Every column in the SELECT clause that is not inside an aggregate function must appear in the GROUP BY clause.
+ //------------------------------
+ 
+ 
+ 
+ <p> Example 2: Select & display every owner,</p>
+ <code>
+ SELECT
+  o.id AS owner_id,
+  o.first_name AS owner_name,
+  v.id AS venue_id,
+  v.venue_name AS venue_name,
+  e.id AS equipment_id,
+  e.trademark_name,
+  e.model_name
+FROM owners o
+JOIN venues v ON v.owner_id = o.id
+LEFT JOIN equipment_venue ev ON ev.venue_id = v.id
+LEFT JOIN equipments e ON e.id = ev.equipment_id
+ORDER BY o.id, v.id, e.trademark_name;
+
+ </code>
+ 
+  Result will be :
+ ------------------------------------------------------------------------------------------------------------------------
+ | owner_id |owner_name     |  venue_id |venue_name    |  equipment_id  |equipment_trademark_name |equipment_model_name  |
+  -----------------------------------------------------------------------------------------------------------------------
+ |   1      |  owner_1_name |     1     | venue1_name, |    1           |  trademark_name1        | model_name1          |
+ -------------------------------------------------------------------------------------------------------------------------
+ |   1      |  owner_1_name |     1     | venue1_name, |    2           |  trademark_name2        | model_name2          |
+ | -------------------------------------------------------------------------------------------------------------------------
+ |   1      |  owner_1_name |     2     | venue2_name, |    3           |  trademark_name3        | model_name3          |
+ |-------------------------------------------------------------------------------------------------------------------------
+ |   1      |  owner_1_name |     2     | venue2_name, |    4           |  trademark_name4        | model_name4          |
+ ------------------------------------------------------------------------------------------------------------------------
+ |   same for owner 2..............                                                                                       |
+ -------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+ //-----------------------------------------------------------
+ 
+ 
+The most important rule when using GROUP BY in SQL is: if you use <b>GROUP BY</b> very column in the <b>SELECT</b> clause that is not inside an aggregate function must appear in the <b>GROUP BY</b> clause.
 
 The GROUP BY clause in SQL is used to group rows that have the same values in specified columns into summary rows, like finding the total, average, or count. It's commonly used with aggregate functions like COUNT(), SUM(), AVG(), MIN(), and MAX().
  
@@ -469,6 +557,12 @@ The GROUP BY clause in SQL is used to group rows that have the same values in sp
     GROUP BY customer_id
     HAVING COUNT(*) > 5;
  </code>
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 <p> ----------------------------------------------------------------------------------------- </p>

@@ -337,8 +337,8 @@ jobs:
 
       - name: Copy file to remote server via SSH
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  #github secrets
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}             #github secrets
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PATH: www      #/path/on/remote/server/
         run: |
@@ -352,7 +352,7 @@ jobs:
           
           
           #create file last-deploy-info.php which contains current timestamp  dd-mm-yy hh::mm::ss
-          echo "<?php echo 'Deployed at  $(date +"%d-%m-%y %H::%M::%S")'; ?>" >> last-deploy-info.php     #creates a file 'last-deploy-info.php' with current time  , >> appends content to file , not overwrite, but since it is a new created in github ci, it always creates a new file
+          echo "<?php echo 'Deployed at  $(TZ='Europe/Kyiv' date -d '+1 hour' '+%d-%m-%y %H:%M:%S')'; ?>" >> last-deploy-info.php #creates a file 'last-deploy-info.php' with current time + 1 hour , >> appends content to file , not overwrite, but since it is a new created in github ci, it always creates a new file
 
           # Variant.1 Use scp to copy the file last-deploy-info.php to the remote server (works).  If exists already, it overwrite it 
           scp last-deploy-info.php $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH   #goes to => https://dima.alwaysdata.net/last-deploy-info.php
@@ -388,8 +388,8 @@ jobs:
         extensions: mbstring, bcmath, intl, mysql
         tools: composer
 
-    - name: Install Composer Dependencies
-      run: composer install --no-dev --optimize-autoloader
+    #- name: Install Composer Dependencies
+    # run: composer install --no-dev --optimize-autoloader    #instructs Composer (PHP dependency manager) to install only the required (production) dependencies, skipping the development dependencies 
 
     - name: Add SSH Key
       run: |
@@ -401,19 +401,22 @@ jobs:
     
     - name: Deploy via Rsync
       run: |
+        # --exclude=".env" \   => Don't delete .env from server when syncing (we add .env manually via ssh/ftp)
         rsync -avz --delete \
           --exclude=".git*" \
           --exclude="node_modules" \
           --exclude="tests" \
+          --exclude=".env" \
           -e "ssh -o StrictHostKeyChecking=no" \
           ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:www/Laravel_2024_migration
 
 
     - name: Set Permissions & Run Laravel Commands
       run: |
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'         #github secrets
         cd www/Laravel_2024_migration
-        #cp .env.production .env
+        composer install --no-dev --optimize-autoloader
+        #cp .env .env
         php artisan config:clear
         php artisan config:cache
         php artisan route:cache
@@ -422,12 +425,43 @@ jobs:
         chmod -R 775 storage bootstrap/cache
         EOF
          
+   
+
+
+   
           
-          
+
+  # Job-7  send notification "Deploy successful" to telegram  ---------------------------------------------------
+  job_7_notify_in_telegram:
+    runs-on: ubuntu-latest
+    needs: [job_1_my-phpunit-tests, job_2_psalm-static-check, job_3_test-docker-compose-yml-images-build-and-run-containers, job_4_codesniffer-check, job_5_deploy_one_test_file, job_6_deploy_laravel_2024_migration_to_alwaysdata]  #will run only after these jobs
+
+    steps:
+      - name: Send message to Telegram
+        if: success()  #Run this job only if all previous jobs have succeeded."
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}  #github secrets
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}   #github secrets
+        run: |
+          MESSAGE="✅ Deployment alwaysdata.com completed successfully on branch $GITHUB_REF"   #U+1F680 is UTF-8 for "rocket-icon".
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id=$TELEGRAM_CHAT_ID \
+            -d text="$MESSAGE" \
+            -d parse_mode=Markdown
+   
+      - name: Notify Telegram on Failure
+        if: failure()  # only run if previous job failed
+        run: |
+          MESSAGE="❌ Deployment alwaysdata.com failed on branch $GITHUB_REF"     #U+274C  UTF-8 for "red cross".
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id=$TELEGRAM_CHAT_ID \
+            -d text="$MESSAGE" \
+            -d parse_mode=Markdown
 
 
 
-      
+
+   
         
   # Job-6 Deploy somewhere (for example to AWS) ---------------------------------------------------
   # Authenticate to the the server via ssh 

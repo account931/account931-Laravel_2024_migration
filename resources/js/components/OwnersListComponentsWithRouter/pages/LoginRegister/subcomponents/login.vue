@@ -41,12 +41,18 @@
 				
 				<!-- Hint/promt for username. If username was prev saved to LocalStorage -->
 				<div class="col-sm-12 col-xs-12 alert alert-info borderX" :class="this.cssStateFlagHidden ? ' hide-me' : '' "   id="userNameHint">
-				<transition name="moveInUp">
+				<transition name="moveInUp"> <!-- appear with delay ?-->
 				    <p class="small-ft"> 
 					    Last time you logged as <b> {{ this.user_Name_Hint }} </b> (LocStorage). 
 						Wanna use it? <button type="button"  v-on:click="useNameHint"> Yes </button> <!-- if use simple <button> it will fire form submitting -->
 					</p>
-				</transition>	
+					
+				</transition>
+                   
+                <p class="small-ft text-danger"> 
+					     Forgot your credentials? Log in with the same credentials as session login(one DB)
+				</p>
+					 
 				</div>
 				<!-- End Hint/promt for username. If username was prev saved to LocalStorage -->
                 
@@ -55,11 +61,11 @@
             </form>
         </div>
 		
-		<!-- GIF Loader (appears while ajax runs  -->
+		<!------------------ GIF Loader (appears while ajax runs  ---->
         <div v-if="showLoader" class="col-sm-12 col-xs-12" style="position:absolute;top:-15%;left:6%"> 
 		    <img src ="img/loader-black.gif" style="width:33%" alt="loader"/>
 		</div>
-		<!------------------ End GIF Loader --------->
+		<!------------------ End GIF Loader --------------------------->
 		   
     </div>
 

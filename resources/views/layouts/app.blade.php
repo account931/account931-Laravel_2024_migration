@@ -195,6 +195,28 @@
         </main>
     </div>
 	
+	
+	<!-- Cookie consent banner -->
+	@if(!isset($_COOKIE['cookie_consent']))
+    <div id="cookieConsent" style="position: fixed; bottom: 0; width: 100%; background: #f8f9fa; padding: 15px; text-align: center; border-top: 5px solid lavender; z-index: 9999;">
+        <span>We use cookies to improve your experience. By continuing, you accept our cookie policy.</span>
+        <button onclick="acceptCookies()" style="margin-left: 10px;">Accept</button>
+    </div>
+
+    <script>
+        function acceptCookies() {
+            // Hide banner
+            document.getElementById('cookieConsent').style.display = 'none';
+
+            // Set cookie via JavaScript (1 year)
+            document.cookie = "cookie_consent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
+        }
+    </script>
+    @endif
+    <!-- End Cookie consent banner -->
+	
+	
+	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>                 <!-- Mega Fix (collapsed main menu won't open)-->	

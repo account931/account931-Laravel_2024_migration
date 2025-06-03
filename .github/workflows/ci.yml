@@ -352,7 +352,7 @@ jobs:
           
           
           #create file last-deploy-info.php which contains current timestamp  dd-mm-yy hh::mm::ss
-          echo "<?php echo 'Deployed at  $(TZ='Europe/Kyiv' date -d '+1 hour' '+%d-%m-%y %H:%M:%S')'; ?>" >> last-deploy-info.php #creates a file 'last-deploy-info.php' with current time + 1 hour , >> appends content to file , not overwrite, but since it is a new created in github ci, it always creates a new file
+          echo "<?php echo 'Deployed at  $(TZ='Europe/Kyiv' date -d '-1 hour' '+%d-%m-%y %H:%M:%S')'; ?>" >> last-deploy-info.php #creates a file 'last-deploy-info.php' with current time - 1 hour , >> appends content to file , not overwrite, but since it is a new created in github ci, it always creates a new file
 
           # Variant.1 Use scp to copy the file last-deploy-info.php to the remote server (works).  If exists already, it overwrite it 
           scp last-deploy-info.php $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH   #goes to => https://dima.alwaysdata.net/last-deploy-info.php

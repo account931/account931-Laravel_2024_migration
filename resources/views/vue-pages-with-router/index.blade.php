@@ -3,23 +3,24 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12 col-12">
             <div class="card">
                 <div class="card-header">Vue Pages (Vuex store, router, access to open and protected py Passport routes)</div>
 
-                <div class="card-body">
+                <div class="">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
 
-					<div class="alert alert-sucess">
+					<div class="col-sm-12 col-12">
 					    <p>
                             <i class="fas fa-user-circle"></i> Hello, <strong>{{Auth::user()->name}}</strong> 
 						</p>
 						
 						<div class="row">
+						
 						    <div class="col-lg-9 col-md-9 col-sm-9">
 						        <!--<p>Owner records via Vue go here.....</p>-->
 							</div>
@@ -40,16 +41,14 @@
                                 </div>
                             @endif   
 						
-						</div>
+						</div> <!-- end row -->
 						
 						
-						<div class="vue-pages">
+						<div class="vue-pages col-sm-12 col-12">
 						    
 						    <!-- Show Hello component -->
-					        <div id="hello" class="col-sm-12 col-xs-12">
 					            <h6><b>Vue router<b></h6>
 								<vue-router-menu-with-links/>
-                            </div>
 							
 						</div> <!-- end of  .vue-pages -->
 						 

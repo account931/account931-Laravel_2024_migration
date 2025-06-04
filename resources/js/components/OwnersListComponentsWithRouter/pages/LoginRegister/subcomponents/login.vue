@@ -4,7 +4,7 @@
 
 <template>
 
-    <div class="col-sm-12 col-xs-12 alert alert-info borderX">
+    <div class="col-sm-12 col-12 borderX">
         <center>
 		    <p> Login Vue </p>
         </center>
@@ -23,36 +23,44 @@
             
             <!-- Login Form -->
             <form class="login" @submit.prevent="loginSubmit">
-                <h1>Sign in</h1>
+                <h1 class="responsive-heading"> Sign in </h1>
                 <p><i class="fa fa-external-link" style="font-size:36px"></i></p>
                 
-                <!-- Login: email -->
-                <div class="col-md-6 form-group">
-                    <label for="email" class="col-md-6 control-label">E-Mail Address</label>
-                    <input required v-model="email" type="email" placeholder="Name"  class="form-control"/>
-                </div>
+				<!-- Login: email -->
+				<div class="form-row justify-content-center">
+                    <div class="col-md-6 col-12 form-group">
+                        <label for="email">E-Mail Address</label>
+                        <input required v-model="email" type="email" placeholder="Name"  class="form-control"/>
+                    </div>
+				</div>
                
                 <!-- Password -->
-                <div class="col-md-6 form-group">
-                    <label for="password" class="col-md-6 control-label">Password</label>
-                    <input required v-model="password" type="password" placeholder="Password" id="passwordd"  class="form-control"/>
-                    <i class="fa fa-eye" id="passEye" @click="togglePassword" style="cursor:pointer;"></i>
-                </div>
+				<div class="form-row justify-content-center">
+                    <div class="col-md-6 col-12 form-group">
+                        <label for="password">Password</label>
+                        <input required v-model="password" type="password" placeholder="Password" id="passwordd"  class="form-control"/>
+                        <i class="fa fa-eye" id="passEye" @click="togglePassword" style="cursor:pointer;"></i>
+                    </div>
+				</div>
 				
 				<!-- Hint/promt for username. If username was prev saved to LocalStorage -->
-				<div class="col-sm-12 col-xs-12 alert alert-info borderX" :class="this.cssStateFlagHidden ? ' hide-me' : '' "   id="userNameHint">
-				<transition name="moveInUp"> <!-- appear with delay ?-->
-				    <p class="small-ft"> 
-					    Last time you logged as <b> {{ this.user_Name_Hint }} </b> (LocStorage). 
-						Wanna use it? <button type="button"  v-on:click="useNameHint"> Yes </button> <!-- if use simple <button> it will fire form submitting -->
-					</p>
+				<div class="form-row">
+				    <div class="col-sm-12 col-12 alert alert-info borderX" :class="this.cssStateFlagHidden ? ' hide-me' : '' "   id="userNameHint">
+				        <transition name="moveInUp"> <!-- appear with delay ?-->
+				            <p class="small-ft"> 
+					        Last time you logged as <b> {{ this.user_Name_Hint }} </b> (LocStorage). 
+						    Wanna use it? <button type="button"  v-on:click="useNameHint"> Yes </button> <!-- if use simple <button> it will fire form submitting -->
+					        </p>
 					
-				</transition>
-                   
-                <p class="small-ft text-danger"> 
-					     Forgot your credentials? Log in with the same credentials as session login(one DB)
-				</p>
+				        </transition>
+                 
+                			 
+                        <p class="small-ft text-danger"> 
+				        <i class="fas fa-award"></i>
+				        <small>You may check credentials in  => <span class ="text-success">\Seeds\...\UserSeeder;</span> otherwise see Factories\UserFactory </small>(one DB)
+				        </p>
 					 
+				    </div>
 				</div>
 				<!-- End Hint/promt for username. If username was prev saved to LocalStorage -->
                 
@@ -62,7 +70,7 @@
         </div>
 		
 		<!------------------ GIF Loader (appears while ajax runs  ---->
-        <div v-if="showLoader" class="col-sm-12 col-xs-12" style="position:absolute;top:-15%;left:6%"> 
+        <div v-if="showLoader" class="col-sm-12 col-12" style="position:absolute;top:-15%;left:6%"> 
 		    <img src ="img/loader-black.gif" style="width:33%" alt="loader"/>
 		</div>
 		<!------------------ End GIF Loader --------------------------->
@@ -259,4 +267,15 @@ export default {
        transform: translateY(-400px);
    }
 }
+
+#Mobile responsive-heading
+ .responsive-heading {
+    font-size: 2.5rem; /* Desktop size, h1-ish */
+  }
+
+  @media (max-width: 576px) {
+    .responsive-heading {
+      font-size: 0.75rem; /* Mobile size, h6-ish */
+    }
+  }
 </style>

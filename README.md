@@ -12,7 +12,8 @@ Visual Studio Code ()
 
 > A Sept 2024 test to run a new Laravel 6 app from the start with migrations, seeders, factories, model binding, hasMany, ManyToMany relations, Spatie Laravel permission + UI, PhpUnit tests, 
    Rest API resource/collection, Passport API authentication(routes protected by Passport requires that user must be authed via API Login controller (& get token)), 
-   Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker, SSH, cookie consent banner  etc.
+   Github workflow CI/CD, Font Awesome 5 Icons, Vue JS (Vuex store, router), PHP_CodeSniffer, Psalm static analysis tool, Docker, SSH, cookie consent banner,
+   BackPack Admin Panel, Sentry, CloudFlare, etc.
 
 ### User login credentials 
 <p> see => Database\Seeds\Subfolder\UserSeeder;   or see Factories\UserFactory </p>
@@ -367,7 +368,7 @@ Steps
 2. Manually copy.env to server (SSH || FTP)) 
 4. Push smth to main branch, it will trigger job_6 in /github/workflows/ci.yml (it will copy code, run composer install, migrate, etc) 
 3. Run one time job manually by a button in the GitHub Actions UI <b> github/workflows/manual-deploy-to-run-1-time-only.yml  </b>
- or run this in SSH Manually:
+ or run the content of that file in SSH manually, for example:
      <code>
 	   php artisan passport:client --personal --name=SomeName
        php artisan passport:install
@@ -700,8 +701,18 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 <p> ----------------------------------------------------------------------------------------- </p>
 
 
-## 104. Several commits to one 
+## 104. Several last commits to one 
 (for example 2 last)
 <code>git reset --soft HEAD~2 </code>
 <code>git commit -m "new commit message" <code>
 <code>git push -f <code>
+
+
+<p> Squash several commits to one (not last) </p>
+git rebase -i HEAD~3    #3 is number of last commits to open in editor
+change 'pick'  to 'squash' in commits you want to squash to prev commit (it will be merged to prev commit)
+
+
+
+Bootstrap 3: class="col-sm-12 col-xs-12"
+Bootstrap 4: class="col-12 col-sm-12"   

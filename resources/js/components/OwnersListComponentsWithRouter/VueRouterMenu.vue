@@ -1,7 +1,8 @@
 <!-- Vue-Router Main menu with Links -->
 
 <template>
-    <div id="appDemo">
+    <div id="appDemo" class="col-sm-12 col-12">
+	
         <!--- Menu Variant 3 --->
         <nav class="navbar navbar-expand-lg navbar-light bg-light" > <!-- fix for BS 4+--> <!-- .fix-for-non-working-click-in-mobile is a fix for non-working click in mobile -->
             <ul class="nav navbar-nav">
@@ -32,7 +33,7 @@
 		
 	  
 	    <!------ Shows the rendered page (home, services, etc) based on selected menu item. Uses animation ------>
-        <div class="col-sm-12 col-xs-12 container ">
+        <div class="col-sm-12 col-12 container">
             <transition name="moveInUp">
                 <router-view/> <!-- built-in Vue component -->
             </transition>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">Store Locator <b> /api/owners </b> (open route, does not require Passport(access token))</div>
 
@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-					<div class="alert alert-sucess">
+					<div>
 					    <p>
                             <i class="fas fa-user-circle"></i> Hello, <strong>{{Auth::user()->name}}</strong> 
 						</p>
@@ -45,11 +45,9 @@
 						
 						<div class="venues-store-locator">
 						    
-					        <div class="col-sm-12 col-xs-12">
 					            <h6><b>Store locator on Vue<b></h6>
 								<!-- Vue component -->
 								<venues-locator-component/>    <!--<example-component/>-->
-                            </div>
 							
 						</div> <!-- end of  .venues-store-locator -->
 						 

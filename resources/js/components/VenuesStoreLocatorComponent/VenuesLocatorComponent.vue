@@ -1,8 +1,7 @@
 <!-- Show Mapbox Store Locator for Venues -->
 
 <template>
-    <div class="container">
-	    <div class="col-sm-12 col-xs-12">
+	    <div class="col-12 col-sm-12">
             <p> {{ this.title }}   </p>
 			
 	
@@ -12,15 +11,15 @@
 			<!-- Show all data with coords received from /api/owners -->
 		    <p style="margin-top:2em; font-size: 0.8em;">  {{this.allVenuesCoords}}} </p>
 			
+			
             <!----------- GIF Loader (appears while ajax runs  ----->
-           <div v-if="showLoader" class="col-sm-12 col-xs-12" style="position:absolute;top:-15%;left:20%"> 
+            <div v-if="showLoader" class="col-12 col-sm-12 myLoader"> 
 		       <img src ="img/loader-black.gif" alt="loader"/>
-		   </div>
-		   <!------------------ End GIF Loader ---------------------->
+		    </div>
+		    <!------------------ End GIF Loader ---------------------->
 		   		
 			
 	    </div> <!-- end class="col-sm-12 col-xs-12" -->	   
-    </div>
 </template>
 
 <script>
@@ -216,4 +215,21 @@
   width: 100%;
   height: 100%;
 }
+
+
+/* --  Gif Loader -- */
+.myLoader {
+   position:absolute; top:-15%; left:20%;
+ }
+
+/* Mobile-specific styles (for screens smaller than 768px) */
+@media (max-width: 767.98px) {
+  .myLoader {
+
+    position:absolute;
+	top:10%; left:20%; 
+  }
+.myLoader img {width:70%;}
+}
+/* -- End Gif Loader -- */
 </style>

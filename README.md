@@ -41,6 +41,7 @@ Visual Studio Code ()
 - [17. Deploy CD](#17-deploy-cd)
 - [18. SSH](#18-shh)
 - [19. SQL Grafana](#19-sql-grafana)
+- [20. Linux mate xfce](#20-linux-mate-xfce)
 
 - [102. Known errors](#102-known-errors)
 - [103. Screenshots](#103-screenshots)
@@ -286,6 +287,33 @@ PhpMyAdmin goes to => http://localhost:8080
 <p> 
 When we test Docker in github CI we have to create <b>.env  </b> manually, as it is in .gitignore & .env is not in github.
 </p>
+
+<p>Running Docker on Linux</p>
+<p>
+<code> sudo systemctl start docker  </code>  #Start Docker daemon (Docker service)
+<code> docker compose up -d </code>  #start docker-compose.yml
+<code> docker ps </code>             #list containers
+<code> docker exec -it laravel_app  /bin/bash  </code>  l#log to container
+<code> exit </code>                 #leave container
+<code> docker stop $(docker ps -q) && docker rm $(docker ps -a -q) </code>  stop and remove all containers
+
+
+<code> ./vendor/bin/sail up </code>  in case of Sail
+
+
+<p> Permission issue </p>
+<code> dfind ~/ -type d -name storage </code>  #find  and copy your storage
+
+<code> dsudo chown -R www-data:www-data /path/to/your-laravel-app/storage  </code>
+<code> dsudo chmod -R 775 /path/to/your-laravel-app/storage </code>
+
+e.g
+<code> dsudo chown -R www-data:www-data /home/dima/Development/Portal_2025/storage  </code>
+<code> dsudo chmod -R 775 /home/dima/Development/Portal_2025/storage  </code>
+
+</p>
+
+
 
 
 
@@ -560,9 +588,106 @@ The GROUP BY clause in SQL is used to group rows that have the same values in sp
  </code>
  
  
+
+
+ <p> ----------------------------------------------------------------------------------------- </p>
+
+ 20. Linux mate xfce
+ Docker
+Apologies for the earlier confusion. Linux Mint 22.1 "Xia" is based on Ubuntu 24.04 LTS, codenamed "Noble Numbat." To install Docker on Linux Mint 22.1, you need to configure the Docker repository to use the Ubuntu "noble" codename instead of "xia.
+
+
+sudo apt update
+sudo apt install ca-certificates curl gnupg
+
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu noble stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io
+
+
+sudo apt install docker-ce docker-ce-cli
+
+sudo systemctl status docker    #verify composer installed
+
+
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+
+
+
+-------------------------
+Composer
+sudo apt update
+sudo apt install php-cli php-curl php-mbstring unzip curl
+
+curl -sS https://getcomposer.org/installer -o composer-setup.php   #get installer
+sudo php composer-setup.php --install-dir=/usr/local/bin –filename=composer
+rm composer-setup.php    # remove installer
+
+
+------------------------------
+Git
+
+sudo apt update
+sudo apt install git
+
+-----------------
+
+Git GUI (start with <code> git gui  </code>)
+sudo apt update
+sudo apt install git-gui
+
+
+-----------------
+
+Notepadqq 
+sudo apt update
+sudo apt install notepadqq
+
+
+
+
+-----------
+
+Visual Studio Code 
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] \
+https://packages.microsoft.com/repos/code stable main" | \
+sudo tee /etc/apt/sources.list.d/vscode.list
+
+sudo apt update
+sudo apt install code
+
+
+
+-----------
+
+Node.js
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt install -y nodejs
+
+
+
+-----------
+FileZilla 
+sudo apt update
+sudo apt install filezilla
+
  
- 
- 
+Git set up
+git config --global core.editor "code –wait"   #set vs code for commits messages
+
+git remote -v            #check if has already connection to git repo
+git remote add origin https://github.com/username/repo.git
  
  
  

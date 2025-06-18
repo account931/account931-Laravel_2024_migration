@@ -43,13 +43,14 @@
 			}
 		},
 		
-        mounted() {
+        mounted() { 
 			//alert(this.allVenuesCoords);
             //console.log('Component mounted.')
 			
 			// Mapbox access token. It is set in .env -> then defined in /config.app as app.frontend.mapbox_token_from_config => then we pass it in Blade /views/venue-store-locator/index
             mapboxgl.accessToken = process.env.MIX_MAPBOX_API_KEY;   //window.mapbox_api_token_from_config.tokenMapBox;  //env('MAPBOX_API_KEY');  // Replace with your actual Mapbox access token
-
+    
+            //alert(process.env.MIX_MAPBOX_API_KEY);
             // Initialize map
             const map = new mapboxgl.Map({
                 container: 'map', // The ID of the container (div)

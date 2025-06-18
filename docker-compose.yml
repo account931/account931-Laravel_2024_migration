@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: laravel_app
+    container_name: laravel_app   #Uniqueness conflict, but since it is used in CI Docker testing, let it be
     ports:
       - "80:80"
     volumes:
@@ -22,7 +22,7 @@ services:
   # MySQL service container (production/development)-----------------------------------------
   my_sql_db_container:
     image: mysql:5.7
-    container_name: mysql_db
+    container_name: mysql_db   #Uniqueness conflict
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel_2024_migration
@@ -38,7 +38,7 @@ services:
   #MySQL service container (for running PhpUnit tests) (so far, it needed for testing Docker image in Github CI/CD only(job 3 in workflows/ci.yml)) -----------------------------------------
   my_sql_db_testing_container:
     image: mysql:5.7
-    container_name: mysql_db_testing
+    container_name: mysql_db_testing  #Uniqueness conflict
     ports:
       - "3307:3306"  # Note different host port
     environment:
@@ -57,7 +57,7 @@ services:
   # phpMyAdmin service  http://localhost:8080 ---------------------------------------------------
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin  #Uniqueness conflict
     environment:
       PMA_HOST: my_sql_db_container
       MYSQL_ROOT_PASSWORD: root
@@ -65,6 +65,19 @@ services:
       - "8080:80"
     networks:
       - laravel_network
+
+  # npm (Vue.js) Service container-----------------------
+  #npm:
+    #image: node:16-alpine
+    #container_name: vue_npm
+    #working_dir: /var/www/html
+    #volumes:
+    #  - .:/var/www/html
+    #networks:
+    #  - laravel_network
+    #entrypoint: ["npm", "run", "dev"]
+
+
 
 networks:
   laravel_network:

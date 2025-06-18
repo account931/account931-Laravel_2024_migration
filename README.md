@@ -280,41 +280,51 @@ If u use Sail, you dont need Dockerfile, as Sail uses pre-build images
 <p><code>docker-compose exec my_larav_931_app php artisan migrate </code> </p>
 
 Laravel goes to    => http://localhost                 </br>
-PhpMyAdmin goes to => http://localhost:8080
+PhpMyAdmin goes to => http://localhost:8080        (login=user, pass=password)
 
 <p><b> Using Docker on localhost: </b> </p>
 <p> If you decide to use Docker on localhost instead of OpenServer, install Docker desktop & make sure to make changes to <b>.env </b> & <b>.env.testing </b> that correspond to values in <b>{docker-compose.yml}</b>, e.g <b>(DB_HOST=my_sql_db_container, DB_DATABASE=laravel_2024_migration, DB_USERNAME=user, DB_PASSWORD=password )</b>, or u can simply copy/paste from in <b> /env_donor_for_cicd </b></p>
 <p> 
 When we test Docker in github CI we have to create <b>.env  </b> manually, as it is in .gitignore & .env is not in github.
 </p>
+_____________________________________
 
-<p>Running Docker on Linux</p>
+<p></br><b>Running Docker on Linux (start, stop, etc)</b></p>
 <p>
 <code> sudo systemctl start docker  </code>  #Start Docker daemon (Docker service)
 <code> docker compose up -d </code>  #start docker-compose.yml
 <code> docker ps </code>             #list containers
-<code> docker exec -it laravel_app  /bin/bash  </code>  l#log to container
+<code> docker exec -it laravel_app  /bin/bash  </code>  log to container
 <code> exit </code>                 #leave container
-<code> docker stop $(docker ps -q) && docker rm $(docker ps -a -q) </code>  stop and remove all containers
+<code> docker stop $(docker ps -q) && docker rm $(docker ps -a -q) </code>  #stop and remove all containers, V1
+<code> docker compose down </code>     #stop and remove all containers, V2
 
 
-<code> ./vendor/bin/sail up </code>  in case of Sail
+<p></br><b>If using Sail</b></p>
+<code> php artisan sail:install  </code>   #publish docker-compose.yml to project and select sql service u want to use
+<code> ./vendor/bin/sail up </code>  start
+<code> ./vendor/bin/sail down </code>  stop
 
 
-<p> Permission issue </p>
+<p> <b>Docker Permission issue (when open site in Chrome)</b></p>
 <code> dfind ~/ -type d -name storage </code>  #find  and copy your storage
 
-<code> dsudo chown -R www-data:www-data /path/to/your-laravel-app/storage  </code>
-<code> dsudo chmod -R 775 /path/to/your-laravel-app/storage </code>
+<code> sudo chown -R www-data:www-data /path/to/your-laravel-app/storage  </code> #give permission
+<code> sudo chmod -R 775 /path/to/your-laravel-app/storage </code>                #give permission
 
 e.g
-<code> dsudo chown -R www-data:www-data /home/dima/Development/Portal_2025/storage  </code>
-<code> dsudo chmod -R 775 /home/dima/Development/Portal_2025/storage  </code>
+<code> sudo chown -R www-data:www-data /home/dima/Development/Portal_2025/storage  </code> #give permission
+<code> sudo chmod -R 775 /home/dima/Development/Portal_2025/storage  </code>               #give permission
 
+
+
+<p></br><b>Clear docker cache</b></p>
+docker builder prune -a
+docker system prune -a
 </p>
 
-
-
+<p><b>Npm on Docker</b></p>
+Instead of putting new Node service to docker-compose.yml you may simply use your local installed Node/Npm (just dont go container)
 
 
 
@@ -592,9 +602,10 @@ The GROUP BY clause in SQL is used to group rows that have the same values in sp
 
  <p> ----------------------------------------------------------------------------------------- </p>
 
- 20. Linux mate xfce
- Docker
-Apologies for the earlier confusion. Linux Mint 22.1 "Xia" is based on Ubuntu 24.04 LTS, codenamed "Noble Numbat." To install Docker on Linux Mint 22.1, you need to configure the Docker repository to use the Ubuntu "noble" codename instead of "xia.
+ ## 20. Linux mate xfce
+
+<b>Install Docker</b></br>
+Apologies for the earlier confusion. Linux Mint 22.1 "Xia" is based on Ubuntu 24.04 LTS, codenamed "Noble Numbat." To install Docker on Linux Mint 22.1, you need to configure the Docker repository to use the Ubuntu "noble" codename instead of "xia. </br>
 
 
 sudo apt update
@@ -623,7 +634,7 @@ newgrp docker
 
 
 -------------------------
-Composer
+<b>Install Composer</b>  </br>
 sudo apt update
 sudo apt install php-cli php-curl php-mbstring unzip curl
 
@@ -633,21 +644,21 @@ rm composer-setup.php    # remove installer
 
 
 ------------------------------
-Git
+<b>Install Git</b>  </br>
 
 sudo apt update
 sudo apt install git
 
 -----------------
-
+<b>Install Git GUI </b>  </br>
 Git GUI (start with <code> git gui  </code>)
 sudo apt update
 sudo apt install git-gui
 
 
 -----------------
-
-Notepadqq 
+<b>Install Notepadqq </b>  </br>
+ 
 sudo apt update
 sudo apt install notepadqq
 
@@ -655,8 +666,8 @@ sudo apt install notepadqq
 
 
 -----------
+<b>Install Visual Studio Code </b></br>
 
-Visual Studio Code 
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 
@@ -670,24 +681,28 @@ sudo apt install code
 
 
 -----------
+<b>Install Node.js </b></br>
 
-Node.js
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install -y nodejs
 
 
 
 -----------
-FileZilla 
+<b>Install FileZilla </b></br>
+
 sudo apt update
 sudo apt install filezilla
 
- 
-Git set up
-git config --global core.editor "code –wait"   #set vs code for commits messages
+-----------
+<b>Git set up</b></br>
+<code>git config core.fileMode false  </code>               #tell git to ignore mode changes
+<code>git config --global core.editor "code –wait"</code>   #set vs code for commits messages
+<code> git config --global init.defaultBranch main</code>   #to set main as the default branch name for all new
 
-git remote -v            #check if has already connection to git repo
-git remote add origin https://github.com/username/repo.git
+<code>git remote -v </code>           #check if has already connection to git repo
+<code>git remote add origin https://github.com/username/repo.git </code>
+<code>git push --set-upstream origin main</code>
  
  
  
@@ -699,7 +714,11 @@ git remote add origin https://github.com/username/repo.git
  3. Error on Render.com (css/js not loading) 'Mixed Content: The page at 'Your_page' was loaded over HTTPS, but requested an insecure stylesheet 'Your_page/public/css/app.css'. This request has been blocked; the content must be served over HTTPS.' </br>
       =>    fix  see at =>  App\Http\Middleware\TrustProxies   </br>
  
- 
+ 4. If Js/Vue is creashing, not working, just => Chrome => Settings => Privace => Clear cache
+
+
+
+
 <p> ----------------------------------------------------------------------------------------- </p>
 
 ## 103. Screenshots

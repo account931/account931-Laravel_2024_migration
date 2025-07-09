@@ -274,10 +274,19 @@ If u use Sail, you dont need Dockerfile, as Sail uses pre-build images
 <code> docker-compose build </code>  => build images
 <code> docker-compose up -d </code>  => start containers 
 
-<p>After containers are running, do usual stuff to launch Laravel </p>
+<p> After containers are running, do usual stuff to launch Laravel </p>
+<p>
+Starts a new shell session inside the container <code>docker exec -it laravel_app bash</code>, i.e <code>docker exec -it <container_name_or_id> bash </code> </br>
+Find container name by <code> docker ps </code>
+</p> 
+
+OR
 <p>To run inside container: </p>
 <p><code>docker-compose exec my_larav_931_app composer install </code> => install dependencies in container, {my_larav_931_app} is php/apache container </p>
-<p><code>docker-compose exec my_larav_931_app php artisan migrate </code> </p>
+<p><code>docker-compose exec  php artisan migrate </code> </p>
+
+
+
 
 Laravel goes to    => http://localhost                 </br>
 PhpMyAdmin goes to => http://localhost:8080        (login=user, pass=password)
@@ -444,7 +453,8 @@ Infinity data source used in Grafana (gets Api from https://account931-laravel-2
 
 ## 18. SSH
 How to set-up connection via SSH (in our case we just testing transferring 1 file to remote server https://www.alwaysdata.com  in github action job):
-Using SSH client:Putty
+Using SSH client:Putty OR use GIT Bash <code> ssh username@host </code>, e.g <code> ssh some-login.alwaysdata.net </code>  
+
  SSH host: ssh-di*****.alwaysdata.net  login:di***    p: m****+l
 
 

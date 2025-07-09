@@ -22,6 +22,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	<!-- <link href="{{ asset('permission-editor/css/app.css') }}" rel="stylesheet" /> --> <!-- for my forked package https://github.com/account931/laravel-permission-editor-my-modified -->
 	
+    <!-- Place for pushed CSS styles -->
+    @stack('styles')
+
 	<!-- added Bootstrap 4 icons -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     

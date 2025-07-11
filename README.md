@@ -459,10 +459,13 @@ Using SSH client:Putty OR use GIT Bash <code> ssh username@host </code>, e.g <co
 
 
 
- <p> To set up ssh for github actions, we need to generate public and private ssh keys using Puttygen or similar, in our case we save the keys to  C:\Users\user\Downloads\Putty_SSH\: </p>
+ <p> To set up ssh for github actions, we need to generate public and private ssh keys using Puttygen or in GitBash on Linux, in our case we save the keys to  C:\Users\user\Downloads\Putty_SSH\:  On Linux the key will go to  /home/.ssh </p>
  ---
 
-## Private key => id_rsa  =>(will go  to github secrets->SSH_PRIVATE_KEY & in git action we use secrets, like  secrets.SSH_PRIVATE_KEY )
+<p>It will generate 2 keys:  <b>Private key => id_rsa </b>  => (will go  to github secrets), <b>Public key  =>  id_rsa.pub</b>  (will go to remote server)</p>
+
+## Private key 
+=> id_rsa  =>(will go  to github secrets->SSH_PRIVATE_KEY & in git action we use secrets, like  secrets.SSH_PRIVATE_KEY )
 
 If Puttygen generates private key as .ppk format, we need to convert it from id_rsa.pkk (or private_key.pkk) to OpenSSH Format (using Puttygen: select 'load' -> select private_key.pkk -> Conversions -> Export OpenSSH key -> save)
 
@@ -478,7 +481,8 @@ and save as  <b> SSH_PRIVATE_KEY </b>
 
 //--------------------------------------
 
-## Public key  => id_rsa.pub  (will go to remote srever)
+## Public key  
+=> id_rsa.pub  (will go to remote server)
 
 
 1. Make sure the .ssh directory and authorized_keys file exist on the remote server. They will be hidden, so check with <code> ls -a </code> 

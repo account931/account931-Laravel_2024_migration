@@ -200,7 +200,7 @@ Artisan::command(
     );
 
 
-    // test Passport
+    // test Passport //since we switched from OpenServer to Docker some routes are crashed in Docker!
     // to test calling protected api endpoint (by Passport) (works), should allow only auth users ------------------------------------
     Artisan::command(
         'test_api_route_protected_by_Passport',
@@ -208,11 +208,12 @@ Artisan::command(
             $client      = new Client();
             $user        = User::find(1);   //dd($user->getAllPermissions()->pluck('name'));
             $bearerToken = $user->createToken('UserToken', ['*'])->accessToken;
+            //dd($user);
 
             // $response = $client->get('http://localhost/Laravel_2024_migration/public/api/owners/quantity?access_token=' . $bearerToken); //Does not work
             $response = $client->request(
                 'GET',
-                'http://localhost/Laravel_2024_migration/public/api/owners/quantity',
+                'http://localhost/Laravel_2024_migration/public/api/owners',
                 // this works
                 [
                     'headers' => [
@@ -222,9 +223,33 @@ Artisan::command(
                 ]
             );
 
+            //$data = json_decode($response->getBody()->getContents(), true);
+
+            //dd($data);
             dd($response->getBody()->getContents());
         }
     );
+
+    //since we switched from OpenServer to Docker some routes are crashed in Docker
+    Artisan::command('test_api_route_protected_by_Passport2', function () {
+    $user = User::find(2);
+
+    // Create token if needed (optional)
+    $token = $user->createToken('UserToken', ['*'])->accessToken;
+
+    // Call the controller method directly
+    $controller = app(\App\Http\Api\V1\Controllers\OwnerController::class);
+
+    // If your method uses auth()->user(), temporarily set the authenticated user
+    auth()->login($user);
+
+    $response = $controller->quantity(); // call the method directly
+
+    // If it returns a JsonResponse
+    dd($response->getData(true)); // true = associative array
+});
+
+
 
 
     // test Passport +  Spatie RBAC permssion 'view owner admin quantity'. Woks fine, if fail: make sure on prod, migrate:fresh, db:seed

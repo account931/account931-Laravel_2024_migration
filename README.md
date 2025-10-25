@@ -80,10 +80,12 @@ If new route is not found => <code>php artisan route:clear</code> </br>    <code
 
 <p>11. Install Passport personal token (is needed to issue user tokens) => <code>php artisan passport:client --personal </code> 
 
-    php artisan passport:client --personal --name=SomeName #Generate Passport personal token
     php artisan passport:install                           #Passport install
+    php artisan passport:client --personal --name=SomeName #Generate Passport personal token
     php artisan passport:keys --force                      #Generates Passport encryption keys
 		
+     and you should get a Passport token to send it in ajax/fetch, etc, see details in Passport section below
+
 </p>
 
 <p>NB: Laravel 6 does not supported: Enums(from php 8.1), Factory trait in model (Laravel 8), seeder ->sequence(), arrow functions (PHP 7.4), 
@@ -176,6 +178,7 @@ OK (65 tests, 974 assertions) -> Tests: 76, Assertions: 1028  </br>
 <p> ----------------------------------------------------------------------------------------- </p>
 
 ## 7. Passport
+Passport is intended to be used as OAuth, but we use it as access token only here
 <p> https://www.twilio.com/en-us/blog/build-secure-api-php-laravel-passport </p>
 #to be able to generate users access tokens (on login, register, etc)) u should firstly generate personal access token =>  <code> php artisan passport:client --personal  </code>
 <p> for tests, you run this command programmatically in code, see example in Tests\Feature\Http\Api\Api_Auth\ApiRegisterTest;
@@ -186,9 +189,15 @@ Passport just checks if user is logged or not for API </p>
 
 Necessary set-up:
   <code>
-   php artisan passport:client --personal --name=SomeName #Generate Passport personal token
    php artisan passport:install                           #Passport install
+   php artisan passport:client --personal --name=SomeName #Generate Passport personal token
    php artisan passport:keys --force                      #Generates Passport encryption keys
+ </code>
+
+ and you should get a Passport token to send it in ajax/fetch, etc
+ <code>
+ $user  = User::find(1);
+ $token = $user->createToken('UserToken', ['*'])->accessToken;
  </code>
 <p> ----------------------------------------------------------------------------------------- </p>
 

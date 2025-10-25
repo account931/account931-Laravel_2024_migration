@@ -231,6 +231,7 @@ Artisan::command(
     );
 
     //since we switched from OpenServer to Docker some routes are crashed in Docker
+    /*
     Artisan::command('test_api_route_protected_by_Passport2', function () {
     $user = User::find(2);
 
@@ -248,7 +249,7 @@ Artisan::command(
     // If it returns a JsonResponse
     dd($response->getData(true)); // true = associative array
 });
-
+ */
 
 
 

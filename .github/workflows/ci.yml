@@ -443,7 +443,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}  #github secrets
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}   #github secrets
         run: |
-          MESSAGE="✅ Deployment alwaysdata.com completed successfully on branch $GITHUB_REF"   #U+1F680 is UTF-8 for "rocket-icon".
+          MESSAGE="✅ 💚 CI/CD: Laravel_2024_migration ver.6 was successfully deployed on alwaysdata.com/Lar.... , branch $GITHUB_REF"   #U+1F680 is UTF-8 for "rocket-icon".
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id=$TELEGRAM_CHAT_ID \
             -d text="$MESSAGE" \
